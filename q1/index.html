@@ -57,6 +57,20 @@
   .quote .en{font-family:"Nunito",sans-serif;font-weight:800;font-size:22px;margin-top:6px}
   .quote .ko{font-size:19px;margin-top:4px}
   .quote .by{font-size:15px;color:var(--sub);margin-top:4px}
+  .lv{display:flex;justify-content:space-between;align-items:center;font-size:17px;margin-bottom:6px}
+  .lv span{color:var(--sub);font-size:15px}
+  .lvbar{height:12px;background:#f3e3b0;border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .lvbar>i{display:block;height:100%;background:linear-gradient(90deg,#ffe27a,#ffb800);transition:width .4s}
+  .ov{position:fixed;inset:0;background:rgba(40,30,10,.45);display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}
+  .ovc{background:#fff;border-radius:26px;padding:24px 22px;text-align:center;max-width:380px;width:100%;animation:pop .4s ease}
+  .lvtitle{font-size:26px;font-weight:bold;color:var(--accent)}
+  .lvname{font-size:24px;font-weight:bold;margin-top:4px}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .dex{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;text-align:center;font-size:13px}
+  .dx svg{width:100%;height:auto}
+  .dx.lock{color:var(--sub)}
+  .dx .q{aspect-ratio:120/130;display:flex;align-items:center;justify-content:center;background:#f3ece3;border-radius:14px;font-size:30px;color:#c9bca9}
+  .gain{font-size:20px;font-weight:bold;color:#c98a00;margin-top:8px}
 </style>
 </head>
 <body>
@@ -147,7 +161,48 @@ const WORDS = [
 const RATIO = 0.8;
 
 
-function penguin(mood){
+const STAGES=[
+ [0,"신비한 알","알 속에서 누가 자라고 있어! 단어를 맞히면 깨어나"],
+ [10,"아기 펭귄","알을 깨고 아기 펭귄이 태어났어!"],
+ [40,"꼬마 펭귄","머리에 해바라기 꽃잎이 돋아나기 시작했어!"],
+ [100,"해바라기 펭귄","해바라기 모자가 활짝 피었어!"],
+ [180,"여행가 펭귄","별꽃 가방을 메고 단어 모험을 떠나!"],
+ [300,"왕관 펭귄","단어 왕 펭귄이 됐어! 👑"],
+ [500,"황금 해바라기 펭귄","전설의 황금 펭귄이 나타났어! ✨"]
+];
+const XPKEY="seola_penguin_xp";
+let memXP=0;
+function getXP(){try{const v=localStorage.getItem(XPKEY);return v?+v:memXP}catch(e){return memXP}}
+function setXP(v){memXP=v;try{localStorage.setItem(XPKEY,String(v))}catch(e){}}
+function stageOf(xp){let s=0;for(let i=0;i<STAGES.length;i++)if(xp>=STAGES[i][0])s=i;return s}
+function addXP(n){const before=stageOf(getXP());setXP(getXP()+n);window.__gain=(window.__gain||0)+n;const after=stageOf(getXP());if(after>before)window.__levelUp=after;renderLv();}
+function lvHTML(){
+  const xp=getXP(),st=stageOf(xp),cur=STAGES[st][0],nx=STAGES[st+1];
+  const pct=nx?Math.round((xp-cur)/(nx[0]-cur)*100):100;
+  return `<div class="lv"><b>🐧 Lv.${st+1} ${STAGES[st][1]}</b><span>${nx?`다음 성장까지 ⭐${nx[0]-xp}`:"최고 레벨!"}</span></div><div class="lvbar"><i style="width:${pct}%"></i></div>`;
+}
+function renderLv(){const e=document.getElementById("lv");if(e)e.innerHTML=lvHTML();}
+function showLevelUp(st,cb){
+  const o=document.createElement("div");o.className="ov";
+  o.innerHTML=`<div class="ovc"><div class="lvtitle">🎉 펭귄이 자랐어!</div><div class="pg big">${penguin("happy",st)}</div><div class="lvname">Lv.${st+1} ${STAGES[st][1]}</div><div class="muted" style="margin:6px 0 4px">${STAGES[st][2]}</div><button id="ovok">좋아! 계속하기</button></div>`;
+  document.body.appendChild(o);
+  document.getElementById("ovok").onclick=()=>{o.remove();cb&&cb();};
+}
+function dexHTML(){
+  const st=stageOf(getXP());
+  return `<div class="card"><b>🌻 펭귄 성장 도감</b><div class="dex">${STAGES.map((s,i)=>`<div class="dx ${i>st?"lock":""}">${i<=st?penguin("normal",i):'<div class="q">?</div>'}<div>${i<=st?s[1]:`⭐${s[0]}`}</div></div>`).join("")}</div></div>`;
+}
+function penguin(mood, st){
+  if(st===undefined) st=stageOf(getXP());
+  const cls = mood==="happy"?"hop":mood==="sad"?"shake":"";
+  if(st===0){
+    const face = mood==="happy" ? '<path d="M50 70 q4 -4 8 0 M62 70 q4 -4 8 0" stroke="#1f1f24" stroke-width="2.5" fill="none" stroke-linecap="round"/>' : mood==="sad" ? '<circle cx="54" cy="70" r="2.5" fill="#1f1f24"/><circle cx="66" cy="70" r="2.5" fill="#1f1f24"/>' : '<circle cx="54" cy="70" r="3" fill="#1f1f24"/><circle cx="66" cy="70" r="3" fill="#1f1f24"/>';
+    return `<svg viewBox="0 0 120 130" class="${cls}"><ellipse cx="60" cy="125" rx="26" ry="3.5" fill="rgba(0,0,0,.08)"/>
+    <path d="M60 22 C 30 22 22 72 26 96 C 30 118 90 118 94 96 C 98 72 90 22 60 22 z" fill="#fbf3e6" stroke="#e8dcc6" stroke-width="2"/>
+    <circle cx="44" cy="48" r="5" fill="#ffe27a"/><circle cx="78" cy="88" r="6" fill="#ffe27a"/><circle cx="74" cy="44" r="3.5" fill="#ffe27a"/>
+    <path d="M34 62 l10 6 l8 -7 l8 7 l8 -7 l8 7 l10 -6" stroke="#cdbb9e" stroke-width="2" fill="none"/>
+    ${face}<circle cx="47" cy="78" r="3.5" fill="#ff9e9e" opacity=".6"/><circle cx="73" cy="78" r="3.5" fill="#ff9e9e" opacity=".6"/></svg>`;
+  }
   const eyes = mood==="happy"
     ? '<path d="M44 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M68 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/>'
     : mood==="sad"
@@ -155,21 +210,34 @@ function penguin(mood){
     : '<circle cx="48" cy="55" r="4.3" fill="#1f1f24"/><circle cx="72" cy="55" r="4.3" fill="#1f1f24"/><circle cx="49.4" cy="53.5" r="1.4" fill="#fff"/><circle cx="73.4" cy="53.5" r="1.4" fill="#fff"/>';
   const nose = mood==="sad" ? '<ellipse cx="60" cy="60" rx="6" ry="4" fill="#8a4a2a"/>' : '<ellipse cx="60" cy="59" rx="6.5" ry="4.5" fill="#8a4a2a"/><ellipse cx="58" cy="57.5" rx="2" ry="1" fill="#b06a45"/>';
   const mouth = mood==="happy" ? '<path d="M56 66 q4 4 8 0" stroke="#8a4a2a" stroke-width="2" fill="none" stroke-linecap="round"/>' : '';
-  let petals=""; for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="19" rx="13" ry="13" fill="#ffd84d" stroke="#f0bf2a" stroke-width="1.2" transform="rotate(${i*36+18} 60 52)"/>`}
-  let star=""; for(let i=0;i<5;i++){star+=`<ellipse cx="30" cy="85" rx="4.5" ry="6" fill="#ffd84d" stroke="#f0bf2a" stroke-width="1" transform="rotate(${i*72} 30 92)"/>`}
-  return `<svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="${mood==="happy"?"hop":mood==="sad"?"shake":""}">
+  const gold = st>=6;
+  const pf = gold?"#ffc21a":"#ffd84d", ps = gold?"#e0a000":"#f0bf2a";
+  let petals="";
+  if(st===2){ for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="25" rx="7" ry="8" fill="#ffe98a" stroke="#f0cf4a" stroke-width="1" transform="rotate(${i*36+18} 60 52)"/>`} }
+  if(st>=3){ for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="19" rx="13" ry="13" fill="${pf}" stroke="${ps}" stroke-width="1.2" transform="rotate(${i*36+18} 60 52)"/>`} }
+  let bag="";
+  if(st>=4){ let star=""; for(let i=0;i<5;i++){star+=`<ellipse cx="30" cy="85" rx="4.5" ry="6" fill="${pf}" stroke="${ps}" stroke-width="1" transform="rotate(${i*72} 30 92)"/>`}
+    bag=`<path d="M84 82 L34 108" stroke="#2b2b30" stroke-width="3.2" stroke-linecap="round"/>${star}<circle cx="30" cy="92" r="4" fill="#e86a2e"/>`; }
+  const crown = st>=5 ? `<path d="M46 26 l4 -14 l6 9 l4 -12 l4 12 l6 -9 l4 14 z" fill="#ffcf33" stroke="#d99a00" stroke-width="1.5" stroke-linejoin="round"/><circle cx="60" cy="20" r="2.4" fill="#ff6b8a"/>` : "";
+  const glow = gold ? `<circle cx="60" cy="66" r="58" fill="url(#gl)"/><path d="M14 30 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z M104 70 l2.5 5 l5 2.5 l-5 2.5 l-2.5 5 l-2.5 -5 l-5 -2.5 l5 -2.5 z" fill="#ffd84d"/>` : "";
+  const tuft = st===1 ? '<path d="M56 24 q2 -8 4 0 q2 -8 4 0" stroke="#5f5f66" stroke-width="3" fill="none" stroke-linecap="round"/>' : "";
+  const shell = st===1 ? '<path d="M28 100 l8 -8 l7 8 l8 -8 l9 8 l9 -8 l8 8 l7 -8 l8 8 q0 26 -32 26 q-32 0 -32 -26 z" fill="#fbf3e6" stroke="#e8dcc6" stroke-width="2"/>' : "";
+  const scale = st===1 ? .78 : st===2 ? .9 : 1;
+  return `<svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="${cls}">
+    <defs><radialGradient id="gl"><stop offset="0" stop-color="#fff2a8" stop-opacity=".9"/><stop offset="1" stop-color="#fff2a8" stop-opacity="0"/></radialGradient></defs>
+    ${glow}
     <ellipse cx="60" cy="126" rx="28" ry="3.5" fill="rgba(0,0,0,.08)"/>
+    <g transform="translate(60 128) scale(${scale}) translate(-60 -128)">
     <ellipse cx="49" cy="122" rx="8" ry="4" fill="#9d8f84"/><ellipse cx="71" cy="122" rx="8" ry="4" fill="#9d8f84"/>
     <path d="M30 78 q-12 10 -8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
     <path d="M90 78 q12 10 8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
     <path d="M32 74 q-6 48 28 47 q34 1 28 -47 z" fill="#b3a397"/>
-    ${petals}
+    ${petals}${tuft}
     <circle cx="60" cy="52" r="29" fill="#5f5f66"/>
     <path d="M33 58 q0 -18 13 -22 q8 -2 14 6 q6 -8 14 -6 q13 4 13 22 q0 20 -27 20 q-27 0 -27 -20 z" fill="#fbf3e6"/>
     <circle cx="41" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/><circle cx="79" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/>
-    ${eyes}${nose}${mouth}
-    <path d="M84 82 L34 108" stroke="#2b2b30" stroke-width="3.2" stroke-linecap="round"/>
-    ${star}<circle cx="30" cy="92" r="4" fill="#e86a2e"/>
+    ${eyes}${nose}${mouth}${bag}${crown}${shell}
+    </g>
   </svg>`;
 }
 const CHEER=["화이팅! 🐧","할 수 있어!","천천히 생각해 봐","설아 최고!","거의 다 왔어!"];
@@ -193,7 +261,7 @@ function makeQuiz(pool){
 }
 
 function start(pool, label){
-  qs = makeQuiz(pool); idx = 0; results = []; window.__label = label || "전체";
+  qs = makeQuiz(pool); idx = 0; results = []; window.__label = label || "전체"; window.__gain = 0;
   renderQ();
 }
 
@@ -219,6 +287,7 @@ function renderQ(){
   const isSp = q.type==="spell";
   const hint = isSp ? w[0].split("").map(c=>c===" "?"  ":"_").join(" ") + `  (${w[0].replace(/ /g,"").length}글자)` : (w[1]?w[1]:"");
   $app.innerHTML = `
+  <div id="lv">${lvHTML()}</div>
   <div class="bar"><i style="width:${idx/qs.length*100}%"></i></div>
   <div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${results.filter(r=>r.ok).length}</span></div>
   <div class="pg" id="pg">${penguin("normal")}<div class="bubble" id="bub">${CHEER[Math.floor(Math.random()*CHEER.length)]}</div></div>
@@ -241,7 +310,9 @@ function renderQ(){
     const ok = isSp ? normEn(v)===normEn(w[0]) : checkMeaning(v, w[3]);
     results.push({word:w[0], meaning:w[2], type:q.type, mine:v, ok});
     answered = true; inp.readOnly = true;
-    document.getElementById("pg").innerHTML = penguin(ok?"happy":"sad") + `<div class="bubble">${ok?"정답! 잘했어 🌻":"괜찮아, 다시 외우자!"}</div>`;
+    if(ok) addXP(1);
+    document.getElementById("pg").innerHTML = penguin(ok?"happy":"sad") + `<div class="bubble">${ok?"정답! ⭐+1":"괜찮아, 다시 외우자!"}</div>`;
+    if(window.__levelUp!==undefined){ const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L,()=>{document.getElementById("pg").innerHTML=penguin("happy")+`<div class="bubble">나 자랐어! 고마워 🌻</div>`;document.getElementById("btn").focus();}),500); }
     const fb = document.getElementById("fb");
     fb.className = "fb " + (ok?"ok":"no");
     fb.innerHTML = ok
@@ -261,6 +332,8 @@ function resultText(){
   let t = `[설아 영어단어 퀴즈] ${today()} (${window.__label})\n점수: ${ok} / ${results.length} (${Math.round(ok/results.length*100)}점)\n`;
   if(wrong.length){ t += `\n틀린 단어 ${wrong.length}개\n` + wrong.map((r,i)=>`${i+1}. ${r.word} = ${r.meaning} (${r.type==="spell"?"철자":"뜻"} / 내 답: ${r.mine})`).join("\n"); }
   else t += "\n모두 맞았어요! 💯";
+  const st=stageOf(getXP());
+  t += `\n\n🐧 펭귄: Lv.${st+1} ${STAGES[st][1]} (모은 별 ${getXP()}개)`;
   return t;
 }
 
@@ -268,18 +341,24 @@ function renderResult(){
   const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
   const pct = Math.round(ok/results.length*100);
   const msg = pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 단어만 다시 해 보자! 🔁";
+  const bonus = (results.length>=10?10:3) + (pct===100?20:0);
+  addXP(bonus);
+  const gain = window.__gain;
   $app.innerHTML = `
   <div class="pg big">${penguin(pct>=60?"happy":"sad")}</div>
   <div class="card center">
     <div class="muted">${today()} · ${esc(window.__label)}</div>
     <div class="score">${ok} / ${results.length}</div>
     <div style="font-size:20px;font-weight:bold">${pct}점 · ${msg}</div>
+    <div class="gain">이번에 모은 별 ⭐+${gain} <span class="muted">(끝까지 푼 보너스 +${bonus})</span></div>
   </div>
+  <div class="card" id="lv">${lvHTML()}</div>
   ${wrong.length?`<div class="card">
     <b>틀린 단어 ${wrong.length}개</b> <span class="muted">아래 메일 버튼으로 아빠한테 보내줘</span>
     <table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>
     ${wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine)}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}
     </table></div>`:""}
+  ${dexHTML()}
   <div class="card">
     <button id="mail">📧 아빠한테 메일 보내기</button>
     <button class="ghost" id="sms">💬 아빠한테 문자 보내기</button>
@@ -309,6 +388,7 @@ function renderResult(){
     const pool = WORDS.filter(w=>wrong.some(r=>r.word===w[0])); start(pool,"오답 다시 풀기");
   };
   document.getElementById("again").onclick = ()=>start(WORDS,"전체");
+  if(window.__levelUp!==undefined){ const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L),600); }
 }
 
 
