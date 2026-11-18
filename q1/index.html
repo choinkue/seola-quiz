@@ -143,26 +143,27 @@ const RATIO = 0.8;
 
 function penguin(mood){
   const eyes = mood==="happy"
-    ? '<path d="M45 57 q4 -5 8 0" stroke="#2b2a33" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M67 57 q4 -5 8 0" stroke="#2b2a33" stroke-width="3" fill="none" stroke-linecap="round"/>'
+    ? '<path d="M44 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M68 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/>'
     : mood==="sad"
-    ? '<circle cx="49" cy="57" r="3.6" fill="#2b2a33"/><circle cx="71" cy="57" r="3.6" fill="#2b2a33"/><path d="M44 50 l8 3 M76 50 l-8 3" stroke="#2b2a33" stroke-width="2.2" stroke-linecap="round"/><path d="M48 63 q-3 6 0 8 q3 -2 0 -8" fill="#7cc4ff"/>'
-    : '<circle cx="49" cy="57" r="4" fill="#2b2a33"/><circle cx="71" cy="57" r="4" fill="#2b2a33"/><circle cx="50.3" cy="55.6" r="1.3" fill="#fff"/><circle cx="72.3" cy="55.6" r="1.3" fill="#fff"/>';
-  const beak = mood==="happy" ? '<path d="M56 63 q4 6 8 0 z" fill="#3a3a3a"/>'
-    : mood==="sad" ? '<path d="M56 66 q4 -3 8 0 l-4 2 z" fill="#3a3a3a"/>' : '<path d="M56 63 l4 4 l4 -4 z" fill="#3a3a3a"/>';
-  let petals=""; for(let i=0;i<14;i++){petals+=`<ellipse cx="60" cy="16" rx="10" ry="15" fill="${i%2?"#ffe27a":"#ffd54a"}" stroke="#f2c230" stroke-width="1" transform="rotate(${i*360/14} 60 56)"/>`}
-  let mini=""; for(let i=0;i<8;i++){mini+=`<ellipse cx="60" cy="88" rx="3" ry="5" fill="#ffd54a" transform="rotate(${i*45} 60 94)"/>`}
-  return `<svg viewBox="0 0 120 124" xmlns="http://www.w3.org/2000/svg" class="${mood==="happy"?"hop":mood==="sad"?"shake":""}">
-    <ellipse cx="60" cy="120" rx="30" ry="4" fill="rgba(0,0,0,.08)"/>
-    <ellipse cx="48" cy="116" rx="8" ry="4" fill="#8f8f96"/><ellipse cx="72" cy="116" rx="8" ry="4" fill="#8f8f96"/>
-    <ellipse cx="60" cy="94" rx="30" ry="23" fill="#a9a9b0"/>
-    <path d="M32 88 q-9 8 -5 18" stroke="#a9a9b0" stroke-width="9" fill="none" stroke-linecap="round"/>
-    <path d="M88 88 q9 8 5 18" stroke="#a9a9b0" stroke-width="9" fill="none" stroke-linecap="round"/>
-    ${mini}<circle cx="60" cy="94" r="3.5" fill="#f2a33a"/>
+    ? '<circle cx="48" cy="55" r="3.8" fill="#1f1f24"/><circle cx="72" cy="55" r="3.8" fill="#1f1f24"/><path d="M43 48 l8 3 M77 48 l-8 3" stroke="#1f1f24" stroke-width="2.2" stroke-linecap="round"/><path d="M47 61 q-3 6 0 8 q3 -2 0 -8" fill="#7cc4ff"/>'
+    : '<circle cx="48" cy="55" r="4.3" fill="#1f1f24"/><circle cx="72" cy="55" r="4.3" fill="#1f1f24"/><circle cx="49.4" cy="53.5" r="1.4" fill="#fff"/><circle cx="73.4" cy="53.5" r="1.4" fill="#fff"/>';
+  const nose = mood==="sad" ? '<ellipse cx="60" cy="60" rx="6" ry="4" fill="#8a4a2a"/>' : '<ellipse cx="60" cy="59" rx="6.5" ry="4.5" fill="#8a4a2a"/><ellipse cx="58" cy="57.5" rx="2" ry="1" fill="#b06a45"/>';
+  const mouth = mood==="happy" ? '<path d="M56 66 q4 4 8 0" stroke="#8a4a2a" stroke-width="2" fill="none" stroke-linecap="round"/>' : '';
+  let petals=""; for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="19" rx="13" ry="13" fill="#ffd84d" stroke="#f0bf2a" stroke-width="1.2" transform="rotate(${i*36+18} 60 52)"/>`}
+  let star=""; for(let i=0;i<5;i++){star+=`<ellipse cx="30" cy="85" rx="4.5" ry="6" fill="#ffd84d" stroke="#f0bf2a" stroke-width="1" transform="rotate(${i*72} 30 92)"/>`}
+  return `<svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="${mood==="happy"?"hop":mood==="sad"?"shake":""}">
+    <ellipse cx="60" cy="126" rx="28" ry="3.5" fill="rgba(0,0,0,.08)"/>
+    <ellipse cx="49" cy="122" rx="8" ry="4" fill="#9d8f84"/><ellipse cx="71" cy="122" rx="8" ry="4" fill="#9d8f84"/>
+    <path d="M30 78 q-12 10 -8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M90 78 q12 10 8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M32 74 q-6 48 28 47 q34 1 28 -47 z" fill="#b3a397"/>
     ${petals}
-    <circle cx="60" cy="56" r="31" fill="#6f6f78"/>
-    <path d="M36 62 q0 -22 24 -22 q24 0 24 22 q0 16 -24 16 q-24 0 -24 -16 z" fill="#fffaf2"/>
-    <circle cx="42" cy="66" r="4.5" fill="#ffb3b3" opacity=".8"/><circle cx="78" cy="66" r="4.5" fill="#ffb3b3" opacity=".8"/>
-    ${eyes}${beak}
+    <circle cx="60" cy="52" r="29" fill="#5f5f66"/>
+    <path d="M33 58 q0 -18 13 -22 q8 -2 14 6 q6 -8 14 -6 q13 4 13 22 q0 20 -27 20 q-27 0 -27 -20 z" fill="#fbf3e6"/>
+    <circle cx="41" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/><circle cx="79" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/>
+    ${eyes}${nose}${mouth}
+    <path d="M84 82 L34 108" stroke="#2b2b30" stroke-width="3.2" stroke-linecap="round"/>
+    ${star}<circle cx="30" cy="92" r="4" fill="#e86a2e"/>
   </svg>`;
 }
 const CHEER=["화이팅! 🐧","할 수 있어!","천천히 생각해 봐","설아 최고!","거의 다 왔어!"];
