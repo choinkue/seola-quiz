@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>설아 영어단어 퀴즈 1회차</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff8ef;--card:#ffffff;--ink:#2b2a33;--sub:#7a7584;--accent:#f07b3f;--accent2:#ffd36e;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#efe6da}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:17px;line-height:1.5}
+  .wrap{max-width:520px;margin:0 auto;padding:20px 16px 48px}
+  h1{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:24px;margin:4px 0 2px}
+  .muted{color:var(--sub);font-size:14px}
+  .card{background:var(--card);border-radius:20px;padding:22px 20px;box-shadow:0 6px 24px rgba(120,80,30,.08);margin-top:16px}
+  .bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:14px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0;transition:width .3s}
+  .top{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--sub);margin-top:8px}
+  .tag{display:inline-block;font-size:13px;padding:3px 10px;border-radius:99px;background:#fff1e3;color:#b9541f;font-weight:bold}
+  .tag.sp{background:#e9f0ff;color:#3559c7}
+  .prompt{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:34px;font-weight:800;margin:14px 0 4px;word-break:keep-all}
+  .prompt.ko{font-family:"Gowun Dodum",sans-serif;font-size:24px;font-weight:700}
+  .hint{color:var(--sub);font-size:15px;letter-spacing:2px;margin-bottom:12px;font-family:monospace}
+  input[type=text]{width:100%;font-size:20px;padding:14px 16px;border:2px solid var(--line);border-radius:14px;outline:none;font-family:inherit;background:#fffdf9}
+  input[type=text]:focus{border-color:var(--accent)}
+  button{font-family:inherit;font-size:18px;font-weight:bold;border:0;border-radius:14px;padding:14px 18px;cursor:pointer;width:100%;margin-top:12px;background:var(--accent);color:#fff}
+  button.ghost{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  button.soft{background:#f3ece3;color:var(--ink)}
+  button:disabled{opacity:.5}
+  .fb{margin-top:14px;border-radius:14px;padding:14px 16px;display:none}
+  .fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+  .fb.no{display:block;background:var(--nobg);color:var(--no)}
+  .fb b{font-size:19px}
+  .fb .ans{color:var(--ink);margin-top:6px}
+  .score{font-family:"Nunito",sans-serif;font-size:56px;font-weight:800;text-align:center;margin:6px 0 0;color:var(--accent)}
+  .center{text-align:center}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+  th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--sub);font-weight:normal;font-size:13px}
+  td.w{font-family:"Nunito",sans-serif;font-weight:800}
+  td.mine{color:var(--no)}
+  .copied{color:var(--ok);font-size:14px;text-align:center;margin-top:6px;min-height:20px}
+  .start li{margin:4px 0}
+  .row{display:flex;gap:10px}.row button{flex:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="muted">설아 영어단어 퀴즈</div>
+  <h1>Lesson 4 + DAY 24·25</h1>
+  <div id="app"></div>
+</div>
+
+<script>
+// [단어, 품사, 정답 뜻(표시용), 인정 키워드, 출처]
+const WORDS = [
+ ["slime","n.","슬라임, 끈적끈적한 물질","슬라임,끈적","L4"],
+ ["value","v.","가치, 소중하게 여기다","가치,소중","L4"],
+ ["ancient","adj.","고대의","고대,옛날","L4"],
+ ["inspire","v.","영감을 주다, 고무하다, 격려하다","영감,고무,격려","L4"],
+ ["natural","adj.","자연의, 천연의","자연,천연","L4"],
+ ["show off","","자랑하다, 뽐내다","자랑,뽐내,뽐냈,과시","L4"],
+ ["worth","adj.","~의 가치가 있는","가치","L4"],
+ ["official","n.","공무원, 관리, 임원","공무원,관리,임원","L4"],
+ ["royal","adj.","왕의, 왕실의","왕의,왕실,국왕,왕족","L4"],
+ ["empire","n.","제국","제국","L4"],
+ ["collect","v.","모으다, 수집하다","모으,모아,모은,수집","L4"],
+ ["rule","v.","통치하다, 지배하다 (n. 규칙)","통치,지배,규칙","L4"],
+ ["robe","n.","예복, 가운","예복,가운","L4"],
+ ["effort","n.","노력","노력","L4"],
+ ["luxurious","adj.","호화로운, 사치스러운","호화,사치,고급","L4"],
+ ["full","형","가득한, 완전한, 배부른","가득,완전,배부","D24"],
+ ["empty","형","빈, 비어 있는","빈,비어,비었,비다","D24"],
+ ["heavy","형","무거운, (양·정도가) 많은","무거,무겁","D24"],
+ ["flat","형","평평한, 납작한","평평,납작","D24"],
+ ["low","형/부","낮은, 낮게","낮","D24"],
+ ["long","형/부","긴, 길게, 오래","긴,길게,길다,오래","D24"],
+ ["new","형","새로운, 새","새,새로","D24"],
+ ["open","형/동","열린, 열려 있는, 열다","열린,열려,열다,열리","D24"],
+ ["wide","형/부","(폭이) 넓은, 넓게","넓","D24"],
+ ["piece","명","조각, 부분, 작품","조각,부분,작품","D24"],
+ ["rough","형","거친, 고르지 않은, 험한, 대략적인","거친,거칠,험한,험하,대략,고르지","D24"],
+ ["hard","형","딱딱한, 단단한, 어려운, 힘든","딱딱,단단,어려,어렵,힘든,힘들","D24"],
+ ["slowly","부","천천히, 느리게","천천,느리게,느릿","D24"],
+ ["helpful","형","유용한, 도움이 되는","유용,도움","D24"],
+ ["round","형","둥근, 원형의","둥근,둥글,원형","D24"],
+ ["shape","명/동","모양, 모습, (~한) 모양으로 만들다","모양,모습,형태","D24"],
+ ["sharp","형","날카로운, 예리한","날카,예리","D24"],
+ ["huge","형","거대한, 엄청난","거대,엄청","D24"],
+ ["tiny","형","조그마한, 아주 작은","조그마,조그만,작은,자그마","D24"],
+ ["up and down","","위아래로, 좋다가 나쁘다가 하는","위아래,오르락","D24"],
+ ["feature","명/동","특징, 특색, 특징을 이루다","특징,특색","D24"],
+ ["wooden","형","나무로 된, 목제의","나무,목제,목재","D24"],
+ ["pile","명/동","더미, 무더기, 쌓다, 포개다","더미,무더기,쌓,포개","D24"],
+ ["exist","동","존재하다, 실재하다","존재,실재","D24"],
+ ["object","명/동","물체, 물건, 반대하다","물체,물건,반대","D24"],
+ ["valuable","형","값비싼, 고가의, 귀중한","값비,비싼,고가,귀중,소중","D24"],
+ ["precious","형","귀중한, 값진","귀중,값진,값비,소중","D24"],
+ ["unlike","전/형","~과 달리, 같지 않은","달리,같지,다른","D24"],
+ ["stiff","형","뻣뻣한, 딱딱한","뻣뻣,딱딱","D24"],
+ ["a variety of","","다양한, 여러 가지의","다양,여러","D24"],
+ ["terrible","형","지독한, 심한, 끔찍한","지독,심한,심하,끔찍","D25"],
+ ["awful","형","끔찍한, 무서운, 지독한, 심한","끔찍,무서,무섭,지독,심한,심하","D25"],
+ ["strange","형","이상한, 낯선, 모르는","이상,낯선,낯설","D25"],
+ ["wrong","형","잘못된, 틀린, 나쁜, 옳지 못한","잘못,틀린,틀리,나쁜,옳지","D25"],
+ ["difficult","형","어려운, 힘든","어려,어렵,힘든,힘들","D25"],
+ ["fair","형/명","공정한, 공평한, 꽤 많은, 박람회","공정,공평,상당,박람","D25"],
+ ["exactly","부","정확하게, 틀림없이","정확,틀림없","D25"],
+ ["loud","형","시끄러운, (소리가) 큰","시끄,큰,소리가큰","D25"],
+ ["silence","명","정적, 고요, 침묵","정적,고요,침묵","D25"],
+ ["usual","형","보통의, 평상시의","보통,평상,평소","D25"],
+ ["especially","부","특히, 유난히","특히,유난","D25"],
+ ["mood","명","기분, 감정, 분위기","기분,감정,분위기","D25"],
+ ["speed","명/동","속도, 속력, 신속, 빨리 가다","속도,속력,신속,빨리","D25"],
+ ["mystery","명","불가사의, 신비","불가사의,신비,미스터리","D25"],
+ ["everything","대","모든 것, 모두","모든,모두","D25"],
+ ["during","전","~ 동안, ~하는 중에","동안,중에","D25"],
+ ["excellent","형","훌륭한, 우수한","훌륭,우수","D25"],
+ ["surprising","형","놀라운, 의외의","놀라,의외","D25"],
+ ["shocking","형","충격적인","충격","D25"],
+ ["covered with","","~으로 뒤덮인","덮인,덮여,뒤덮,덮힌","D25"],
+ ["dramatic","형","극적인","극적","D25"],
+ ["suddenly","부","갑자기","갑자기,갑작","D25"],
+ ["unbelievable","형","믿을 수 없는, 믿기 어려운","믿을수없,믿기어려,믿을수가없,믿기힘","D25"],
+ ["ordinary","형","보통의, 평범한","보통,평범","D25"],
+ ["situation","명","상황, 처지, 입장","상황,처지,입장","D25"],
+ ["familiar","형","친숙한, 익숙한, 잘 알고 있는","친숙,익숙,잘알,정통","D25"],
+ ["describe","동","묘사하다, 서술하다","묘사,서술,설명","D25"],
+ ["among","전","~ 중에서, ~에 둘러싸여","중에서,사이,둘러싸","D25"],
+ ["unfortunately","부","불행하게도, 유감스럽게도","불행,유감","D25"],
+ ["in addition","","게다가, 덧붙여","게다가,덧붙,추가로","D25"]
+];
+const RATIO = 0.8;
+
+const $app = document.getElementById("app");
+let qs = [], idx = 0, results = [], answered = false, dbRef = null;
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function normKo(s){return s.replace(/[\s~()（）\[\]…\.\-·'"]/g,"")}
+function normEn(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/\s+/g," ").trim()}
+
+function checkMeaning(ans, keys){
+  const parts = ans.split(/[,，\/、]/).map(normKo).filter(Boolean);
+  const ks = keys.split(",").map(normKo);
+  return parts.some(p => ks.some(k => k.length===1 ? (p===k || p===k+"의" || p.startsWith(k+"은") || p.startsWith(k+"게")) : p.includes(k)));
+}
+
+function makeQuiz(pool){
+  const n = pool===WORDS ? Math.round(WORDS.length*RATIO) : pool.length;
+  return shuffle(pool).slice(0,n).map(w=>({w, type: Math.random()<0.5 ? "meaning" : "spell"}));
+}
+
+function start(pool, label){
+  qs = makeQuiz(pool); idx = 0; results = []; window.__label = label || "전체";
+  renderQ();
+}
+
+function renderIntro(){
+  $app.innerHTML = `
+  <div class="card start">
+    <p style="margin-top:0">설아야, 오늘 단어 시험이야! ✏️</p>
+    <ul>
+      <li>전체 <b>${WORDS.length}개</b> 단어 중 <b>${Math.round(WORDS.length*RATIO)}문제</b>가 무작위로 나와</li>
+      <li><span class="tag">뜻 쓰기</span> 영어를 보고 한국어 뜻 쓰기</li>
+      <li><span class="tag sp">철자 쓰기</span> 뜻을 보고 영어 철자 쓰기</li>
+      <li>뜻이 여러 개면 <b>하나만</b> 맞게 써도 정답!</li>
+      <li>다 풀면 결과 화면을 <b>캡처해서 아빠한테</b> 보내줘 📸</li>
+    </ul>
+    <button id="go">시작하기</button>
+  </div>`;
+  document.getElementById("go").onclick = ()=>start(WORDS,"전체");
+}
+
+function renderQ(){
+  answered = false;
+  const q = qs[idx], w = q.w;
+  const isSp = q.type==="spell";
+  const hint = isSp ? w[0].split("").map(c=>c===" "?"  ":"_").join(" ") + `  (${w[0].replace(/ /g,"").length}글자)` : (w[1]?w[1]:"");
+  $app.innerHTML = `
+  <div class="bar"><i style="width:${idx/qs.length*100}%"></i></div>
+  <div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${results.filter(r=>r.ok).length}</span></div>
+  <div class="card">
+    <span class="tag ${isSp?"sp":""}">${isSp?"철자 쓰기":"뜻 쓰기"}</span>
+    <div class="prompt ${isSp?"ko":""}">${esc(isSp?w[2]:w[0])}</div>
+    <div class="hint">${esc(hint)}</div>
+    <form id="f" autocomplete="off">
+      <input type="text" id="a" placeholder="${isSp?"영어로 써 보세요":"한국어 뜻을 써 보세요"}" autocapitalize="off" autocorrect="off" spellcheck="false" lang="${isSp?"en":"ko"}">
+      <button id="btn" type="submit">확인</button>
+    </form>
+    <div class="fb" id="fb"></div>
+  </div>`;
+  const inp = document.getElementById("a"); inp.focus();
+  document.getElementById("f").onsubmit = e=>{
+    e.preventDefault();
+    if(answered){ next(); return; }
+    const v = inp.value.trim();
+    if(!v){ inp.focus(); return; }
+    const ok = isSp ? normEn(v)===normEn(w[0]) : checkMeaning(v, w[3]);
+    results.push({word:w[0], meaning:w[2], type:q.type, mine:v, ok});
+    answered = true; inp.readOnly = true;
+    const fb = document.getElementById("fb");
+    fb.className = "fb " + (ok?"ok":"no");
+    fb.innerHTML = ok
+      ? `<b>정답! 🎉</b><div class="ans">${esc(w[0])} = ${esc(w[2])}</div>`
+      : `<b>아쉬워요 😢</b><div class="ans">정답: <b>${esc(w[0])}</b> = ${esc(w[2])}</div>`;
+    document.getElementById("btn").textContent = idx+1<qs.length ? "다음 문제 →" : "결과 보기";
+    document.getElementById("btn").focus();
+  };
+}
+
+function next(){ idx++; if(idx<qs.length) renderQ(); else renderResult(); }
+
+function today(){const d=new Date();return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`}
+
+function resultText(){
+  const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
+  let t = `[설아 영어단어 퀴즈] ${today()} (${window.__label})\n점수: ${ok} / ${results.length} (${Math.round(ok/results.length*100)}점)\n`;
+  if(wrong.length){ t += `\n틀린 단어 ${wrong.length}개\n` + wrong.map((r,i)=>`${i+1}. ${r.word} = ${r.meaning} (${r.type==="spell"?"철자":"뜻"} / 내 답: ${r.mine})`).join("\n"); }
+  else t += "\n모두 맞았어요! 💯";
+  return t;
+}
+
+function renderResult(){
+  const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
+  const pct = Math.round(ok/results.length*100);
+  const msg = pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 단어만 다시 해 보자! 🔁";
+  $app.innerHTML = `
+  <div class="card center">
+    <div class="muted">${today()} · ${esc(window.__label)}</div>
+    <div class="score">${ok} / ${results.length}</div>
+    <div style="font-size:20px;font-weight:bold">${pct}점 · ${msg}</div>
+  </div>
+  ${wrong.length?`<div class="card">
+    <b>틀린 단어 ${wrong.length}개</b> <span class="muted">← 이 화면을 캡처해서 아빠한테 보내줘</span>
+    <table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>
+    ${wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine)}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}
+    </table></div>`:""}
+  <div class="card">
+    <button id="copy">결과 복사하기 (카톡에 붙여넣기)</button>
+    <div class="copied" id="cp"></div>
+    ${wrong.length?`<button class="ghost" id="retry">틀린 단어만 다시 풀기 (${wrong.length}개)</button>`:""}
+    <button class="soft" id="again">처음부터 새로 풀기</button>
+  </div>`;
+  document.getElementById("copy").onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(resultText()); document.getElementById("cp").textContent="복사됐어! 카톡에서 아빠한테 붙여넣기 해줘 ✅"; }
+    catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
+  };
+  if(wrong.length) document.getElementById("retry").onclick = ()=>{
+    const pool = WORDS.filter(w=>wrong.some(r=>r.word===w[0])); start(pool,"오답 다시 풀기");
+  };
+  document.getElementById("again").onclick = ()=>start(WORDS,"전체");
+}
+
+
+renderIntro();
+</script>
+</body>
+</html>
