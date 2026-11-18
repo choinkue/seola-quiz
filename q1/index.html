@@ -276,18 +276,25 @@ function renderResult(){
     <div style="font-size:20px;font-weight:bold">${pct}점 · ${msg}</div>
   </div>
   ${wrong.length?`<div class="card">
-    <b>틀린 단어 ${wrong.length}개</b> <span class="muted">← 이 화면을 캡처해서 아빠한테 보내줘</span>
+    <b>틀린 단어 ${wrong.length}개</b> <span class="muted">아래 메일 버튼으로 아빠한테 보내줘</span>
     <table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>
     ${wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine)}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}
     </table></div>`:""}
   <div class="card">
-    <button id="copy">결과 복사하기 (카톡에 붙여넣기)</button>
+    <button id="mail">📧 아빠한테 메일 보내기</button>
+    <button class="ghost" id="copy">결과 복사하기</button>
     <div class="copied" id="cp"></div>
     ${wrong.length?`<button class="ghost" id="retry">틀린 단어만 다시 풀기 (${wrong.length}개)</button>`:""}
     <button class="soft" id="again">처음부터 새로 풀기</button>
   </div>`;
+  document.getElementById("mail").onclick = ()=>{
+    const to = atob("Y2hvaW5rdWVAZ21haWwuY29t");
+    const subj = `[설아 단어퀴즈] ${window.__label} ${ok}/${results.length} (${pct}점)`;
+    location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(resultText());
+    document.getElementById("cp").textContent = "메일 앱이 열리면 '보내기'를 눌러줘 📨";
+  };
   document.getElementById("copy").onclick = async ()=>{
-    try{ await navigator.clipboard.writeText(resultText()); document.getElementById("cp").textContent="복사됐어! 카톡에서 아빠한테 붙여넣기 해줘 ✅"; }
+    try{ await navigator.clipboard.writeText(resultText()); document.getElementById("cp").textContent="복사됐어! 문자에서 아빠한테 붙여넣기 해줘 ✅"; }
     catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
   };
   if(wrong.length) document.getElementById("retry").onclick = ()=>{
