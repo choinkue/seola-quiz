@@ -282,7 +282,8 @@ function renderResult(){
     </table></div>`:""}
   <div class="card">
     <button id="mail">📧 아빠한테 메일 보내기</button>
-    <button class="ghost" id="copy">결과 복사하기</button>
+    <button class="ghost" id="sms">💬 아빠한테 문자 보내기</button>
+    <button class="soft" id="copy">📋 결과 복사하기</button>
     <div class="copied" id="cp"></div>
     ${wrong.length?`<button class="ghost" id="retry">틀린 단어만 다시 풀기 (${wrong.length}개)</button>`:""}
     <button class="soft" id="again">처음부터 새로 풀기</button>
@@ -292,9 +293,16 @@ function renderResult(){
     const subj = `[설아 단어퀴즈] ${window.__label} ${ok}/${results.length} (${pct}점)`;
     location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(resultText());
     document.getElementById("cp").textContent = "메일 앱이 열리면 '보내기'를 눌러줘 📨";
+    setTimeout(()=>{ if(!document.hidden) document.getElementById("cp").textContent = "메일이 안 열리면 아래 '문자 보내기'를 눌러줘 💬"; }, 1800);
+  };
+  document.getElementById("sms").onclick = async ()=>{
+    const t = resultText();
+    try{ await navigator.clipboard.writeText(t); }catch(e){}
+    location.href = "sms:?body=" + encodeURIComponent(t);
+    document.getElementById("cp").textContent = "문자 앱에서 받는 사람에 '아빠'를 고르고 보내줘 💬 (내용이 비어 있으면 꾹 눌러 붙여넣기)";
   };
   document.getElementById("copy").onclick = async ()=>{
-    try{ await navigator.clipboard.writeText(resultText()); document.getElementById("cp").textContent="복사됐어! 문자에서 아빠한테 붙여넣기 해줘 ✅"; }
+    try{ await navigator.clipboard.writeText(resultText()); document.getElementById("cp").textContent="복사됐어! 문자나 메일에 꾹 눌러 붙여넣기 해서 아빠한테 보내줘 ✅"; }
     catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
   };
   if(wrong.length) document.getElementById("retry").onclick = ()=>{
