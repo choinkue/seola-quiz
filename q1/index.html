@@ -8,55 +8,61 @@
 <style>
   :root{--bg:#fff8ef;--card:#ffffff;--ink:#2b2a33;--sub:#7a7584;--accent:#f07b3f;--accent2:#ffd36e;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#efe6da}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:17px;line-height:1.5}
-  .wrap{max-width:520px;margin:0 auto;padding:20px 16px 48px}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:20px;line-height:1.55}
+  .wrap{max-width:600px;margin:0 auto;padding:20px 16px 48px}
   h1{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:24px;margin:4px 0 2px}
-  .muted{color:var(--sub);font-size:14px}
-  .card{background:var(--card);border-radius:20px;padding:22px 20px;box-shadow:0 6px 24px rgba(120,80,30,.08);margin-top:16px}
-  .bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:14px}
+  .muted{color:var(--sub);font-size:16px}
+  .card{background:var(--card);border-radius:22px;padding:26px 22px;box-shadow:0 6px 24px rgba(120,80,30,.08);margin-top:16px}
+  .bar{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:14px}
   .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0;transition:width .3s}
-  .top{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--sub);margin-top:8px}
-  .tag{display:inline-block;font-size:13px;padding:3px 10px;border-radius:99px;background:#fff1e3;color:#b9541f;font-weight:bold}
+  .top{display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--sub);margin-top:8px}
+  .tag{display:inline-block;font-size:16px;padding:5px 13px;border-radius:99px;background:#fff1e3;color:#b9541f;font-weight:bold}
   .tag.sp{background:#e9f0ff;color:#3559c7}
-  .prompt{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:34px;font-weight:800;margin:14px 0 4px;word-break:keep-all}
-  .prompt.ko{font-family:"Gowun Dodum",sans-serif;font-size:24px;font-weight:700}
-  .hint{color:var(--sub);font-size:15px;letter-spacing:2px;margin-bottom:12px;font-family:monospace}
-  input[type=text]{width:100%;font-size:20px;padding:14px 16px;border:2px solid var(--line);border-radius:14px;outline:none;font-family:inherit;background:#fffdf9}
+  .prompt{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:44px;font-weight:800;margin:14px 0 4px;word-break:keep-all}
+  .prompt.ko{font-family:"Gowun Dodum",sans-serif;font-size:31px;font-weight:700}
+  .hint{color:var(--sub);font-size:18px;letter-spacing:2px;margin-bottom:12px;font-family:monospace}
+  input[type=text]{width:100%;font-size:25px;padding:18px 18px;border:2px solid var(--line);border-radius:14px;outline:none;font-family:inherit;background:#fffdf9}
   input[type=text]:focus{border-color:var(--accent)}
-  button{font-family:inherit;font-size:18px;font-weight:bold;border:0;border-radius:14px;padding:14px 18px;cursor:pointer;width:100%;margin-top:12px;background:var(--accent);color:#fff}
+  button{font-family:inherit;font-size:22px;font-weight:bold;border:0;border-radius:16px;padding:18px 20px;cursor:pointer;width:100%;margin-top:12px;background:var(--accent);color:#fff}
   button.ghost{background:#fff;color:var(--accent);border:2px solid var(--accent)}
   button.soft{background:#f3ece3;color:var(--ink)}
   button:disabled{opacity:.5}
   .fb{margin-top:14px;border-radius:14px;padding:14px 16px;display:none}
   .fb.ok{display:block;background:var(--okbg);color:var(--ok)}
   .fb.no{display:block;background:var(--nobg);color:var(--no)}
-  .fb b{font-size:19px}
+  .fb b{font-size:23px}
   .fb .ans{color:var(--ink);margin-top:6px}
-  .score{font-family:"Nunito",sans-serif;font-size:56px;font-weight:800;text-align:center;margin:6px 0 0;color:var(--accent)}
+  .score{font-family:"Nunito",sans-serif;font-size:68px;font-weight:800;text-align:center;margin:6px 0 0;color:var(--accent)}
   .center{text-align:center}
-  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:18px}
   th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
-  th{color:var(--sub);font-weight:normal;font-size:13px}
+  th{color:var(--sub);font-weight:normal;font-size:15px}
   td.w{font-family:"Nunito",sans-serif;font-weight:800}
   td.mine{color:var(--no)}
   .copied{color:var(--ok);font-size:14px;text-align:center;margin-top:6px;min-height:20px}
   .start li{margin:4px 0}
   .row{display:flex;gap:10px}.row button{flex:1}
   .pg{display:flex;align-items:flex-end;gap:10px;margin:10px 0 -6px}
-  .pg svg{width:100px;height:100px;flex:none}
-  .pg.big svg{width:160px;height:160px}
+  .pg svg{width:125px;height:125px;flex:none}
+  .pg.big svg{width:200px;height:200px}
   .pg.big{justify-content:center}
-  .bubble{background:#fff;border-radius:16px;padding:8px 14px;box-shadow:0 3px 12px rgba(120,80,30,.1);font-size:15px;margin-bottom:22px;position:relative}
+  .bubble{background:#fff;border-radius:18px;padding:10px 16px;box-shadow:0 3px 12px rgba(120,80,30,.1);font-size:19px;margin-bottom:22px;position:relative}
   .bubble:after{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#fff;border-left:0}
   .hop{animation:hop .5s ease}
   .shake{animation:shake .5s ease}
   @keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
   @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+  .quote{margin-top:22px;background:#fff3c9;border-radius:20px;padding:18px 20px;text-align:center}
+  .quote .lab{font-size:15px;color:#b98a12;font-weight:bold}
+  .quote .en{font-family:"Nunito",sans-serif;font-weight:800;font-size:22px;margin-top:6px}
+  .quote .ko{font-size:19px;margin-top:4px}
+  .quote .by{font-size:15px;color:var(--sub);margin-top:4px}
 </style>
 </head>
 <body>
 <div class="wrap">
     <div id="app"></div>
+  <div class="quote" id="quote"></div>
 </div>
 
 <script>
@@ -291,6 +297,35 @@ function renderResult(){
 }
 
 
+const QUOTES=[
+ ["Little by little, one travels far.","조금씩 조금씩 가면 멀리 갈 수 있어.","스페인 속담"],
+ ["Slow and steady wins the race.","천천히 꾸준히 가는 쪽이 이겨.","이솝 우화 〈토끼와 거북이〉"],
+ ["Practice makes perfect.","연습하면 완벽해져.","영어 속담"],
+ ["Rome wasn't built in a day.","로마는 하루아침에 만들어지지 않았어.","영어 속담"],
+ ["A journey of a thousand miles begins with a single step.","천 리 길도 한 걸음부터.","노자"],
+ ["Where there's a will, there's a way.","뜻이 있는 곳에 길이 있어.","영어 속담"],
+ ["Knowledge is power.","아는 것이 힘이야.","프랜시스 베이컨"],
+ ["Many drops make a shower.","작은 물방울이 모여 소나기가 돼.","영어 속담"],
+ ["Every day is a new chance to learn.","매일매일이 새로 배울 기회야.","오늘의 응원"],
+ ["Don't put off till tomorrow what you can do today.","오늘 할 수 있는 일을 내일로 미루지 마.","영어 속담"],
+ ["Constant dripping wears away the stone.","낙숫물이 바위를 뚫어.","영어 속담"],
+ ["Small steps every day add up to big results.","매일의 작은 걸음이 모여 큰 결과가 돼.","오늘의 응원"],
+ ["Learning is a treasure that follows its owner everywhere.","배움은 어디든 주인을 따라다니는 보물이야.","중국 속담"],
+ ["It does not matter how slowly you go as long as you do not stop.","멈추지만 않는다면 얼마나 천천히 가는지는 중요하지 않아.","공자"],
+ ["Today's effort is tomorrow's strength.","오늘의 노력이 내일의 힘이 돼.","오늘의 응원"],
+ ["Mistakes help you learn.","틀려도 괜찮아, 틀리면서 배우는 거야.","오늘의 응원"],
+ ["An hour in the morning is worth two in the evening.","아침 한 시간은 저녁 두 시간만큼 값져.","영어 속담"],
+ ["Many a little makes a mickle.","티끌 모아 태산.","영어 속담"],
+ ["The more you learn, the more you can do.","많이 배울수록 할 수 있는 게 많아져.","오늘의 응원"],
+ ["Keep going. You are doing great!","계속 가자. 정말 잘하고 있어!","해바라기 펭귄"]
+];
+function showQuote(){
+  const d=new Date(); const day=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
+  const q=QUOTES[day%QUOTES.length];
+  document.getElementById("quote").innerHTML=`<div class="lab">🌻 오늘의 한마디</div><div class="en">${esc(q[0])}</div><div class="ko">${esc(q[1])}</div><div class="by">— ${esc(q[2])}</div>`;
+}
+
+showQuote();
 start(WORDS,"1회차");
 </script>
 </body>
