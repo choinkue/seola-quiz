@@ -225,7 +225,7 @@
   .big-stars{font-size:34px;line-height:1.1}
   .big-stars .off{color:#d6dde5}
   .score{font-size:44px!important;margin:0}
-  .wl{max-height:17vh}
+  .wl{max-height:12vh}
   .copied{min-height:0!important;margin:2px 0!important}
   @media (min-height:800px){ .mtile{padding:16px 4px} .s3 .stg{padding:14px 4px} }
   a.btn{display:block;text-align:center;text-decoration:none;font-size:22px;font-weight:bold;border-radius:14px;padding:14px 18px;margin-top:10px;background:var(--accent);color:#fff}
@@ -294,6 +294,9 @@
   .score-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px}
   .score-row b{font-size:24px}
   .mtile{padding:8px 4px}
+  .r2{gap:8px}.r2>*{flex:1;margin-top:8px!important;line-height:1.25;font-size:20px!important;padding:10px 6px!important}
+  .btn.sms{background:linear-gradient(135deg,#ffb020,#ff8a00);color:#fff;border-radius:14px}
+  .copied{font-size:16px!important;color:var(--ok)}
 </style>
 </head>
 <body>
@@ -823,11 +826,21 @@ function renderResult(){
     <b>틀린 문제 ${wrong.length}개</b> <span class="muted">📸 캡처해서 아빠한테</span>
     <div class="wl">${wrong.map(r=>`<div><b>${r.pic} ${esc(r.word)}</b> <span class="muted">${TYPES[r.type]}</span> 정답 <b style="color:var(--ok)">${esc(r.answer)}</b> · <span class="mine">${esc(r.mine)}</span></div>`).join("")}</div>
     </div>`:""}
-  <a class="btn mail" id="mail" href="mailto:${DAD_EMAIL}?subject=${encodeURIComponent(`[설훈 파닉스] ${fmt(rec.at)} ${rec.label} ${ok}/${results.length}`)}&body=${encodeURIComponent(resultText(rec))}">📧 아빠한테 메일 보내기</a>
+  <div class="row r2"><a class="btn mail" id="mail" href="mailto:${DAD_EMAIL}?subject=${encodeURIComponent(`[설훈 파닉스] ${fmt(rec.at)} ${rec.label} ${ok}/${results.length}`)}&body=${encodeURIComponent(resultText(rec))}">📧 아빠한테<br>메일</a><button class="btn sms" id="sms">💬 아빠한테<br>문자</button></div>
   <div class="row r3">${wrong.length?`<button class="ghost" id="retry">🔁 틀린 것<br>다시 (${wrong.length})</button>`:""}<button class="soft" id="copy">📋 결과<br>복사</button><button class="soft" id="home">🏠 처음<br>화면</button></div>
   <div class="copied" id="cp"></div>`;
+  document.getElementById("mail").addEventListener("click",()=>{
+    document.getElementById("cp").textContent="메일 앱이 열리면 '보내기'를 눌러줘 📨";
+    setTimeout(()=>{ if(!document.hidden) document.getElementById("cp").textContent="메일이 안 열리면 '💬 문자'를 눌러줘!"; },1800);
+  });
+  document.getElementById("sms").onclick=async()=>{
+    const t=resultText(rec);
+    try{ await navigator.clipboard.writeText(t); }catch(e){}
+    document.getElementById("cp").textContent="문자 앱에서 받는 사람에 '아빠'를 고르고 보내줘 💬 (내용이 비어 있으면 꾹 눌러 붙여넣기)";
+    location.href="sms:?body="+encodeURIComponent(t);
+  };
   document.getElementById("copy").onclick=async()=>{
-    try{ await navigator.clipboard.writeText(resultText(rec)); document.getElementById("cp").textContent="복사됐어! 카톡에서 아빠한테 붙여넣기 해줘 ✅"; }
+    try{ await navigator.clipboard.writeText(resultText(rec)); document.getElementById("cp").textContent="복사됐어! 문자나 카톡에 꾹 눌러 붙여넣기 해서 아빠한테 보내줘 ✅"; }
     catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
   };
   if(wrong.length) document.getElementById("retry").onclick=()=>{
