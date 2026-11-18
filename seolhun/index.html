@@ -228,6 +228,9 @@
   .wl{max-height:17vh}
   .copied{min-height:0!important;margin:2px 0!important}
   @media (min-height:800px){ .mtile{padding:16px 4px} .s3 .stg{padding:14px 4px} }
+  a.btn{display:block;text-align:center;text-decoration:none;font-size:22px;font-weight:bold;border-radius:14px;padding:14px 18px;margin-top:10px;background:var(--accent);color:#fff}
+  a.btn.mail{background:linear-gradient(135deg,#34a853,#2e9e6a)}
+  .r3 button{font-size:17px;padding:10px 4px;line-height:1.3;margin-top:8px}
 </style>
 </head>
 <body>
@@ -270,6 +273,7 @@ const BUDDY = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAw
 const KOM={"apple":"사과","ball":"공","cat":"고양이","dog":"개","egg":"달걀","fish":"물고기","goat":"염소","hat":"모자","ink":"잉크","jam":"잼","kite":"연","lion":"사자","moon":"달","nest":"둥지","octopus":"문어","pig":"돼지","queen":"여왕","rabbit":"토끼","sun":"해","tiger":"호랑이","umbrella":"우산","van":"승합차","watch":"손목시계","yo-yo":"요요","zebra":"얼룩말","bat":"박쥐","map":"지도","bag":"가방","can":"깡통","fan":"부채","bed":"침대","hen":"암탉","pen":"펜","net":"그물","web":"거미줄","leg":"다리","ten":"10(열)","jet":"제트기","pin":"핀","lip":"입술","six":"6(여섯)","zip":"지퍼","kid":"아이","sit":"앉다","bin":"쓰레기통","fox":"여우","box":"상자","pot":"냄비","mop":"대걸레","log":"통나무","hop":"깡충 뛰다","hot":"뜨거운","bus":"버스","cup":"컵","bug":"벌레","nut":"견과","hug":"안아 주다","tub":"욕조","gum":"껌","ship":"배","shell":"조개껍데기","shoe":"신발","chick":"병아리","chair":"의자","cheese":"치즈","chip":"감자칩","thumb":"엄지손가락","three":"3(셋)","bath":"목욕","teeth":"이빨들","whale":"고래","wheel":"바퀴","white":"하얀색","duck":"오리","sock":"양말","rock":"바위","clock":"시계","frog":"개구리","flag":"깃발","clap":"박수 치다","crab":"게","drum":"북","tree":"나무","star":"별","snake":"뱀","sled":"썰매","plant":"식물","grapes":"포도","brush":"솔·칫솔","spoon":"숟가락","swim":"수영하다","block":"블록","globe":"지구본","cake":"케이크","game":"게임","plane":"비행기","gate":"대문","bike":"자전거","five":"5(다섯)","dice":"주사위","rice":"밥·쌀","rose":"장미","bone":"뼈","nose":"코","home":"집","cone":"아이스크림콘","cube":"정육면체·얼음조각","flute":"플루트(피리)","bee":"벌","sheep":"양","feet":"발(두 발)","sea":"바다","leaf":"나뭇잎","peach":"복숭아","tea":"차","boat":"배(보트)","coat":"외투","soap":"비누","rain":"비","snail":"달팽이","train":"기차","paint":"물감","book":"책","foot":"발"};
 const KOW={"apple":"애플","ball":"볼","cat":"캣","dog":"독","egg":"에그","fish":"피쉬","goat":"고트","hat":"햇","ink":"잉크","jam":"잼","kite":"카이트","lion":"라이언","moon":"문","nest":"네스트","octopus":"옥토퍼스","pig":"피그","queen":"퀸","rabbit":"래빗","sun":"썬","tiger":"타이거","umbrella":"엄브렐라","van":"밴","watch":"워치","yo-yo":"요요","zebra":"지브라","bat":"뱃","map":"맵","bag":"백","can":"캔","fan":"팬","bed":"베드","hen":"헨","pen":"펜","net":"넷","web":"웹","leg":"레그","ten":"텐","jet":"젯","pin":"핀","lip":"립","six":"식스","zip":"집","kid":"키드","sit":"싯","bin":"빈","fox":"폭스","box":"박스","pot":"팟","mop":"맙","log":"로그","hop":"합","hot":"핫","bus":"버스","cup":"컵","bug":"버그","nut":"넛","hug":"허그","tub":"텁","gum":"검","ship":"쉽","shell":"쉘","shoe":"슈","chick":"칙","chair":"체어","cheese":"치즈","chip":"칩","thumb":"썸","three":"쓰리","bath":"배쓰","teeth":"티-쓰","whale":"웨일","wheel":"휠","white":"화이트","duck":"덕","sock":"삭","rock":"락","clock":"클락","frog":"프로그","flag":"플래그","clap":"클랩","crab":"크랩","drum":"드럼","tree":"트리","star":"스타","snake":"스네이크","sled":"슬레드","plant":"플랜트","grapes":"그레입스","brush":"브러쉬","spoon":"스푼","swim":"스윔","block":"블락","globe":"글로브","cake":"케이크","game":"게임","plane":"플레인","gate":"게이트","bike":"바이크","five":"파이브","dice":"다이스","rice":"라이스","rose":"로즈","bone":"본","nose":"노즈","home":"홈","cone":"콘","cube":"큐브","flute":"플루트","bee":"비-","sheep":"쉬-입","feet":"피-트","sea":"씨-","leaf":"리-프","peach":"피-치","tea":"티-","boat":"보트","coat":"코트","soap":"소프","rain":"레인","snail":"스네일","train":"트레인","paint":"페인트","book":"북","foot":"풋"};
 function kw(w,big){const m=KOM[w];if(big)return `<span class="kw big">(${KOW[w]||""})</span>${m?`<span class="mean big">뜻: ${m}</span>`:""}`;const k=KOW[w];return (k?`<span class="kw">(${k})</span>`:"")+(m?`<span class="mean">${m}</span>`:"")}
+const DAD_EMAIL = "choinkue@gmail.com";
 const QN = 12; // 퀴즈 문제 수
 const ALL = STAGES.flatMap(s=>s.words.map(w=>({word:w[0],pic:w[1],p:w[2],st:s,key:s.id+":"+w[0]})));
 const BYKEY = Object.fromEntries(ALL.map(x=>[x.key,x]));
@@ -724,9 +728,9 @@ function renderResult(){
     <b>틀린 문제 ${wrong.length}개</b> <span class="muted">📸 캡처해서 아빠한테</span>
     <div class="wl">${wrong.map(r=>`<div><b>${r.pic} ${esc(r.word)}</b> <span class="muted">${TYPES[r.type]}</span> 정답 <b style="color:var(--ok)">${esc(r.answer)}</b> · <span class="mine">${esc(r.mine)}</span></div>`).join("")}</div>
     </div>`:""}
-  <button id="copy">결과 복사하기 (카톡)</button>
-  <div class="copied" id="cp"></div>
-  <div class="row">${wrong.length?`<button class="ghost" id="retry">틀린 것 다시 (${wrong.length})</button>`:""}<button class="soft" id="home">처음 화면</button></div>`;
+  <a class="btn mail" id="mail" href="mailto:${DAD_EMAIL}?subject=${encodeURIComponent(`[설훈 파닉스] ${fmt(rec.at)} ${rec.label} ${ok}/${results.length}`)}&body=${encodeURIComponent(resultText(rec))}">📧 아빠한테 메일 보내기</a>
+  <div class="row r3">${wrong.length?`<button class="ghost" id="retry">🔁 틀린 것<br>다시 (${wrong.length})</button>`:""}<button class="soft" id="copy">📋 결과<br>복사</button><button class="soft" id="home">🏠 처음<br>화면</button></div>
+  <div class="copied" id="cp"></div>`;
   document.getElementById("copy").onclick=async()=>{
     try{ await navigator.clipboard.writeText(resultText(rec)); document.getElementById("cp").textContent="복사됐어! 카톡에서 아빠한테 붙여넣기 해줘 ✅"; }
     catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
