@@ -212,7 +212,7 @@ function penguin(mood, st, gen){
   if(st===undefined||gen===undefined){const I=info(getXP()); if(st===undefined) st=I.st; if(gen===undefined) gen=I.gen;}
   const cls = mood==="happy"?"hop":mood==="sad"?"shake":"";
   const gold = st>=9;
-  const [pf0,ps0]=PETAL[gen%PETAL.length];
+  const [pf0,ps0]=PETAL[0];   // 설아가 좋아하는 노란 해바라기로 고정
   const pf = gold?"#ffc21a":pf0, ps = gold?"#e0a000":ps0;
   if(st===0){
     const face = mood==="happy" ? '<path d="M50 70 q4 -4 8 0 M62 70 q4 -4 8 0" stroke="#1f1f24" stroke-width="2.5" fill="none" stroke-linecap="round"/>' : mood==="sad" ? '<circle cx="54" cy="70" r="2.5" fill="#1f1f24"/><circle cx="66" cy="70" r="2.5" fill="#1f1f24"/>' : '<circle cx="54" cy="70" r="3" fill="#1f1f24"/><circle cx="66" cy="70" r="3" fill="#1f1f24"/>';
@@ -230,8 +230,8 @@ function penguin(mood, st, gen){
   const nose = mood==="sad" ? '<ellipse cx="60" cy="60" rx="6" ry="4" fill="#8a4a2a"/>' : '<ellipse cx="60" cy="59" rx="6.5" ry="4.5" fill="#8a4a2a"/><ellipse cx="58" cy="57.5" rx="2" ry="1" fill="#b06a45"/>';
   const mouth = mood==="happy" ? '<path d="M56 66 q4 4 8 0" stroke="#8a4a2a" stroke-width="2" fill="none" stroke-linecap="round"/>' : '';
   let petals="";
-  if(st===3){ for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="25" rx="7" ry="8" fill="${pf}" stroke="${ps}" stroke-width="1" opacity=".85" transform="rotate(${i*36+18} 60 52)"/>`} }
-  if(st>=4){ for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="19" rx="13" ry="13" fill="${pf}" stroke="${ps}" stroke-width="1.2" transform="rotate(${i*36+18} 60 52)"/>`} }
+  const PR=[0,0,0,6,8,9.5,11,12,13,14][st];   // 단계별 해바라기 꽃잎 크기 (천천히 커짐)
+  if(PR){ const off=22+PR*0.85; for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="${52-off}" rx="${PR}" ry="${PR}" fill="${pf}" stroke="${ps}" stroke-width="1.2" transform="rotate(${i*36+18} 60 52)"/>`} }
   const scarf = st>=6 ? '<path d="M35 77 q25 11 50 0 l1 8 q-26 12 -52 0 z" fill="#e8574a"/><path d="M74 84 l7 17 l-9 -1 z" fill="#d94a3e"/>' : "";
   let bag="";
   if(st>=5){ let star=""; for(let i=0;i<5;i++){star+=`<ellipse cx="30" cy="85" rx="4.5" ry="6" fill="${pf}" stroke="${ps}" stroke-width="1" transform="rotate(${i*72} 30 92)"/>`}
@@ -241,7 +241,7 @@ function penguin(mood, st, gen){
   const glow = gold ? `<circle cx="60" cy="66" r="58" fill="url(#gl)"/><path d="M14 30 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z M104 70 l2.5 5 l5 2.5 l-5 2.5 l-2.5 5 l-2.5 -5 l-5 -2.5 l5 -2.5 z" fill="#ffd84d"/>` : "";
   const tuft = st===1 ? '<path d="M56 24 q2 -8 4 0 q2 -8 4 0" stroke="#5f5f66" stroke-width="3" fill="none" stroke-linecap="round"/>' : "";
   const shell = st===1 ? '<path d="M28 100 l8 -8 l7 8 l8 -8 l9 8 l9 -8 l8 8 l7 -8 l8 8 q0 26 -32 26 q-32 0 -32 -26 z" fill="#fbf3e6" stroke="#e8dcc6" stroke-width="2"/>' : "";
-  const scale = st===1 ? .76 : st===2 ? .84 : st===3 ? .92 : 1;
+  const scale = [1,.7,.78,.84,.88,.92,.95,.98,1,1.02][st];   // 단계별 몸 크기 (천천히 커짐)
   return `<svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="${cls}">
     <defs><radialGradient id="gl"><stop offset="0" stop-color="#fff2a8" stop-opacity=".9"/><stop offset="1" stop-color="#fff2a8" stop-opacity="0"/></radialGradient></defs>
     ${glow}
