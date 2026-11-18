@@ -42,6 +42,16 @@
   .copied{color:var(--ok);font-size:14px;text-align:center;margin-top:6px;min-height:20px}
   .start li{margin:4px 0}
   .row{display:flex;gap:10px}.row button{flex:1}
+  .pg{display:flex;align-items:flex-end;gap:10px;margin:10px 0 -6px}
+  .pg svg{width:84px;height:84px;flex:none}
+  .pg.big svg{width:140px;height:140px}
+  .pg.big{justify-content:center}
+  .bubble{background:#fff;border-radius:16px;padding:8px 14px;box-shadow:0 3px 12px rgba(120,80,30,.1);font-size:15px;margin-bottom:22px;position:relative}
+  .bubble:after{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#fff;border-left:0}
+  .hop{animation:hop .5s ease}
+  .shake{animation:shake .5s ease}
+  @keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+  @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
 </style>
 </head>
 <body>
@@ -130,6 +140,31 @@ const WORDS = [
 ];
 const RATIO = 0.8;
 
+
+function penguin(mood){
+  const eyes = mood==="happy"
+    ? '<path d="M41 50 q5 -6 10 0" stroke="#2b2a33" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M63 50 q5 -6 10 0" stroke="#2b2a33" stroke-width="3" fill="none" stroke-linecap="round"/>'
+    : mood==="sad"
+    ? '<circle cx="46" cy="51" r="4" fill="#2b2a33"/><circle cx="68" cy="51" r="4" fill="#2b2a33"/><path d="M40 42 l10 3 M74 42 l-10 3" stroke="#2b2a33" stroke-width="2.5" stroke-linecap="round"/><path d="M45 58 q-3 6 0 8 q3 -2 0 -8" fill="#7cc4ff"/>'
+    : '<circle cx="46" cy="50" r="4.5" fill="#2b2a33"/><circle cx="68" cy="50" r="4.5" fill="#2b2a33"/><circle cx="47.5" cy="48.5" r="1.4" fill="#fff"/><circle cx="69.5" cy="48.5" r="1.4" fill="#fff"/>';
+  const beak = mood==="happy"
+    ? '<path d="M50 60 q7 9 14 0 z" fill="#f59a2c"/>'
+    : mood==="sad" ? '<path d="M51 63 q6 -5 12 0 l-6 3 z" fill="#f59a2c"/>' : '<path d="M51 59 l6 7 l6 -7 z" fill="#f59a2c"/>';
+  let petals=""; for(let i=0;i<12;i++){petals+=`<ellipse cx="92" cy="20" rx="4" ry="10" fill="#ffc928" transform="rotate(${i*30} 92 30)"/>`}
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="${mood==="happy"?"hop":mood==="sad"?"shake":""}">
+    <ellipse cx="58" cy="114" rx="30" ry="4" fill="rgba(0,0,0,.08)"/>
+    <ellipse cx="44" cy="110" rx="9" ry="4" fill="#f59a2c"/><ellipse cx="72" cy="110" rx="9" ry="4" fill="#f59a2c"/>
+    <path d="M24 70 q-12 14 -4 26" stroke="#2f3e6b" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M92 70 q12 14 4 26" stroke="#2f3e6b" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <ellipse cx="58" cy="68" rx="38" ry="42" fill="#2f3e6b"/>
+    <ellipse cx="58" cy="76" rx="27" ry="31" fill="#fffaf2"/>
+    <ellipse cx="58" cy="52" rx="26" ry="20" fill="#fffaf2"/>
+    <circle cx="38" cy="60" r="5" fill="#ffb3b3" opacity=".8"/><circle cx="78" cy="60" r="5" fill="#ffb3b3" opacity=".8"/>
+    ${eyes}${beak}
+    ${petals}<circle cx="92" cy="30" r="8" fill="#8a5a2b"/><circle cx="90" cy="28" r="2" fill="#a8743f"/>
+  </svg>`;
+}
+const CHEER=["화이팅! 🐧","할 수 있어!","천천히 생각해 봐","설아 최고!","거의 다 왔어!"];
 const $app = document.getElementById("app");
 let qs = [], idx = 0, results = [], answered = false, dbRef = null;
 
@@ -178,6 +213,7 @@ function renderQ(){
   $app.innerHTML = `
   <div class="bar"><i style="width:${idx/qs.length*100}%"></i></div>
   <div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${results.filter(r=>r.ok).length}</span></div>
+  <div class="pg" id="pg">${penguin("normal")}<div class="bubble" id="bub">${CHEER[Math.floor(Math.random()*CHEER.length)]}</div></div>
   <div class="card">
     <span class="tag ${isSp?"sp":""}">${isSp?"철자 쓰기":"뜻 쓰기"}</span>
     <div class="prompt ${isSp?"ko":""}">${esc(isSp?w[2]:w[0])}</div>
@@ -197,6 +233,7 @@ function renderQ(){
     const ok = isSp ? normEn(v)===normEn(w[0]) : checkMeaning(v, w[3]);
     results.push({word:w[0], meaning:w[2], type:q.type, mine:v, ok});
     answered = true; inp.readOnly = true;
+    document.getElementById("pg").innerHTML = penguin(ok?"happy":"sad") + `<div class="bubble">${ok?"정답! 잘했어 🌻":"괜찮아, 다시 외우자!"}</div>`;
     const fb = document.getElementById("fb");
     fb.className = "fb " + (ok?"ok":"no");
     fb.innerHTML = ok
@@ -224,6 +261,7 @@ function renderResult(){
   const pct = Math.round(ok/results.length*100);
   const msg = pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 단어만 다시 해 보자! 🔁";
   $app.innerHTML = `
+  <div class="pg big">${penguin(pct>=60?"happy":"sad")}</div>
   <div class="card center">
     <div class="muted">${today()} · ${esc(window.__label)}</div>
     <div class="score">${ok} / ${results.length}</div>
