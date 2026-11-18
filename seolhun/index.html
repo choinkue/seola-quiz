@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>설훈이의 파닉스 교실</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#eef7ff;--card:#fff;--ink:#23303d;--sub:#6f7d8a;--accent:#2f80ed;--accent2:#7cd3ff;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#dde8f3;--hl:#ff7a45;--star:#ffb400}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:21px;line-height:1.5}
+  .wrap{max-width:560px;margin:0 auto;padding:18px 16px 56px}
+  h1{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:32px;margin:2px 0}
+  h2{font-size:24px;margin:0 0 6px}
+  .muted{color:var(--sub);font-size:18px}
+  .card{background:var(--card);border-radius:22px;padding:20px 18px;box-shadow:0 6px 24px rgba(30,80,130,.08);margin-top:14px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .stat{background:#fff;border-radius:18px;padding:12px 6px;text-align:center;box-shadow:0 4px 14px rgba(30,80,130,.06)}
+  .stat b{display:block;font-family:"Nunito",sans-serif;font-size:32px;font-weight:900}
+  .stat span{font-size:16px;color:var(--sub)}
+  .stages{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .stg{background:#fff;border-radius:20px;padding:14px;box-shadow:0 4px 14px rgba(30,80,130,.07);cursor:pointer;border:3px solid transparent;text-align:left;color:var(--ink);margin:0;font-weight:normal;font-size:20px;width:auto}
+  .stg:active{border-color:var(--accent2)}
+  .stg .n{font-size:15px;color:var(--accent);font-weight:bold}
+  .stg .e{font-size:44px;line-height:1.2}
+  .stg .t{font-weight:bold;font-size:22px}
+  .stg .x{font-size:16px;color:var(--sub);font-family:"Nunito",sans-serif}
+  .stars{color:var(--star);letter-spacing:1px;font-size:22px;margin-top:2px}
+  .stars .off{color:#d6dde5}
+  .back{background:none;color:var(--accent);width:auto;padding:4px 0;margin:0;font-size:20px}
+  .modes{display:grid;gap:10px;margin-top:12px}
+  .mode{display:flex;align-items:center;gap:14px;text-align:left;background:#f4f8fc;color:var(--ink);border:2px solid var(--line);margin:0}
+  .mode .ic{font-size:42px}
+  .mode small{display:block;font-weight:normal;color:var(--sub);font-size:17px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{font-family:"Nunito",sans-serif;font-weight:800;background:#f1f6fb;border-radius:99px;padding:5px 12px;font-size:20px}
+  .bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0;transition:width .3s}
+  .top{display:flex;justify-content:space-between;align-items:center;font-size:18px;color:var(--sub);margin-top:8px}
+  .tag{display:inline-block;font-size:18px;padding:6px 14px;border-radius:99px;background:#e3f0ff;color:#1f5fb8;font-weight:bold}
+  .q{font-size:25px;font-weight:bold;margin:12px 0 4px}
+  .pic{font-size:110px;text-align:center;line-height:1.2;margin:6px 0}
+  .word{font-family:"Nunito",sans-serif;font-weight:900;font-size:58px;text-align:center;letter-spacing:6px;margin:4px 0;word-break:break-all}
+  .word .blank{color:var(--accent);border-bottom:5px solid var(--accent);padding:0 6px;display:inline-block;min-width:44px}
+  .word .hl{color:var(--hl)}
+  .speak{display:block;margin:6px auto 4px;width:auto;padding:12px 26px;font-size:23px;background:#fff;color:var(--accent);border:2px solid var(--accent);border-radius:99px}
+  .opts{display:grid;gap:12px;margin-top:16px}
+  .opts.c1{grid-template-columns:1fr}
+  .opts.c1 .opt{font-size:36px;padding:12px}
+  .opt{min-width:0;overflow-wrap:anywhere}
+  .opts.c2{grid-template-columns:repeat(2,1fr)}
+  .opts.c3{grid-template-columns:repeat(3,1fr)}
+  .opts.c4{grid-template-columns:repeat(4,1fr)}
+  .opt{font-family:"Nunito",sans-serif;font-weight:900;font-size:38px;padding:18px 4px;margin:0;background:#f4f8fc;color:var(--ink);border:3px solid var(--line);border-radius:18px}
+  .opt.emo{font-size:60px;padding:10px 4px}
+  .opt.small{font-size:30px}
+  .opt.right{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+  .opt.wrong{background:var(--nobg);border-color:var(--no);color:var(--no)}
+  .slots{display:flex;justify-content:center;gap:8px;margin:10px 0;flex-wrap:wrap}
+  .slot{width:56px;height:68px;border-bottom:5px solid var(--accent);font-family:"Nunito",sans-serif;font-weight:900;font-size:46px;text-align:center;line-height:68px}
+  .tiles{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .tile{width:66px;height:66px;padding:0;margin:0;font-family:"Nunito",sans-serif;font-weight:900;font-size:36px;background:#fff7e6;color:var(--ink);border:3px solid #ffd98a;border-radius:14px}
+  .tile.used{opacity:.25}
+  button{font-family:inherit;font-size:22px;font-weight:bold;border:0;border-radius:14px;padding:14px 18px;cursor:pointer;width:100%;margin-top:12px;background:var(--accent);color:#fff}
+  button.ghost{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  button.soft{background:#e9eff5;color:var(--ink)}
+  button:disabled{opacity:1}
+  .row{display:flex;gap:10px}.row button{flex:1}
+  .fb{margin-top:14px;border-radius:14px;padding:14px 16px;display:none;text-align:center}
+  .fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+  .fb.no{display:block;background:var(--nobg);color:var(--no)}
+  .fb b{font-size:24px}
+  .fb .ans{color:var(--ink);margin-top:4px;font-size:22px}
+  .fb .ans span{font-family:"Nunito",sans-serif;font-weight:900;font-size:30px}
+  .hidden{display:none}
+  .score{font-family:"Nunito",sans-serif;font-size:64px;font-weight:900;text-align:center;margin:6px 0 0;color:var(--accent)}
+  .center{text-align:center}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:18px}
+  th,td{text-align:left;padding:8px 5px;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{color:var(--sub);font-weight:normal;font-size:15px}
+  td.w{font-family:"Nunito",sans-serif;font-weight:900;font-size:21px}
+  td.mine{color:var(--no);font-family:"Nunito",sans-serif;font-weight:800}
+  .copied{color:var(--ok);font-size:17px;text-align:center;margin-top:6px;min-height:20px}
+  .hist{list-style:none;padding:0;margin:8px 0 0}
+  .hist li{display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid var(--line);font-size:18px}
+  .hist li b{font-family:"Nunito",sans-serif}
+  .big-stars{font-size:48px;color:var(--star);text-align:center;letter-spacing:4px}
+  .buddy{display:flex;align-items:center;gap:12px;margin-top:10px}
+  .buddy img{width:96px;height:96px;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 4px 14px rgba(30,80,130,.15);flex:none}
+  .buddy.sm img{width:72px;height:72px}
+  .buddy.big{flex-direction:column;text-align:center}
+  .buddy.big img{width:150px;height:150px}
+  .bubble{position:relative;background:#fff;border-radius:18px;padding:12px 16px;font-size:21px;font-weight:bold;box-shadow:0 4px 14px rgba(30,80,130,.08)}
+  .fb .bubble{box-shadow:none;background:transparent;padding:0}
+  .fb .buddy{justify-content:center}
+  .jump{animation:jump .6s ease}
+  .shake{animation:shake .5s ease}
+  @keyframes jump{0%,100%{transform:translateY(0)}40%{transform:translateY(-18px) rotate(-6deg)}70%{transform:translateY(0) rotate(4deg)}}
+  @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+  .start-btn{background:linear-gradient(135deg,#ff9a3c,#ff6a3d);display:flex;align-items:center;gap:14px;text-align:left}
+  .start-btn small{display:block;font-weight:normal;font-size:17px;color:#fff}
+  .start-btn{color:#fff}
+  .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:14px}
+  .sbtn{margin:0;padding:12px 4px;background:#f4f8fc;color:var(--ink);border:3px solid var(--line);border-radius:18px;font-family:"Nunito",sans-serif;font-weight:900;font-size:36px;line-height:1.1}
+  .sbtn small{display:block;font-family:"Gowun Dodum",sans-serif;font-size:19px;color:var(--hl);margin-top:4px}
+  .sbtn .sw{display:block;font-size:15px;line-height:1.35;font-weight:800;color:var(--sub);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .panel{position:sticky;top:6px;z-index:2;box-shadow:0 4px 14px rgba(30,80,130,.10)}
+  .sbtn.heard{border-color:var(--ok);background:var(--okbg)}
+  .sbtn.on{border-color:var(--hl);background:#fff3ea}
+  .panel{text-align:center;background:#fff8f2;border-radius:20px;padding:14px;margin-top:14px;min-height:120px}
+  .panel .big{font-family:"Nunito",sans-serif;font-weight:900;font-size:min(72px,14vw);line-height:1.1}
+  .panel .ko{font-size:34px;font-weight:bold;color:var(--hl)}
+  .canvas-wrap{position:relative;margin-top:12px;border-radius:20px;overflow:hidden;background:#fff;border:3px solid var(--line)}
+  #cv{display:block;width:100%;height:min(330px,40vh);touch-action:none;cursor:crosshair}
+  .dots{font-size:30px;letter-spacing:6px;text-align:center;color:var(--ok)}
+  .dots .off{color:#d6dde5}
+  .trace-head{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:0}
+  .trace-card{padding-top:12px}
+  .trace-head .eng{font-family:"Nunito",sans-serif;font-weight:900;font-size:52px}
+  .trace-head .ko{font-size:30px;font-weight:bold;color:var(--hl);white-space:nowrap}
+  .trace-head .speak{padding:8px 16px}
+  .trace-foot{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .trace-foot .dots{flex:1;text-align:left}
+  .trace-foot button{width:auto;margin:0;padding:10px 16px;font-size:19px}
+  .pct{font-family:"Nunito",sans-serif;font-weight:900;color:var(--accent);font-size:22px}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;font-family:"Nunito",sans-serif;font-weight:900;font-size:22px;flex:none}
+  .mode .num{margin-right:-4px}
+  .mode.extra .num{background:#9fb3c8}
+  .sec{font-size:17px;color:var(--sub);margin:14px 0 2px;font-weight:bold}
+  .steps{display:flex;align-items:center;gap:3px;margin-top:10px;font-size:15px}
+  .steps .st{flex:1;justify-content:center;display:flex;align-items:center;gap:4px;padding:6px 4px;border-radius:99px;background:#fff;color:var(--sub);white-space:nowrap}
+  .steps .st b{display:inline-flex;width:24px;height:24px;border-radius:50%;background:#d6dde5;color:#fff;align-items:center;justify-content:center;font-family:Nunito;font-size:15px}
+  .steps .st.done b{background:var(--ok)}
+  .steps .st.cur{background:var(--accent);color:#fff;font-weight:bold}
+  .steps .st.cur b{background:#fff;color:var(--accent)}
+  .steps .ar{color:#b5c3d1;flex:none}
+  .steps .st:only-child{flex:none;padding:6px 14px}
+  .stg .n b{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;align-items:center;justify-content:center;margin-right:4px}
+  .kw{font-family:"Gowun Dodum",sans-serif;font-weight:bold;color:var(--hl);font-size:.8em;letter-spacing:0;margin-left:4px}
+  .kw.big{display:block;font-size:30px;margin:0}
+  .mean{font-family:"Gowun Dodum",sans-serif;font-weight:bold;color:#2e9e6a;font-size:.8em;letter-spacing:0;margin-left:6px}
+  .mean.big{display:block;font-size:28px;margin:2px 0 0;text-align:center}
+  .kw.big{text-align:center}
+  .upc{margin-left:.35em;color:#5b7fa8}
+  .trace-head{flex-wrap:wrap;gap:6px 12px !important}
+  .trace-head .eng{font-size:46px !important}
+  .sbtn{min-width:0}
+  .sbtn.long{font-size:26px}
+  html{-webkit-text-size-adjust:100%}
+  body{-webkit-user-select:none;user-select:none}
+  button,.stg,.sbtn,.opt,.tile{touch-action:manipulation}
+  canvas{-webkit-touch-callout:none;-webkit-user-select:none}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ===== 단계별 단어 데이터: [단어, 그림, 핵심 소리] ===== */
+const STAGES = [
+ {id:"s1", ko:{a:"애",b:"브",c:"크",d:"드",e:"에",f:"프",g:"그",h:"흐",i:"이",j:"즈",k:"크",l:"르",m:"므",n:"느",o:"아",p:"프",q:"쿠",r:"뤄",s:"스",t:"트",u:"어",v:"브(v)",w:"우",y:"이",z:"즈(z)"}, trace:["a","e","i","o","u"], n:1, title:"알파벳 소리", emoji:"🔤", desc:"글자마다 나는 첫소리를 익혀요",
+  soundQ:"이 그림은 어떤 글자 소리로 시작할까?", fillQ:"맨 앞에 들어갈 글자는?",
+  words:[["apple","🍎","a"],["ball","⚽","b"],["cat","🐱","c"],["dog","🐶","d"],["egg","🥚","e"],["fish","🐟","f"],["goat","🐐","g"],["hat","🎩","h"],["ink","🖋️","i"],["jam","🍓","j"],["kite","🪁","k"],["lion","🦁","l"],["moon","🌙","m"],["nest","🪺","n"],["octopus","🐙","o"],["pig","🐷","p"],["queen","👸","q"],["rabbit","🐰","r"],["sun","☀️","s"],["tiger","🐯","t"],["umbrella","☂️","u"],["van","🚐","v"],["watch","⌚","w"],["yo-yo","🪀","y"],["zebra","🦓","z"]]},
+ {id:"s2", ko:{a:"애",e:"에",i:"이",o:"아",u:"어"}, trace:["a","e","i","o","u"], n:2, title:"단모음", emoji:"🐱", desc:"cat · bed · pig · dog · bus",
+  soundQ:"이 단어 가운데에서 나는 모음 소리는?", fillQ:"가운데에 들어갈 모음은?",
+  words:[["cat","🐱","a"],["hat","🎩","a"],["bat","🦇","a"],["map","🗺️","a"],["bag","👜","a"],["van","🚐","a"],["can","🥫","a"],["fan","🪭","a"],
+   ["bed","🛏️","e"],["hen","🐔","e"],["pen","🖊️","e"],["net","🥅","e"],["web","🕸️","e"],["leg","🦵","e"],["ten","🔟","e"],["jet","✈️","e"],
+   ["pig","🐷","i"],["pin","📌","i"],["lip","👄","i"],["six","6️⃣","i"],["zip","🤐","i"],["kid","🧒","i"],["sit","🪑","i"],["bin","🗑️","i"],
+   ["dog","🐶","o"],["fox","🦊","o"],["box","📦","o"],["pot","🍲","o"],["mop","🧹","o"],["log","🪵","o"],["hop","🐸","o"],["hot","🔥","o"],
+   ["bus","🚌","u"],["sun","☀️","u"],["cup","☕","u"],["bug","🐛","u"],["nut","🥜","u"],["hug","🤗","u"],["tub","🛁","u"],["gum","🍬","u"]]},
+ {id:"s3", ko:{sh:"쉬",ch:"취",th:"쓰(th)",wh:"우(wh)",ck:"크"}, trace:["sh","ch","th","wh","ck"], n:3, title:"이중자음", emoji:"🚢", desc:"sh · ch · th · wh · ck",
+  soundQ:"이 단어에 들어 있는 소리는?", fillQ:"빈칸에 들어갈 소리는?",
+  words:[["ship","🚢","sh"],["shell","🐚","sh"],["fish","🐟","sh"],["shoe","👟","sh"],["chick","🐥","ch"],["chair","🪑","ch"],["cheese","🧀","ch"],["chip","🍟","ch"],
+   ["thumb","👍","th"],["three","3️⃣","th"],["bath","🛁","th"],["teeth","🦷","th"],["whale","🐋","wh"],["wheel","🛞","wh"],["white","⚪","wh"],
+   ["duck","🦆","ck"],["sock","🧦","ck"],["rock","🪨","ck"],["clock","🕰️","ck"]]},
+ {id:"s4", ko:{fr:"프르",fl:"플",cl:"클",cr:"크르",dr:"드르",tr:"츠르",st:"스트",sn:"스느",sl:"슬",pl:"플",gr:"그르",br:"브르",sp:"스프",sw:"스우",bl:"블",gl:"글"}, trace:["bl","cl","fl","st","tr"], n:4, title:"자음 블렌드", emoji:"🐸", desc:"fr · fl · cl · st · sn · tr …",
+  soundQ:"이 단어는 어떤 소리로 시작할까?", fillQ:"맨 앞에 들어갈 소리는?",
+  words:[["frog","🐸","fr"],["flag","🚩","fl"],["clap","👏","cl"],["crab","🦀","cr"],["drum","🥁","dr"],["tree","🌳","tr"],["star","⭐","st"],["snake","🐍","sn"],
+   ["sled","🛷","sl"],["plant","🌱","pl"],["grapes","🍇","gr"],["brush","🪥","br"],["spoon","🥄","sp"],["swim","🏊","sw"],["block","🧱","bl"],["globe","🌍","gl"]]},
+ {id:"s5", ko:{a:"에이",i:"아이",o:"오우",u:"유"}, trace:["a","i","o","u"], n:5, title:"매직 e (장모음)", emoji:"🎂", desc:"cake · kite · rose · cube",
+  labels:{a:"a_e",i:"i_e",o:"o_e",u:"u_e"},
+  soundQ:"이 단어의 매직 e 소리는?", fillQ:"빈칸에 들어갈 모음은? (끝의 e는 소리 안 나요)",
+  words:[["cake","🎂","a"],["game","🎮","a"],["plane","✈️","a"],["gate","🚪","a"],["kite","🪁","i"],["bike","🚲","i"],["five","5️⃣","i"],["dice","🎲","i"],["rice","🍚","i"],
+   ["rose","🌹","o"],["bone","🦴","o"],["nose","👃","o"],["home","🏠","o"],["cone","🍦","o"],["cube","🧊","u"],["flute","🪈","u"]]},
+ {id:"s6", ko:{ee:"이-",ea:"이-",oa:"오우",ai:"에이",oo:"우-"}, trace:["ee","ea","oa","ai","oo"], n:6, title:"모음 팀", emoji:"🐝", desc:"ee · ea · oa · ai · oo",
+  soundQ:"이 단어에 들어 있는 모음 팀은?", fillQ:"빈칸에 들어갈 모음 팀은?",
+  words:[["bee","🐝","ee"],["sheep","🐑","ee"],["feet","🦶","ee"],["tree","🌳","ee"],["sea","🌊","ea"],["leaf","🍃","ea"],["peach","🍑","ea"],["tea","🍵","ea"],
+   ["boat","⛵","oa"],["goat","🐐","oa"],["coat","🧥","oa"],["soap","🧼","oa"],["rain","🌧️","ai"],["snail","🐌","ai"],["train","🚆","ai"],["paint","🎨","ai"],
+   ["moon","🌙","oo"],["spoon","🥄","oo"],["book","📖","oo"],["foot","🦶","oo"]]}
+];
+const BUDDY = "data:image/jpeg;base64,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";
+const KOM={"apple":"사과","ball":"공","cat":"고양이","dog":"개","egg":"달걀","fish":"물고기","goat":"염소","hat":"모자","ink":"잉크","jam":"잼","kite":"연","lion":"사자","moon":"달","nest":"둥지","octopus":"문어","pig":"돼지","queen":"여왕","rabbit":"토끼","sun":"해","tiger":"호랑이","umbrella":"우산","van":"승합차","watch":"손목시계","yo-yo":"요요","zebra":"얼룩말","bat":"박쥐","map":"지도","bag":"가방","can":"깡통","fan":"부채","bed":"침대","hen":"암탉","pen":"펜","net":"그물","web":"거미줄","leg":"다리","ten":"10(열)","jet":"제트기","pin":"핀","lip":"입술","six":"6(여섯)","zip":"지퍼","kid":"아이","sit":"앉다","bin":"쓰레기통","fox":"여우","box":"상자","pot":"냄비","mop":"대걸레","log":"통나무","hop":"깡충 뛰다","hot":"뜨거운","bus":"버스","cup":"컵","bug":"벌레","nut":"견과","hug":"안아 주다","tub":"욕조","gum":"껌","ship":"배","shell":"조개껍데기","shoe":"신발","chick":"병아리","chair":"의자","cheese":"치즈","chip":"감자칩","thumb":"엄지손가락","three":"3(셋)","bath":"목욕","teeth":"이빨들","whale":"고래","wheel":"바퀴","white":"하얀색","duck":"오리","sock":"양말","rock":"바위","clock":"시계","frog":"개구리","flag":"깃발","clap":"박수 치다","crab":"게","drum":"북","tree":"나무","star":"별","snake":"뱀","sled":"썰매","plant":"식물","grapes":"포도","brush":"솔·칫솔","spoon":"숟가락","swim":"수영하다","block":"블록","globe":"지구본","cake":"케이크","game":"게임","plane":"비행기","gate":"대문","bike":"자전거","five":"5(다섯)","dice":"주사위","rice":"밥·쌀","rose":"장미","bone":"뼈","nose":"코","home":"집","cone":"아이스크림콘","cube":"정육면체·얼음조각","flute":"플루트(피리)","bee":"벌","sheep":"양","feet":"발(두 발)","sea":"바다","leaf":"나뭇잎","peach":"복숭아","tea":"차","boat":"배(보트)","coat":"외투","soap":"비누","rain":"비","snail":"달팽이","train":"기차","paint":"물감","book":"책","foot":"발"};
+const KOW={"apple":"애플","ball":"볼","cat":"캣","dog":"독","egg":"에그","fish":"피쉬","goat":"고트","hat":"햇","ink":"잉크","jam":"잼","kite":"카이트","lion":"라이언","moon":"문","nest":"네스트","octopus":"옥토퍼스","pig":"피그","queen":"퀸","rabbit":"래빗","sun":"썬","tiger":"타이거","umbrella":"엄브렐라","van":"밴","watch":"워치","yo-yo":"요요","zebra":"지브라","bat":"뱃","map":"맵","bag":"백","can":"캔","fan":"팬","bed":"베드","hen":"헨","pen":"펜","net":"넷","web":"웹","leg":"레그","ten":"텐","jet":"젯","pin":"핀","lip":"립","six":"식스","zip":"집","kid":"키드","sit":"싯","bin":"빈","fox":"폭스","box":"박스","pot":"팟","mop":"맙","log":"로그","hop":"합","hot":"핫","bus":"버스","cup":"컵","bug":"버그","nut":"넛","hug":"허그","tub":"텁","gum":"검","ship":"쉽","shell":"쉘","shoe":"슈","chick":"칙","chair":"체어","cheese":"치즈","chip":"칩","thumb":"썸","three":"쓰리","bath":"배쓰","teeth":"티-쓰","whale":"웨일","wheel":"휠","white":"화이트","duck":"덕","sock":"삭","rock":"락","clock":"클락","frog":"프로그","flag":"플래그","clap":"클랩","crab":"크랩","drum":"드럼","tree":"트리","star":"스타","snake":"스네이크","sled":"슬레드","plant":"플랜트","grapes":"그레입스","brush":"브러쉬","spoon":"스푼","swim":"스윔","block":"블락","globe":"글로브","cake":"케이크","game":"게임","plane":"플레인","gate":"게이트","bike":"바이크","five":"파이브","dice":"다이스","rice":"라이스","rose":"로즈","bone":"본","nose":"노즈","home":"홈","cone":"콘","cube":"큐브","flute":"플루트","bee":"비-","sheep":"쉬-입","feet":"피-트","sea":"씨-","leaf":"리-프","peach":"피-치","tea":"티-","boat":"보트","coat":"코트","soap":"소프","rain":"레인","snail":"스네일","train":"트레인","paint":"페인트","book":"북","foot":"풋"};
+function kw(w,big){const m=KOM[w];if(big)return `<span class="kw big">(${KOW[w]||""})</span>${m?`<span class="mean big">뜻: ${m}</span>`:""}`;const k=KOW[w];return (k?`<span class="kw">(${k})</span>`:"")+(m?`<span class="mean">${m}</span>`:"")}
+const QN = 12; // 퀴즈 문제 수
+const ALL = STAGES.flatMap(s=>s.words.map(w=>({word:w[0],pic:w[1],p:w[2],st:s,key:s.id+":"+w[0]})));
+const BYKEY = Object.fromEntries(ALL.map(x=>[x.key,x]));
+const TYPES = {sound:"소리 찾기", fill:"빈칸 채우기", listen:"듣고 고르기", read:"읽고 고르기", build:"단어 만들기"};
+const LETTERS = "abcdefghijklmnoprstuvwy".split("");
+
+/* ===== 유틸 ===== */
+const $app = document.getElementById("app");
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function upper(st,p){const l=label(st,p);return l[0].toUpperCase()+l.slice(1)}
+function both(st,p){return `${esc(label(st,p))}<span class="upc">${esc(upper(st,p))}</span>`}
+function label(st,p){return (st.labels&&st.labels[p])||p}
+function pIndex(x){return x.word.indexOf(x.p)}
+function dayKey(d){d=new Date(d);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function fmt(d){d=new Date(d);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`}
+
+/* ===== 소리 ===== */
+let tts=null;
+(async()=>{try{ if(window.claude&&window.claude.use) tts=await window.claude.use("tts"); }catch(e){}})();
+function browserSpeak(text){
+  try{ const s=window.speechSynthesis; if(!s) return; if(s.speaking||s.pending) s.cancel();
+    const u=new SpeechSynthesisUtterance(text); u.lang="en-US"; u.rate=0.75;
+    const vs=s.getVoices().filter(v=>/^en[-_]US/i.test(v.lang)); const v=vs.find(v=>/Samantha|Enhanced|Premium/i.test(v.name+v.voiceURI))||vs[0]; if(v) u.voice=v; s.speak(u);
+  }catch(e){}
+}
+try{ window.speechSynthesis&&speechSynthesis.getVoices(); }catch(e){}
+function speak(text){
+  text=text.replace("-"," ");
+  if(tts){ tts.speak(text,{language:"en",rate:0.8}).catch(()=>browserSpeak(text)); }
+  else browserSpeak(text);
+}
+
+/* ===== 기록 (db + 이 기기) ===== */
+let records=[];
+function loadLocal(){try{return JSON.parse(localStorage.getItem("phonics_records")||"[]")}catch(e){return []}}
+function saveLocal(){try{localStorage.setItem("phonics_records",JSON.stringify(records.slice(0,300)))}catch(e){}}
+function merge(list){
+  const m=new Map(records.map(r=>[r.id,r])); list.forEach(r=>{ if(r&&r.id) m.set(r.id,r) });
+  records=[...m.values()].sort((a,b)=>String(b.at).localeCompare(String(a.at)));
+}
+records=loadLocal();
+async function getDb(){try{ if(!window.claude||!window.claude.use) return null; return await window.claude.use("db"); }catch(e){return null}}
+async function loadDb(){
+  const db=await getDb(); if(!db) return;
+  try{
+    let snap;
+    try{ snap=await db.collection("results").orderBy("at","desc").limit(300).get(); }
+    catch(e){ snap=await db.collection("results").get(); }
+    const docs=Array.isArray(snap)?snap:(snap&&(snap.docs||snap.items))||[];
+    const list=docs.map(d=>{ const data=typeof d.data==="function"?d.data():(d.data||d); return {id:d.id||data.id, ...data}; })
+      .filter(r=>r.stage); // 파닉스 교실 기록만
+    merge(list); saveLocal();
+    if(view==="home") renderHome();
+  }catch(e){}
+}
+async function saveRecord(r){
+  merge([r]); saveLocal();
+  const db=await getDb(); if(!db) return;
+  try{ const {id,...rest}=r; await db.doc("results/"+id).set(rest); }catch(e){}
+}
+function bestPct(stId){ const rs=records.filter(r=>r.stage===stId&&r.mode==="quiz"); return rs.length?Math.max(...rs.map(r=>Math.round(r.score/r.total*100))):null }
+function starsOf(p){ return p==null?0: p>=90?3: p>=70?2: p>=50?1:0 }
+function starHtml(n){ return "★".repeat(n)+`<span class="off">${"★".repeat(3-n)}</span>` }
+function streak(){
+  const days=new Set(records.map(r=>dayKey(r.at)));
+  let d=new Date(), c=0;
+  if(!days.has(dayKey(d))) d.setDate(d.getDate()-1);
+  while(days.has(dayKey(d))){ c++; d.setDate(d.getDate()-1); }
+  return c;
+}
+function reviewList(){
+  // 최근 기록에서 틀린 단어 모으기. 이후 다시 맞힌 단어는 빼기
+  const status=new Map();
+  [...records].reverse().forEach(r=>{
+    (r.wrong||[]).forEach(w=>{ if(w.key&&BYKEY[w.key]) status.set(w.key,false) });
+    (r.right||[]).forEach(k=>{ if(status.has(k)) status.set(k,true) });
+  });
+  return [...status].filter(([k,ok])=>!ok).map(([k])=>BYKEY[k]);
+}
+
+/* ===== 화면: 홈 ===== */
+let view="home", curStage=null;
+function buddy(text,cls,anim){return `<div class="buddy ${cls||""}"><img class="${anim||""}" src="${BUDDY}" alt="설훈이 친구"><div class="bubble">${text}</div></div>`}
+function renderHome(){
+  view="home"; try{scrollTo(0,0)}catch(e){}
+  const totalStars=STAGES.reduce((s,st)=>s+starsOf(bestPct(st.id)),0);
+  const todayN=records.filter(r=>dayKey(r.at)===dayKey(new Date())).reduce((s,r)=>s+(r.total||0),0);
+  const rv=reviewList();
+  $app.innerHTML=`
+  <div class="muted">설훈이의</div>
+  <h1>파닉스 교실 🎧</h1>
+  ${buddy(records.length?(streak()>0?`설훈아! 벌써 ${streak()}일째 공부 중이야. 오늘도 같이 하자! 💪`:"설훈아, 다시 왔구나! 오늘도 같이 공부하자! 📚"):"안녕 설훈아! 나랑 같이 파닉스 공부하자! STEP 1부터 시작해 볼까?","","jump")}
+  <div class="stats">
+    <div class="stat"><b>🔥 ${streak()}</b><span>연속 공부일</span></div>
+    <div class="stat"><b style="color:var(--star)">★ ${totalStars}</b><span>모은 별 / ${STAGES.length*3}</span></div>
+    <div class="stat"><b>${todayN}</b><span>오늘 푼 문제</span></div>
+  </div>
+  <div class="sec" style="margin-top:18px">📌 STEP 1부터 차례대로 공부해요</div>
+  <div class="stages" style="margin-top:6px">
+    ${STAGES.map(st=>`<button class="stg" data-s="${st.id}">
+      <div class="n"><b>${st.n}</b>STEP ${st.n}</div><div class="e">${st.emoji}</div>
+      <div class="t">${st.title}</div><div class="x">${esc(st.desc)}</div>
+      <div class="stars">${starHtml(starsOf(bestPct(st.id)))}</div></button>`).join("")}
+  </div>
+  <div class="card">
+    <h2>🔁 오답 복습</h2>
+    <div class="muted">${rv.length?`틀렸던 단어 <b>${rv.length}개</b>가 기다리고 있어. 다시 맞히면 목록에서 빠져!`:"아직 복습할 단어가 없어요. 퀴즈를 풀어 보자!"}</div>
+    ${rv.length?`<div class="chips">${rv.slice(0,12).map(x=>`<span class="chip">${x.pic} ${esc(x.word)} ${kw(x.word)}</span>`).join("")}${rv.length>12?`<span class="chip">+${rv.length-12}</span>`:""}</div>
+    <button id="rv">오답 복습 시작 (${Math.min(rv.length,QN)}문제)</button>`:""}
+  </div>
+  <div class="card">
+    <h2>📒 최근 공부 기록</h2>
+    ${records.length?`<ul class="hist">${records.slice(0,8).map(r=>`<li><span>${fmt(r.at)} · ${esc(r.label)}</span><b>${r.score} / ${r.total}</b></li>`).join("")}</ul>`:`<div class="muted">아직 기록이 없어요. STEP 1부터 시작해 볼까?</div>`}
+  </div>`;
+  document.querySelectorAll(".stg").forEach(b=>b.onclick=()=>renderStage(STAGES.find(s=>s.id===b.dataset.s)));
+  const rb=document.getElementById("rv"); if(rb) rb.onclick=()=>startQuiz(shuffle(rv).slice(0,QN),"오답 복습","review",["fill","listen","read","build","sound"]);
+}
+
+/* ===== 화면: 단계 ===== */
+function renderStage(st){
+  view="stage"; try{scrollTo(0,0)}catch(e){} curStage=st;
+  const best=bestPct(st.id);
+  $app.innerHTML=`
+  <button class="back" id="bk">← 처음 화면</button>
+  <div class="card">
+    <div class="muted">STEP ${st.n}</div>
+    <h1>${st.emoji} ${st.title}</h1>
+    <div class="muted">${esc(st.desc)} · 단어 ${st.words.length}개</div>
+    <div class="stars" style="font-size:22px">${starHtml(starsOf(best))} <span class="muted">${best==null?"아직 퀴즈 기록 없음":"최고 "+best+"점"}</span></div>
+    ${buddy(best==null?"🚀 공부 시작하기를 누르면 소리 → 쓰기 → 문제 순서로 같이 해 줄게!":best>=90?"별 3개! 대단해! 🧩 단어 만들기도 해 볼까?":"한 번 더 하면 별을 더 모을 수 있어! ⭐","sm")}
+    <div class="modes">
+      <button class="mode start-btn" id="m0"><span class="ic">🚀</span><span>①→②→③ 한 번에 공부하기<small>소리 듣기 → 따라 쓰기 5번 → 문제 풀기</small></span></button>
+      <div class="sec">📌 공부 순서</div>
+      <button class="mode" id="ms"><span class="num">1</span><span class="ic">🔤</span><span>소리 듣기<small>글자를 누르면 소리와 한글 발음이 나와요</small></span></button>
+      <button class="mode" id="mt"><span class="num">2</span><span class="ic">✏️</span><span>따라 쓰기<small>글자마다 5번씩 손가락으로 써요</small></span></button>
+      <button class="mode" id="m2"><span class="num">3</span><span class="ic">🎯</span><span>문제 풀기 ${QN}문제<small>별 3개에 도전! (90점 이상)</small></span></button>
+      <div class="sec">➕ 더 공부하기</div>
+      <button class="mode extra" id="m1"><span class="num">4</span><span class="ic">📖</span><span>단어 배우기<small>그림 보고 듣고 따라 읽기</small></span></button>
+      <button class="mode extra" id="m3"><span class="num">5</span><span class="ic">🧩</span><span>단어 만들기<small>글자 블록으로 단어 완성하기</small></span></button>
+    </div>
+  </div>
+  <div class="card"><h2>이 단계 단어</h2>
+    <div class="chips">${st.words.map(w=>`<span class="chip">${w[1]} ${esc(w[0])} ${kw(w[0])}</span>`).join("")}</div></div>`;
+  document.getElementById("bk").onclick=renderHome;
+  const items=ALL.filter(x=>x.st===st);
+  document.getElementById("m1").onclick=()=>renderLearn(items,0);
+  document.getElementById("m0").onclick=()=>renderSounds(st,true);
+  document.getElementById("ms").onclick=()=>renderSounds(st,false);
+  document.getElementById("mt").onclick=()=>renderTrace(st,false);
+  document.getElementById("m2").onclick=()=>quizFor(st);
+  document.getElementById("m3").onclick=()=>startQuiz(shuffle(items.filter(x=>x.word.length<=6&&!x.word.includes("-"))).slice(0,8),`STEP${st.n} 단어 만들기`,"build",["build"],st.id);
+}
+
+
+/* ===== 소리 듣기 ===== */
+function steps(cur){
+  const L=["소리 듣기","따라 쓰기","문제 풀기"];
+  return `<div class="steps">${L.map((t,i)=>`<span class="st ${i+1<cur?"done":i+1===cur?"cur":""}"><b>${i+1<cur?"✓":i+1}</b>${t}</span>`).join('<span class="ar">›</span>')}</div>`;
+}
+function quizFor(st,flow){
+  curStage=st;
+  const items=ALL.filter(x=>x.st===st);
+  startQuiz(shuffle(items).slice(0,QN),`STEP${st.n} ${st.title} 퀴즈`,"quiz",["sound","fill","listen","read","build"],st.id);
+  session.flow=!!flow; renderQ();
+}
+function exampleOf(st,p){ return ALL.find(x=>x.st===st&&x.p===p) }
+function renderSounds(st,flow){
+  view="sounds"; try{scrollTo(0,0)}catch(e){} curStage=st;
+  const pats=[...new Set(st.words.map(w=>w[2]))];
+  const need=Math.min(pats.length,6);
+  const heard=new Set();
+  $app.innerHTML=`
+  <button class="back" id="bk">← STEP ${st.n}</button>
+  ${flow?steps(1):`<div class="steps">${'<span class="st cur"><b>1</b>소리 듣기</span>'}</div>`}
+  <div class="card">
+    ${buddy("글자를 눌러 봐! 소리랑 한글 발음을 알려 줄게 🔊","sm")}
+    <div class="panel" id="panel"><div class="muted" style="padding-top:34px">아래 글자를 눌러 보세요 👇</div></div>
+    <div class="sgrid">${pats.map(p=>{const ex=exampleOf(st,p);return `<button class="sbtn ${label(st,p).length>2?"long":""}" data-p="${esc(p)}">${both(st,p)}<small>${esc(st.ko[p]||"")}</small>${ex?`<span class="sw">${ex.pic} ${esc(ex.word)}</span><span class="sw" style="color:var(--hl);margin-top:0">${KOW[ex.word]||""}</span><span class="sw" style="color:#2e9e6a;margin-top:0">${KOM[ex.word]||""}</span>`:""}</button>`}).join("")}</div>
+    <div class="muted center" id="cnt" style="margin-top:10px">${flow?`글자 ${need}개 이상 들어 보면 다음으로 갈 수 있어 (0/${need})`:""}</div>
+    ${flow?`<button id="go" disabled style="opacity:.4">✏️ 따라 쓰러 가기</button>`:`<button class="soft" id="go">STEP ${st.n}으로 돌아가기</button>`}
+  </div>`;
+  document.getElementById("bk").onclick=()=>renderStage(st);
+  document.querySelectorAll(".sbtn").forEach(b=>b.onclick=()=>{
+    const p=b.dataset.p, ex=exampleOf(st,p);
+    document.querySelectorAll(".sbtn").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on","heard"); heard.add(p);
+    document.getElementById("panel").innerHTML=`
+      <div class="big">${both(st,p)}</div><div class="muted">소문자 · 대문자</div>
+      <div class="ko">= "${esc(st.ko[p]||"")}" 소리</div>
+      ${ex?`<div style="margin-top:6px;font-size:22px">${ex.pic} <span style="font-family:Nunito;font-weight:900;font-size:32px">${hlWord(ex)}</span> ${kw(ex.word)}</div>`:""}`;
+    if(ex) speak(st.n===1?`${p}. ${ex.word}`:`${ex.word}. ${ex.word}`);
+    if(flow){
+      document.getElementById("cnt").textContent=heard.size>=need?"잘했어! 이제 따라 쓰러 가자 ✏️":`글자 ${need}개 이상 들어 보면 다음으로 갈 수 있어 (${heard.size}/${need})`;
+      if(heard.size>=need){ const g=document.getElementById("go"); g.disabled=false; g.style.opacity=1; }
+    }
+  });
+  document.getElementById("go").onclick=()=>{ if(flow){ if(heard.size>=need) renderTrace(st,true); } else renderStage(st); };
+}
+
+/* ===== 따라 쓰기 ===== */
+const REP=5;
+function renderTrace(st,flow){
+  view="trace"; try{scrollTo(0,0)}catch(e){} curStage=st;
+  const items=st.trace, total=items.length*REP;
+  let ti=0, rep=0, done=0;
+  function draw(){
+    try{scrollTo(0,0)}catch(e){}
+    const p=items[ti], ex=exampleOf(st,p), pct=Math.round(done/total*100);
+    $app.innerHTML=`
+    <button class="back" id="bk">← STEP ${st.n}</button>
+    ${flow?steps(2):`<div class="steps"><span class="st cur"><b>2</b>따라 쓰기</span></div>`}
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="top"><span>${esc(label(st,p))} 글자 ${rep+1}번째</span><span class="pct">${pct}%</span></div>
+    <div class="card trace-card">
+      <div class="trace-head"><span class="eng">${both(st,p)}</span><span class="ko">"${esc(st.ko[p]||"")}"</span>
+        <button class="speak" id="sp" style="margin:0">🔊</button></div>
+      ${ex?`<div class="center" style="font-size:30px;font-family:Nunito;font-weight:900">${ex.pic} ${hlWord(ex)} ${kw(ex.word)}</div>`:""}
+      <div class="canvas-wrap"><canvas id="cv"></canvas></div>
+      <div class="trace-foot"><div class="dots">${"●".repeat(rep)}<span class="off">${"●".repeat(REP-rep)}</span></div><button class="soft" id="clr">🧽 지우기</button></div>
+      <div id="msg" class="center" style="min-height:32px;font-size:20px;font-weight:bold"></div>
+    </div>`;
+    document.getElementById("bk").onclick=()=>renderStage(st);
+    document.getElementById("sp").onclick=()=>{ if(ex) speak(ex.word) };
+    setupCanvas(label(st,p), ok=>{
+      if(!ok) return false;
+      done++; rep++;
+      document.getElementById("msg").innerHTML=`<span style="color:var(--ok)">잘 썼어! ✨ (${rep}/${REP})</span>`;
+      setTimeout(()=>{
+        if(rep>=REP){ ti++; rep=0; }
+        if(ti>=items.length) finish(); else draw();
+      },650);
+      return true;
+    });
+  }
+  function finish(){
+    saveRecord({id:"t"+Date.now(),at:new Date().toISOString(),label:`STEP${st.n} 따라 쓰기`,stage:st.id,mode:"trace",score:total,total});
+    $app.innerHTML=`
+    <div class="bar"><i style="width:100%"></i></div>
+    <div class="card center">
+      ${buddy(flow?"100% 완료! 정말 잘 썼어! 이제 문제 풀어 보자! 🎯":"100% 완료! 정말 잘 썼어! 💯","big","jump")}
+      <div class="score">100%</div>
+      ${flow?`<div class="muted" id="cd">곧 문제가 시작돼요…</div><button id="q">지금 문제 풀기 🎯</button>`:`<button id="q">🎯 퀴즈 풀러 가기</button><button class="soft" id="b">STEP ${st.n}으로</button>`}
+    </div>`;
+    let started=false; const go=()=>{ if(started) return; started=true; quizFor(st,flow); };
+    document.getElementById("q").onclick=go;
+    const b=document.getElementById("b"); if(b) b.onclick=()=>{ started=true; renderStage(st); };
+    if(flow) setTimeout(()=>{ if(view==="trace") go(); },2500);
+  }
+  draw();
+}
+
+function setupCanvas(text,onDone){
+  const cv=document.getElementById("cv");
+  const dpr=window.devicePixelRatio||1, W=cv.clientWidth, H=cv.clientHeight;
+  cv.width=W*dpr; cv.height=H*dpr;
+  const ctx=cv.getContext("2d"); ctx.scale(dpr,dpr);
+  const mk=()=>{const c=document.createElement("canvas");c.width=W;c.height=H;return c};
+  const ink=mk(), ictx=ink.getContext("2d"), fill=mk(), dil=mk();
+  let fs, base, inkW, samples=[], dilData, finished=false;
+  function layout(){
+    const fam='900 {S}px Nunito, "Arial Rounded MT Bold", Arial, sans-serif';
+    fs=H*0.86; ctx.font=fam.replace("{S}",fs);
+    const w=ctx.measureText(text).width; if(w>W*0.86) fs=fs*W*0.86/w;
+    base=H*0.72; inkW=Math.max(14,fs*0.14);
+    const font=fam.replace("{S}",fs);
+    [fill,dil].forEach((c,i)=>{const x=c.getContext("2d");x.font=font;x.textAlign="center";x.textBaseline="alphabetic";x.fillStyle="#000";x.fillText(text,W/2,base);
+      if(i===1){x.lineWidth=inkW*1.5;x.lineJoin="round";x.strokeStyle="#000";x.strokeText(text,W/2,base)}});
+    const fd=fill.getContext("2d").getImageData(0,0,W,H).data; const step=Math.max(3,Math.round(fs/40));
+    samples=[]; for(let y=0;y<H;y+=step)for(let x=0;x<W;x+=step){ if(fd[(y*W+x)*4+3]>128) samples.push([x,y]) }
+    dilData=dil.getContext("2d").getImageData(0,0,W,H).data;
+    ictx.lineCap="round"; ictx.lineJoin="round"; ictx.lineWidth=inkW; ictx.strokeStyle="#2f80ed";
+    ctx._font=font; render();
+  }
+  function render(){
+    ctx.clearRect(0,0,W,H);
+    // 영어 공책 줄
+    const lines=[base-fs*0.72, base-fs*0.5, base, base+fs*0.2];
+    lines.forEach((y,i)=>{ctx.beginPath();ctx.setLineDash(i===2?[]:[8,8]);ctx.strokeStyle=i===2?"#f3a0a0":"#c9d6e3";ctx.lineWidth=2;ctx.moveTo(10,y);ctx.lineTo(W-10,y);ctx.stroke()});
+    ctx.setLineDash([]);
+    ctx.font=ctx._font; ctx.textAlign="center"; ctx.textBaseline="alphabetic";
+    ctx.fillStyle="#e9eff6"; ctx.fillText(text,W/2,base);
+    ctx.setLineDash([6,7]); ctx.lineWidth=3; ctx.strokeStyle="#9fb3c8"; ctx.strokeText(text,W/2,base); ctx.setLineDash([]);
+    ctx.drawImage(ink,0,0,W,H);
+  }
+  function pos(e){const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]}
+  let drawing=false,last=null;
+  cv.onpointerdown=e=>{ if(finished) return; drawing=true; cv.setPointerCapture(e.pointerId); last=pos(e); ictx.beginPath(); ictx.arc(last[0],last[1],inkW/2,0,7); ictx.fillStyle="#2f80ed"; ictx.fill(); render(); };
+  cv.onpointermove=e=>{ if(!drawing) return; const p=pos(e); ictx.beginPath(); ictx.moveTo(last[0],last[1]); ictx.lineTo(p[0],p[1]); ictx.stroke(); last=p; render(); };
+  const up=()=>{ if(!drawing) return; drawing=false; check(); };
+  cv.onpointerup=up; cv.onpointercancel=up; cv.onpointerleave=up;
+  function check(){
+    const id=ictx.getImageData(0,0,W,H).data;
+    let hit=0; samples.forEach(([x,y])=>{ if(id[(y*W+x)*4+3]>40) hit++ });
+    const cov=samples.length?hit/samples.length:0;
+    let inkPts=0,out=0; for(let y=0;y<H;y+=4)for(let x=0;x<W;x+=4){ const k=(y*W+x)*4+3; if(id[k]>40){inkPts++; if(dilData[k]<100) out++} }
+    const outR=inkPts?out/inkPts:0, msg=document.getElementById("msg");
+    if(cov>=0.62 && outR<0.3){ finished=true; onDone(true); }
+    else if(outR>=0.3 && inkPts>30){ msg.innerHTML=`<span style="color:var(--no)">선 밖으로 많이 나갔어! 🧽 지우고 다시 써 볼까?</span>`; }
+    else if(cov>0.15){ msg.innerHTML=`조금만 더! 회색 글자를 다 덮어 봐 (${Math.round(Math.min(cov/0.62,1)*100)}%)`; }
+  }
+  document.getElementById("clr").onclick=()=>{ if(finished) return; ictx.clearRect(0,0,W,H); document.getElementById("msg").textContent=""; render(); };
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(layout);
+}
+
+/* ===== 배우기 ===== */
+function hlWord(x){
+  const i=pIndex(x), w=x.word;
+  if(i<0) return esc(w);
+  let html=esc(w.slice(0,i))+`<span class="hl">${esc(x.p)}</span>`+esc(w.slice(i+x.p.length));
+  if(x.st.labels){ // 매직 e: 끝 e도 강조
+    html=esc(w.slice(0,i))+`<span class="hl">${esc(x.p)}</span>`+esc(w.slice(i+1,-1))+`<span class="hl">e</span>`;
+  }
+  return html;
+}
+function renderLearn(items,i){
+  view="learn"; try{scrollTo(0,0)}catch(e){}
+  const x=items[i];
+  $app.innerHTML=`
+  <button class="back" id="bk">← STEP ${x.st.n}</button>
+  <div class="bar"><i style="width:${(i+1)/items.length*100}%"></i></div>
+  <div class="top"><span>${i+1} / ${items.length}</span><span>${esc(x.st.title)}</span></div>
+  <div class="card center">
+    ${buddy(`<span class="hl" style="font-family:Nunito">${esc(label(x.st,x.p))} ${esc(upper(x.st,x.p))}</span> 소리를 잘 들어 봐! 🔊`,"sm")}
+    <div class="pic" style="font-size:110px">${x.pic}</div>
+    <div class="word">${hlWord(x)}</div>${kw(x.word,true)}
+    <button class="speak" id="sp">🔊 듣고 따라 읽기</button>
+    <div class="row">
+      <button class="soft" id="pv" ${i===0?"disabled style='opacity:.4'":""}>← 이전</button>
+      <button id="nx">${i+1<items.length?"다음 →":"다 배웠어! 🎉"}</button>
+    </div>
+  </div>`;
+  document.getElementById("bk").onclick=()=>renderStage(x.st);
+  document.getElementById("sp").onclick=()=>speak(x.word);
+  document.getElementById("pv").onclick=()=>{ if(i>0) renderLearn(items,i-1) };
+  document.getElementById("nx").onclick=()=>{ if(i+1<items.length){ renderLearn(items,i+1); speak(items[i+1].word); } else renderStage(x.st) };
+}
+
+/* ===== 문제 만들기 ===== */
+function makeQ(x,type){
+  const st=x.st, pats=[...new Set(st.words.map(w=>w[2]))].filter(p=>p!==x.p);
+  const nOpt=Math.min(4,pats.length+1);
+  if(type==="sound"||type==="fill"){
+    const opts=shuffle([x.p,...shuffle(pats).slice(0,nOpt-1)]);
+    return {x,type,answer:x.p,opts,show:o=>type==="sound"?label(st,o):o};
+  }
+  if(type==="listen"||type==="read"){
+    const others=shuffle(st.words.filter(w=>w[0]!==x.word&&w[1]!==x.pic)).slice(0,2);
+    if(type==="listen") return {x,type,answer:x.word,opts:shuffle([x.word,...others.map(w=>w[0])]),show:o=>o};
+    return {x,type,answer:x.pic,opts:shuffle([x.pic,...others.map(w=>w[1])]),show:o=>o};
+  }
+  // build
+  const letters=x.word.split("");
+  const extra=shuffle(LETTERS.filter(l=>!letters.includes(l))).slice(0,2);
+  return {x,type,answer:x.word,tiles:shuffle([...letters,...extra]),built:[]};
+}
+function pickType(x,types){
+  let ok=types.filter(t=>!(t==="build"&&(x.word.length>6||x.word.includes("-"))));
+  return ok[Math.floor(Math.random()*ok.length)];
+}
+
+/* ===== 퀴즈 진행 ===== */
+let qs=[], idx=0, results=[], answered=false, session=null;
+function startQuiz(items,label_,mode,types,stage){
+  session={label:label_,mode,types,stage:stage||"review",items};
+  qs=items.map(x=>makeQ(x,pickType(x,types))); idx=0; results=[];
+  renderQ();
+}
+function renderQ(){
+  view="quiz"; try{scrollTo(0,0)}catch(e){} answered=false;
+  const q=qs[idx], x=q.x, st=x.st;
+  let body="";
+  if(q.type==="sound"){
+    body=`<div class="q">${st.soundQ}</div><div class="pic">${x.pic}</div><button class="speak" id="sp">🔊 듣기</button>`;
+  }else if(q.type==="fill"){
+    const i=pIndex(x), w=x.word;
+    body=`<div class="q">${st.fillQ}</div><div class="pic">${x.pic}</div>
+      <div class="word">${esc(w.slice(0,i))}<span class="blank">?</span>${esc(w.slice(i+x.p.length))}</div><button class="speak" id="sp">🔊 듣기</button>`;
+  }else if(q.type==="listen"){
+    body=`<div class="q">🔊 잘 듣고 맞는 단어를 골라 봐!</div><div class="pic">🎧</div><button class="speak" id="sp">🔊 다시 듣기</button>`;
+  }else if(q.type==="read"){
+    body=`<div class="q">이 단어를 읽고 맞는 그림을 골라 봐!</div><div class="word" style="margin:22px 0">${esc(x.word)}</div>
+      <div class="muted center">소리 내서 읽어 보고 골라 봐</div>`;
+  }else{
+    body=`<div class="q">그림을 보고 글자 블록으로 단어를 만들어 봐!</div><div class="pic">${x.pic}</div>
+      <button class="speak" id="sp">🔊 듣기</button>
+      <div class="slots" id="slots"></div><div class="tiles" id="tiles"></div>
+      <div class="row"><button class="soft" id="undo">⌫ 지우기</button></div>`;
+  }
+  const n=q.opts?q.opts.length:0;
+  $app.innerHTML=`
+  <button class="back" id="bk">← 그만하기</button>
+  ${session.stage!=="review"&&session.mode==="quiz"?(session.flow?steps(3):`<div class="steps"><span class="st cur"><b>3</b>문제 풀기</span></div>`):""}
+  <div class="bar"><i style="width:${idx/qs.length*100}%"></i></div>
+  <div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${results.filter(r=>r.ok).length}</span></div>
+  <div class="card">
+    <span class="tag">${TYPES[q.type]}</span>
+    ${body}
+    ${q.opts?`<div class="opts c${q.type==="listen"?1:n}">${q.opts.map((o,i)=>`<button class="opt ${q.type==="read"?"emo":""} ${q.type==="listen"||String(q.show(o)).length>2?"small":""}" data-i="${i}">${esc(q.show(o))}</button>`).join("")}</div>`:""}
+    <div class="fb" id="fb"></div>
+    <button id="next" class="hidden">${idx+1<qs.length?"다음 문제 →":"결과 보기"}</button>
+  </div>`;
+  document.getElementById("bk").onclick=()=>{ session.stage!=="review"&&curStage?renderStage(curStage):renderHome() };
+  const sp=document.getElementById("sp"); if(sp) sp.onclick=()=>speak(x.word);
+  if(q.type==="listen") speak(x.word);
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>choose(q.opts[+b.dataset.i],b));
+  document.getElementById("next").onclick=next;
+  if(q.type==="build") renderBuild();
+}
+function renderBuild(){
+  const q=qs[idx];
+  document.getElementById("slots").innerHTML=q.x.word.split("").map((_,i)=>`<div class="slot">${esc(q.built[i]!=null?q.tiles[q.built[i]]:"")}</div>`).join("");
+  document.getElementById("tiles").innerHTML=q.tiles.map((t,i)=>`<button class="tile ${q.built.includes(i)?"used":""}" data-i="${i}">${esc(t)}</button>`).join("");
+  document.querySelectorAll(".tile").forEach(b=>b.onclick=()=>{
+    if(answered) return; const i=+b.dataset.i; if(q.built.includes(i)) return;
+    q.built.push(i); renderBuild();
+    if(q.built.length===q.x.word.length) choose(q.built.map(j=>q.tiles[j]).join(""),null);
+  });
+  document.getElementById("undo").onclick=()=>{ if(answered) return; q.built.pop(); renderBuild(); };
+}
+function choose(mine,btn){
+  if(answered) return; answered=true;
+  const q=qs[idx], x=q.x, ok=mine===q.answer;
+  if(q.opts) document.querySelectorAll(".opt").forEach(b=>{
+    const v=q.opts[+b.dataset.i];
+    if(v===q.answer) b.classList.add("right"); else if(b===btn) b.classList.add("wrong");
+    b.disabled=true;
+  });
+  results.push({key:x.key,word:x.word,pic:x.pic,type:q.type,answer:q.show?q.show(q.answer):q.answer,mine:q.show?q.show(mine):mine,ok});
+  const fb=document.getElementById("fb");
+  fb.className="fb "+(ok?"ok":"no");
+  const cheers=["정답! 최고야! 🎉","우와, 맞았어! 👏","잘했어 설훈아! ⭐","딩동댕! 🎶"];
+  fb.innerHTML= ok ? buddy(`<b>${cheers[Math.floor(Math.random()*cheers.length)]}</b>`,"sm","jump")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`
+    : buddy(`<b>괜찮아! 정답은 "${esc(q.show?q.show(q.answer):q.answer)}"</b>`,"sm","shake")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`;
+  speak(x.word);
+  const n=document.getElementById("next"); n.classList.remove("hidden"); n.focus();
+}
+function next(){ idx++; if(idx<qs.length) renderQ(); else renderResult(); }
+
+/* ===== 결과 ===== */
+function resultText(r){
+  let t=`[설훈 파닉스 교실] ${fmt(r.at)} (${r.label})\n점수: ${r.score} / ${r.total} (${Math.round(r.score/r.total*100)}점)\n`;
+  const wrong=results.filter(x=>!x.ok);
+  if(wrong.length) t+=`\n틀린 문제 ${wrong.length}개\n`+wrong.map((w,i)=>`${i+1}. ${w.word} ${w.pic} - ${TYPES[w.type]} (정답: ${w.answer} / 고른 답: ${w.mine})`).join("\n");
+  else t+="\n모두 맞았어요! 💯";
+  return t;
+}
+function renderResult(){
+  view="result"; try{scrollTo(0,0)}catch(e){}
+  const ok=results.filter(r=>r.ok).length, wrong=results.filter(r=>!r.ok);
+  const pct=Math.round(ok/results.length*100), stars=starsOf(pct);
+  const rec={id:"p"+Date.now(),at:new Date().toISOString(),label:session.label,stage:session.stage,mode:session.mode,score:ok,total:results.length,
+    wrong:wrong.map(w=>({key:w.key,word:w.word,type:w.type,answer:w.answer,mine:w.mine})),right:results.filter(r=>r.ok).map(r=>r.key)};
+  saveRecord(rec);
+  const msg=pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 것만 다시 해 보자! 🔁";
+  $app.innerHTML=`
+  <div class="card center">
+    ${buddy(msg,"big",pct>=60?"jump":"")}
+    <div class="muted">${fmt(rec.at)} · ${esc(rec.label)}</div>
+    ${session.mode==="quiz"?`<div class="big-stars">${starHtml(stars)}</div>`:""}
+    <div class="score">${ok} / ${results.length}</div>
+    <div style="font-size:24px;font-weight:bold">${pct}점</div>
+  </div>
+  ${wrong.length?`<div class="card">
+    <b>틀린 문제 ${wrong.length}개</b> <span class="muted">← 캡처해서 아빠한테 보내줘 📸</span>
+    <table><tr><th>단어</th><th>문제</th><th>정답</th><th>고른 답</th></tr>
+    ${wrong.map(r=>`<tr><td class="w">${r.pic} ${esc(r.word)}</td><td>${TYPES[r.type]}</td><td class="w">${esc(r.answer)}</td><td class="mine">${esc(r.mine)}</td></tr>`).join("")}
+    </table></div>`:""}
+  <div class="card">
+    <button id="copy">결과 복사하기 (카톡에 붙여넣기)</button>
+    <div class="copied" id="cp"></div>
+    ${wrong.length?`<button class="ghost" id="retry">틀린 것만 다시 풀기 (${wrong.length}개)</button>`:""}
+    <button class="soft" id="home">처음 화면으로</button>
+  </div>`;
+  document.getElementById("copy").onclick=async()=>{
+    try{ await navigator.clipboard.writeText(resultText(rec)); document.getElementById("cp").textContent="복사됐어! 카톡에서 아빠한테 붙여넣기 해줘 ✅"; }
+    catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
+  };
+  if(wrong.length) document.getElementById("retry").onclick=()=>{
+    const items=wrong.map(w=>BYKEY[w.key]).filter(Boolean);
+    startQuiz(items,"틀린 것 다시 풀기",session.mode==="build"?"build":"retry",session.types,session.stage);
+  };
+  document.getElementById("home").onclick=renderHome;
+}
+
+renderHome();
+loadDb();
+</script>
+</body>
+</html>
