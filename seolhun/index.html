@@ -150,6 +150,84 @@
   body{-webkit-user-select:none;user-select:none}
   button,.stg,.sbtn,.opt,.tile{touch-action:manipulation}
   canvas{-webkit-touch-callout:none;-webkit-user-select:none}
+  /* ===== 한 화면에 들어오게 ===== */
+  .wrap{padding:10px 12px 24px}
+  .card{padding:14px 14px;margin-top:10px;border-radius:20px}
+  summary{cursor:pointer;list-style:none}
+  summary::-webkit-details-marker{display:none}
+  .qhead{display:flex;align-items:center;gap:10px}
+  .qhead .back{flex:none;font-size:24px;padding:2px 6px}
+  .qhead .bar{flex:1;margin:0}
+  .qhead .qn{flex:none;color:var(--sub);font-size:17px;font-family:Nunito,sans-serif;font-weight:800}
+  .qcard{text-align:center}
+  .qcard .tag{font-size:15px;padding:3px 12px}
+  .q{font-size:clamp(18px,2.9vh,25px);margin:6px 0 2px}
+  .pic{font-size:clamp(56px,12vh,110px);margin:2px 0}
+  .word{font-size:clamp(38px,7vh,58px);margin:0}
+  .speak{padding:7px 20px;font-size:20px;margin:4px auto}
+  .opts{gap:10px;margin-top:10px}
+  .opt{padding:12px 4px;font-size:clamp(28px,5vh,38px)}
+  .opt.emo{font-size:clamp(40px,7vh,60px);padding:6px 4px}
+  .opts.c1 .opt{font-size:clamp(26px,4.5vh,36px);padding:8px}
+  .slot{width:46px;height:54px;line-height:54px;font-size:38px}
+  .tiles{gap:8px;margin-top:8px}
+  .tile{width:54px;height:54px;font-size:30px}
+  .qcard .row button{margin-top:8px;padding:10px}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(30,80,130,.18);padding:12px 16px calc(14px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto}
+  .sheet .fb{display:block;margin:0;padding:6px 8px}
+  .sheet button{margin-top:8px}
+  .buddy.sm img{width:60px;height:60px}
+  .buddy.sm .bubble{font-size:18px;padding:8px 12px}
+  .buddy.big img{width:100px;height:100px}
+  .pic[style*="110px"]{font-size:clamp(60px,13vh,110px)!important}
+  .kw.big{font-size:24px}.mean.big{font-size:22px}
+  .panel{padding:8px;min-height:0;margin-top:8px}
+  .panel .big{font-size:min(56px,12vw)}
+  .panel .ko{font-size:24px}
+  .sgrid{max-height:calc(100dvh - 430px);min-height:160px;overflow:auto;gap:8px;margin-top:10px;padding:2px}
+  .sbtn{padding:8px 4px;font-size:30px}
+  .sbtn small{font-size:17px;margin-top:0}
+  #cv{height:clamp(190px,calc(100dvh - 380px),330px)!important}
+  .trace-head .eng{font-size:40px!important}
+  .trace-head .ko{font-size:26px}
+  .mode{padding:10px 12px;margin:0}
+  .mode .ic{font-size:30px}
+  .mode small{font-size:15px}
+  .modes{gap:8px;margin-top:8px}
+  .sec{margin:8px 0 0}
+  .stages{gap:8px;margin-top:8px}
+  .stg{padding:10px 12px}
+  .stg .e{font-size:32px}
+  .stats{margin-top:8px}
+  .stat{padding:8px 4px}
+  .score{font-size:52px}
+  h1{font-size:28px}
+  .hero{display:flex;align-items:center;gap:12px}
+  .hero img{width:76px;height:76px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 4px 14px rgba(30,80,130,.15)}
+  .hero h1{margin:0;line-height:1.15}
+  .hero-say{font-size:17px;font-weight:bold;color:var(--accent)}
+  .stages.s3{grid-template-columns:repeat(3,1fr)}
+  .s3 .stg{text-align:center;padding:8px 4px}
+  .s3 .stg .t{font-size:16px;line-height:1.25;word-break:keep-all}
+  .s3 .stg .stars{font-size:16px}
+  .s3 .stg .n{position:absolute}
+  .stg{position:relative}
+  .st-title{font-size:21px;font-weight:bold}
+  .qhead .steps{margin:0;flex:1}
+  .tiles3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .tiles3.t2{grid-template-columns:repeat(2,1fr)}
+  .mtile{margin:0;padding:10px 4px;background:#f4f8fc;color:var(--ink);border:2px solid var(--line);border-radius:16px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .mtile .num{width:28px;height:28px;font-size:16px}
+  .mtile .ic{font-size:30px}
+  .mtile.extra .num{background:#9fb3c8}
+  .wl{margin-top:6px;font-size:17px;line-height:1.7;max-height:30vh;overflow:auto}
+  .wl .mine{color:var(--no);font-weight:bold}
+  .big-stars{font-size:34px;line-height:1.1}
+  .big-stars .off{color:#d6dde5}
+  .score{font-size:44px!important;margin:0}
+  .wl{max-height:17vh}
+  .copied{min-height:0!important;margin:2px 0!important}
+  @media (min-height:800px){ .mtile{padding:16px 4px} .s3 .stg{padding:14px 4px} }
 </style>
 </head>
 <body>
@@ -282,31 +360,25 @@ function renderHome(){
   const todayN=records.filter(r=>dayKey(r.at)===dayKey(new Date())).reduce((s,r)=>s+(r.total||0),0);
   const rv=reviewList();
   $app.innerHTML=`
-  <div class="muted">설훈이의</div>
-  <h1>파닉스 교실 🎧</h1>
-  ${buddy(records.length?(streak()>0?`설훈아! 벌써 ${streak()}일째 공부 중이야. 오늘도 같이 하자! 💪`:"설훈아, 다시 왔구나! 오늘도 같이 공부하자! 📚"):"안녕 설훈아! 나랑 같이 파닉스 공부하자! STEP 1부터 시작해 볼까?","","jump")}
+  <div class="hero"><img class="jump" src="${BUDDY}" alt=""><div><div class="muted">설훈이의</div><h1>파닉스 교실 🎧</h1>
+    <div class="hero-say">${records.length?(streak()>0?`벌써 ${streak()}일째! 오늘도 같이 하자 💪`:"다시 왔구나! 오늘도 같이 하자 📚"):"안녕 설훈아! STEP 1부터 시작하자!"}</div></div></div>
   <div class="stats">
     <div class="stat"><b>🔥 ${streak()}</b><span>연속 공부일</span></div>
     <div class="stat"><b style="color:var(--star)">★ ${totalStars}</b><span>모은 별 / ${STAGES.length*3}</span></div>
     <div class="stat"><b>${todayN}</b><span>오늘 푼 문제</span></div>
   </div>
-  <div class="sec" style="margin-top:18px">📌 STEP 1부터 차례대로 공부해요</div>
-  <div class="stages" style="margin-top:6px">
+  <div class="sec">📌 STEP 1부터 차례대로 공부해요</div>
+  <div class="stages s3">
     ${STAGES.map(st=>`<button class="stg" data-s="${st.id}">
-      <div class="n"><b>${st.n}</b>STEP ${st.n}</div><div class="e">${st.emoji}</div>
-      <div class="t">${st.title}</div><div class="x">${esc(st.desc)}</div>
+      <div class="n"><b>${st.n}</b></div><div class="e">${st.emoji}</div>
+      <div class="t">${st.title}</div>
       <div class="stars">${starHtml(starsOf(bestPct(st.id)))}</div></button>`).join("")}
   </div>
-  <div class="card">
-    <h2>🔁 오답 복습</h2>
-    <div class="muted">${rv.length?`틀렸던 단어 <b>${rv.length}개</b>가 기다리고 있어. 다시 맞히면 목록에서 빠져!`:"아직 복습할 단어가 없어요. 퀴즈를 풀어 보자!"}</div>
-    ${rv.length?`<div class="chips">${rv.slice(0,12).map(x=>`<span class="chip">${x.pic} ${esc(x.word)} ${kw(x.word)}</span>`).join("")}${rv.length>12?`<span class="chip">+${rv.length-12}</span>`:""}</div>
-    <button id="rv">오답 복습 시작 (${Math.min(rv.length,QN)}문제)</button>`:""}
-  </div>
-  <div class="card">
-    <h2>📒 최근 공부 기록</h2>
+  ${rv.length?`<button class="ghost" id="rv">🔁 오답 복습 (틀린 단어 ${rv.length}개)</button>`:`<div class="muted center" style="margin-top:10px">🔁 틀린 단어가 생기면 오답 복습이 나와요</div>`}
+  <details class="card">
+    <summary><h2 style="display:inline">📒 최근 공부 기록 ▾</h2></summary>
     ${records.length?`<ul class="hist">${records.slice(0,8).map(r=>`<li><span>${fmt(r.at)} · ${esc(r.label)}</span><b>${r.score} / ${r.total}</b></li>`).join("")}</ul>`:`<div class="muted">아직 기록이 없어요. STEP 1부터 시작해 볼까?</div>`}
-  </div>`;
+  </details>`;
   document.querySelectorAll(".stg").forEach(b=>b.onclick=()=>renderStage(STAGES.find(s=>s.id===b.dataset.s)));
   const rb=document.getElementById("rv"); if(rb) rb.onclick=()=>startQuiz(shuffle(rv).slice(0,QN),"오답 복습","review",["fill","listen","read","build","sound"]);
 }
@@ -316,26 +388,27 @@ function renderStage(st){
   view="stage"; try{scrollTo(0,0)}catch(e){} curStage=st;
   const best=bestPct(st.id);
   $app.innerHTML=`
-  <button class="back" id="bk">← 처음 화면</button>
+  <div class="qhead"><button class="back" id="bk">←</button><div class="st-title">${st.emoji} STEP ${st.n} ${st.title}</div></div>
   <div class="card">
-    <div class="muted">STEP ${st.n}</div>
-    <h1>${st.emoji} ${st.title}</h1>
-    <div class="muted">${esc(st.desc)} · 단어 ${st.words.length}개</div>
-    <div class="stars" style="font-size:22px">${starHtml(starsOf(best))} <span class="muted">${best==null?"아직 퀴즈 기록 없음":"최고 "+best+"점"}</span></div>
-    ${buddy(best==null?"🚀 공부 시작하기를 누르면 소리 → 쓰기 → 문제 순서로 같이 해 줄게!":best>=90?"별 3개! 대단해! 🧩 단어 만들기도 해 볼까?":"한 번 더 하면 별을 더 모을 수 있어! ⭐","sm")}
+    <div class="muted">${esc(st.desc)}</div>
+    <div class="stars" style="font-size:20px">${starHtml(starsOf(best))} <span class="muted">${best==null?"아직 문제 풀기 기록 없음":"최고 "+best+"점"}</span></div>
     <div class="modes">
-      <button class="mode start-btn" id="m0"><span class="ic">🚀</span><span>①→②→③ 한 번에 공부하기<small>소리 듣기 → 따라 쓰기 5번 → 문제 풀기</small></span></button>
+      <button class="mode start-btn" id="m0"><span class="ic">🚀</span><span>한 번에 공부하기 ①②③<small>소리 듣기 → 따라 쓰기 → 문제 풀기</small></span></button>
       <div class="sec">📌 공부 순서</div>
-      <button class="mode" id="ms"><span class="num">1</span><span class="ic">🔤</span><span>소리 듣기<small>글자를 누르면 소리와 한글 발음이 나와요</small></span></button>
-      <button class="mode" id="mt"><span class="num">2</span><span class="ic">✏️</span><span>따라 쓰기<small>글자마다 5번씩 손가락으로 써요</small></span></button>
-      <button class="mode" id="m2"><span class="num">3</span><span class="ic">🎯</span><span>문제 풀기 ${QN}문제<small>별 3개에 도전! (90점 이상)</small></span></button>
+      <div class="tiles3">
+        <button class="mtile" id="ms"><span class="num">1</span><span class="ic">🔤</span>소리 듣기</button>
+        <button class="mtile" id="mt"><span class="num">2</span><span class="ic">✏️</span>따라 쓰기</button>
+        <button class="mtile" id="m2"><span class="num">3</span><span class="ic">🎯</span>문제 풀기</button>
+      </div>
       <div class="sec">➕ 더 공부하기</div>
-      <button class="mode extra" id="m1"><span class="num">4</span><span class="ic">📖</span><span>단어 배우기<small>그림 보고 듣고 따라 읽기</small></span></button>
-      <button class="mode extra" id="m3"><span class="num">5</span><span class="ic">🧩</span><span>단어 만들기<small>글자 블록으로 단어 완성하기</small></span></button>
+      <div class="tiles3 t2">
+        <button class="mtile extra" id="m1"><span class="num">4</span><span class="ic">📖</span>단어 배우기</button>
+        <button class="mtile extra" id="m3"><span class="num">5</span><span class="ic">🧩</span>단어 만들기</button>
+      </div>
     </div>
   </div>
-  <div class="card"><h2>이 단계 단어</h2>
-    <div class="chips">${st.words.map(w=>`<span class="chip">${w[1]} ${esc(w[0])} ${kw(w[0])}</span>`).join("")}</div></div>`;
+  <details class="card"><summary><h2 style="display:inline">이 단계 단어 ${st.words.length}개 ▾</h2></summary>
+    <div class="chips">${st.words.map(w=>`<span class="chip">${w[1]} ${esc(w[0])} ${kw(w[0])}</span>`).join("")}</div></details>`;
   document.getElementById("bk").onclick=renderHome;
   const items=ALL.filter(x=>x.st===st);
   document.getElementById("m1").onclick=()=>renderLearn(items,0);
@@ -365,13 +438,11 @@ function renderSounds(st,flow){
   const need=Math.min(pats.length,6);
   const heard=new Set();
   $app.innerHTML=`
-  <button class="back" id="bk">← STEP ${st.n}</button>
-  ${flow?steps(1):`<div class="steps">${'<span class="st cur"><b>1</b>소리 듣기</span>'}</div>`}
+  <div class="qhead"><button class="back" id="bk">✕</button>${flow?steps(1):`<div class="st-title">① 소리 듣기</div>`}</div>
   <div class="card">
-    ${buddy("글자를 눌러 봐! 소리랑 한글 발음을 알려 줄게 🔊","sm")}
-    <div class="panel" id="panel"><div class="muted" style="padding-top:34px">아래 글자를 눌러 보세요 👇</div></div>
+    <div class="panel" id="panel"><div class="muted" style="padding:18px 0">글자를 누르면 소리와 한글 발음이 나와요 👇</div></div>
     <div class="sgrid">${pats.map(p=>{const ex=exampleOf(st,p);return `<button class="sbtn ${label(st,p).length>2?"long":""}" data-p="${esc(p)}">${both(st,p)}<small>${esc(st.ko[p]||"")}</small>${ex?`<span class="sw">${ex.pic} ${esc(ex.word)}</span><span class="sw" style="color:var(--hl);margin-top:0">${KOW[ex.word]||""}</span><span class="sw" style="color:#2e9e6a;margin-top:0">${KOM[ex.word]||""}</span>`:""}</button>`}).join("")}</div>
-    <div class="muted center" id="cnt" style="margin-top:10px">${flow?`글자 ${need}개 이상 들어 보면 다음으로 갈 수 있어 (0/${need})`:""}</div>
+    <div class="muted center" id="cnt" style="margin-top:6px">${flow?`글자 ${need}개 이상 들어 보면 다음으로 갈 수 있어 (0/${need})`:""}</div>
     ${flow?`<button id="go" disabled style="opacity:.4">✏️ 따라 쓰러 가기</button>`:`<button class="soft" id="go">STEP ${st.n}으로 돌아가기</button>`}
   </div>`;
   document.getElementById("bk").onclick=()=>renderStage(st);
@@ -402,10 +473,7 @@ function renderTrace(st,flow){
     try{scrollTo(0,0)}catch(e){}
     const p=items[ti], ex=exampleOf(st,p), pct=Math.round(done/total*100);
     $app.innerHTML=`
-    <button class="back" id="bk">← STEP ${st.n}</button>
-    ${flow?steps(2):`<div class="steps"><span class="st cur"><b>2</b>따라 쓰기</span></div>`}
-    <div class="bar"><i style="width:${pct}%"></i></div>
-    <div class="top"><span>${esc(label(st,p))} 글자 ${rep+1}번째</span><span class="pct">${pct}%</span></div>
+    <div class="qhead"><button class="back" id="bk">✕</button><span class="qn">②</span><div class="bar"><i style="width:${pct}%"></i></div><span class="pct">${pct}%</span></div>
     <div class="card trace-card">
       <div class="trace-head"><span class="eng">${both(st,p)}</span><span class="ko">"${esc(st.ko[p]||"")}"</span>
         <button class="speak" id="sp" style="margin:0">🔊</button></div>
@@ -573,7 +641,7 @@ function renderQ(){
   }else if(q.type==="listen"){
     body=`<div class="q">🔊 잘 듣고 맞는 단어를 골라 봐!</div><div class="pic">🎧</div><button class="speak" id="sp">🔊 다시 듣기</button>`;
   }else if(q.type==="read"){
-    body=`<div class="q">이 단어를 읽고 맞는 그림을 골라 봐!</div><div class="word" style="margin:22px 0">${esc(x.word)}</div>
+    body=`<div class="q">이 단어를 읽고 맞는 그림을 골라 봐!</div><div class="word" style="margin:14px 0">${esc(x.word)}</div>
       <div class="muted center">소리 내서 읽어 보고 골라 봐</div>`;
   }else{
     body=`<div class="q">그림을 보고 글자 블록으로 단어를 만들어 봐!</div><div class="pic">${x.pic}</div>
@@ -583,17 +651,14 @@ function renderQ(){
   }
   const n=q.opts?q.opts.length:0;
   $app.innerHTML=`
-  <button class="back" id="bk">← 그만하기</button>
-  ${session.stage!=="review"&&session.mode==="quiz"?(session.flow?steps(3):`<div class="steps"><span class="st cur"><b>3</b>문제 풀기</span></div>`):""}
-  <div class="bar"><i style="width:${idx/qs.length*100}%"></i></div>
-  <div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${results.filter(r=>r.ok).length}</span></div>
-  <div class="card">
-    <span class="tag">${TYPES[q.type]}</span>
+  <div class="qhead"><button class="back" id="bk">✕</button><div class="bar"><i style="width:${idx/qs.length*100}%"></i></div><span class="qn">${idx+1}/${qs.length} · ✅${results.filter(r=>r.ok).length}</span></div>
+  <div class="card qcard">
+    <span class="tag">${session.flow?"③ ":""}${TYPES[q.type]}</span>
     ${body}
     ${q.opts?`<div class="opts c${q.type==="listen"?1:n}">${q.opts.map((o,i)=>`<button class="opt ${q.type==="read"?"emo":""} ${q.type==="listen"||String(q.show(o)).length>2?"small":""}" data-i="${i}">${esc(q.show(o))}</button>`).join("")}</div>`:""}
-    <div class="fb" id="fb"></div>
-    <button id="next" class="hidden">${idx+1<qs.length?"다음 문제 →":"결과 보기"}</button>
-  </div>`;
+  </div>
+  <div class="sheet hidden" id="sheet"><div class="fb" id="fb"></div>
+    <button id="next">${idx+1<qs.length?"다음 문제 →":"결과 보기"}</button></div>`;
   document.getElementById("bk").onclick=()=>{ session.stage!=="review"&&curStage?renderStage(curStage):renderHome() };
   const sp=document.getElementById("sp"); if(sp) sp.onclick=()=>speak(x.word);
   if(q.type==="listen") speak(x.word);
@@ -627,7 +692,7 @@ function choose(mine,btn){
   fb.innerHTML= ok ? buddy(`<b>${cheers[Math.floor(Math.random()*cheers.length)]}</b>`,"sm","jump")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`
     : buddy(`<b>괜찮아! 정답은 "${esc(q.show?q.show(q.answer):q.answer)}"</b>`,"sm","shake")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`;
   speak(x.word);
-  const n=document.getElementById("next"); n.classList.remove("hidden"); n.focus();
+  document.getElementById("sheet").classList.remove("hidden"); document.getElementById("next").focus();
 }
 function next(){ idx++; if(idx<qs.length) renderQ(); else renderResult(); }
 
@@ -649,23 +714,19 @@ function renderResult(){
   const msg=pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 것만 다시 해 보자! 🔁";
   $app.innerHTML=`
   <div class="card center">
-    ${buddy(msg,"big",pct>=60?"jump":"")}
+    ${buddy(msg,"sm",pct>=60?"jump":"")}
     <div class="muted">${fmt(rec.at)} · ${esc(rec.label)}</div>
     ${session.mode==="quiz"?`<div class="big-stars">${starHtml(stars)}</div>`:""}
     <div class="score">${ok} / ${results.length}</div>
     <div style="font-size:24px;font-weight:bold">${pct}점</div>
   </div>
   ${wrong.length?`<div class="card">
-    <b>틀린 문제 ${wrong.length}개</b> <span class="muted">← 캡처해서 아빠한테 보내줘 📸</span>
-    <table><tr><th>단어</th><th>문제</th><th>정답</th><th>고른 답</th></tr>
-    ${wrong.map(r=>`<tr><td class="w">${r.pic} ${esc(r.word)}</td><td>${TYPES[r.type]}</td><td class="w">${esc(r.answer)}</td><td class="mine">${esc(r.mine)}</td></tr>`).join("")}
-    </table></div>`:""}
-  <div class="card">
-    <button id="copy">결과 복사하기 (카톡에 붙여넣기)</button>
-    <div class="copied" id="cp"></div>
-    ${wrong.length?`<button class="ghost" id="retry">틀린 것만 다시 풀기 (${wrong.length}개)</button>`:""}
-    <button class="soft" id="home">처음 화면으로</button>
-  </div>`;
+    <b>틀린 문제 ${wrong.length}개</b> <span class="muted">📸 캡처해서 아빠한테</span>
+    <div class="wl">${wrong.map(r=>`<div><b>${r.pic} ${esc(r.word)}</b> <span class="muted">${TYPES[r.type]}</span> 정답 <b style="color:var(--ok)">${esc(r.answer)}</b> · <span class="mine">${esc(r.mine)}</span></div>`).join("")}</div>
+    </div>`:""}
+  <button id="copy">결과 복사하기 (카톡)</button>
+  <div class="copied" id="cp"></div>
+  <div class="row">${wrong.length?`<button class="ghost" id="retry">틀린 것 다시 (${wrong.length})</button>`:""}<button class="soft" id="home">처음 화면</button></div>`;
   document.getElementById("copy").onclick=async()=>{
     try{ await navigator.clipboard.writeText(resultText(rec)); document.getElementById("cp").textContent="복사됐어! 카톡에서 아빠한테 붙여넣기 해줘 ✅"; }
     catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
