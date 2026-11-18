@@ -231,6 +231,69 @@
   a.btn{display:block;text-align:center;text-decoration:none;font-size:22px;font-weight:bold;border-radius:14px;padding:14px 18px;margin-top:10px;background:var(--accent);color:#fff}
   a.btn.mail{background:linear-gradient(135deg,#34a853,#2e9e6a)}
   .r3 button{font-size:17px;padding:10px 4px;line-height:1.3;margin-top:8px}
+  .lv{display:flex;align-items:center;gap:10px;background:#fff;border-radius:18px;padding:8px 12px;margin-top:8px;box-shadow:0 4px 14px rgba(30,80,130,.06);text-align:left}
+  .lv-e{font-size:40px;line-height:1}
+  .lv.big .lv-e{font-size:50px}
+  .lv-b{flex:1}
+  .lv-t{font-size:21px}
+  .lv-t b{font-family:Nunito,sans-serif;font-weight:900;color:var(--accent);font-size:24px}
+  .xpbar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin:3px 0}
+  .xpbar i{display:block;height:100%;background:linear-gradient(90deg,#ffd36e,#ff9a3c)}
+  .lv-x{font-size:15px;color:var(--sub)}
+  .card .lv{box-shadow:none;background:#f7fafd}
+  .gain{font-family:Nunito,sans-serif;font-weight:900;font-size:22px;color:#ff7a00}
+  .gain.neg{color:var(--no)}
+  .xpup{display:inline-block;font-family:Nunito,sans-serif;font-weight:900;color:#ff7a00;font-size:.9em;animation:jump .6s}
+  .xpdown{display:block;color:var(--no);font-size:.85em}
+  .xpwarn{display:block;color:#c77800;font-size:.85em}
+  .toast{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(20,40,60,.35)}
+  .toast-in{background:#fff;border-radius:26px;padding:22px 26px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:300px}
+  .toast-in img{width:90px;height:90px;border-radius:50%;object-fit:cover}
+  .toast-e{font-size:64px;line-height:1}
+  .toast-in b{display:block;font-size:28px;margin-top:6px}
+  .toast.up b{color:#ff7a00}
+  .toast.down b{color:var(--no)}
+  /* 조금 더 크게 */
+  body{font-size:22px}
+  .q{font-size:clamp(20px,3.3vh,28px)}
+  .pic{font-size:clamp(64px,14vh,124px)}
+  .word{font-size:clamp(44px,8vh,64px)}
+  .opt{font-size:clamp(32px,6vh,44px);padding:14px 4px}
+  .opt.emo{font-size:clamp(46px,8vh,66px)}
+  .opts.c1 .opt{font-size:clamp(30px,5vh,40px)}
+  .speak{font-size:22px;padding:8px 22px}
+  .slot{width:52px;height:60px;line-height:60px;font-size:42px}
+  .tile{width:60px;height:60px;font-size:34px}
+  .mtile{font-size:21px}
+  .mtile .ic{font-size:36px}
+  .mtile .num{width:32px;height:32px;font-size:18px}
+  .s3 .stg .t{font-size:19px}
+  .stg .e{font-size:38px}
+  .s3 .stg .stars{font-size:18px}
+  .stat b{font-size:30px}
+  .stat span{font-size:16px}
+  .sec{font-size:19px}
+  .st-title{font-size:23px}
+  .sbtn{font-size:34px}
+  .sbtn small{font-size:19px}
+  .sbtn .sw{font-size:16px}
+  .panel .big{font-size:min(64px,14vw)}
+  .panel .ko{font-size:27px}
+  .trace-head .eng{font-size:46px!important}
+  .trace-head .ko{font-size:29px}
+  .qhead .qn{font-size:18px}
+  .sheet .fb{font-size:22px}
+  button{font-size:23px}
+  .hero .lv{margin-top:4px;padding:4px 8px;box-shadow:none;background:#fff}
+  h1.ht{font-size:22px;margin:0}
+  .hero img{width:70px;height:70px}
+  .card.center .lv{padding:4px 10px;margin-top:4px}
+  .card.center .lv-e{font-size:32px}
+  .result-top .buddy{margin-top:0}
+  .stats .stat{padding:6px 4px}
+  .score-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px}
+  .score-row b{font-size:24px}
+  .mtile{padding:8px 4px}
 </style>
 </head>
 <body>
@@ -327,6 +390,8 @@ async function loadDb(){
     const list=docs.map(d=>{ const data=typeof d.data==="function"?d.data():(d.data||d); return {id:d.id||data.id, ...data}; })
       .filter(r=>r.stage); // 파닉스 교실 기록만
     merge(list); saveLocal();
+    const withXP=records.filter(r=>typeof r.xp==="number");
+    if(withXP.length&&String(withXP[0].at)>String(xpState.at||"")){ xpState.xp=withXP[0].xp; saveXP(); }
     if(view==="home") renderHome();
   }catch(e){}
 }
@@ -355,6 +420,32 @@ function reviewList(){
   return [...status].filter(([k,ok])=>!ok).map(([k])=>BYKEY[k]);
 }
 
+
+/* ===== 레벨 (경험치) ===== */
+const XP_PER_LV=100, XP_RIGHT=10, XP_TRACE=3, WRONG_RUN=3, XP_PENALTY=20;
+const LV_NAMES=[["🥚","알"],["🐣","아기 병아리"],["🐥","병아리"],["🐤","꼬마 새"],["🐦","파랑새"],["🦜","앵무새"],["🦉","부엉이 박사"],["🦅","독수리"],["🐉","파닉스 용"],["👑","파닉스 왕"]];
+function loadXP(){try{const v=JSON.parse(localStorage.getItem("phonics_xp")||"null");if(v&&typeof v.xp==="number")return v}catch(e){}return {xp:0,wrongRun:0,at:""}}
+let xpState=loadXP();
+function saveXP(){xpState.at=new Date().toISOString();try{localStorage.setItem("phonics_xp",JSON.stringify(xpState))}catch(e){}}
+function lvOf(xp){return Math.floor(Math.max(0,xp)/XP_PER_LV)+1}
+function lvName(l){return LV_NAMES[Math.min(l,LV_NAMES.length)-1]}
+function lvBadge(xp,big){const l=lvOf(xp),[e,n]=lvName(l),cur=xp%XP_PER_LV;
+  return `<div class="lv ${big?"big":""}"><span class="lv-e">${e}</span><div class="lv-b"><div class="lv-t"><b>Lv.${l}</b> ${n}</div><div class="xpbar"><i style="width:${cur}%"></i></div><div class="lv-x">${cur} / ${XP_PER_LV} XP</div></div></div>`}
+let sessXP=0;
+function addXP(d){
+  const old=xpState.xp, before=lvOf(old); xpState.xp=Math.max(0,old+d); saveXP(); sessXP+=xpState.xp-old;
+  const after=lvOf(xpState.xp);
+  if(after>before) toast(`${lvName(after)[0]}`,`레벨 업! Lv.${after}`,`이제 "${lvName(after)[1]}" 레벨이야! 최고야!`,"up");
+  else if(after<before) toast(`${lvName(after)[0]}`,`레벨이 내려갔어… Lv.${after}`,"괜찮아! 천천히 다시 올라가자 💪","down");
+  return after-before;
+}
+function toast(emo,title,sub,kind){
+  const t=document.createElement("div"); t.className="toast "+kind;
+  t.innerHTML=`<div class="toast-in"><div class="toast-e">${emo}</div><img src="${BUDDY}" class="${kind==="up"?"jump":"shake"}"><b>${title}</b><div>${sub}</div></div>`;
+  document.body.appendChild(t); t.onclick=()=>t.remove(); setTimeout(()=>t.remove(),2600);
+  if(kind==="up") speak("Level up!");
+}
+
 /* ===== 화면: 홈 ===== */
 let view="home", curStage=null;
 function buddy(text,cls,anim){return `<div class="buddy ${cls||""}"><img class="${anim||""}" src="${BUDDY}" alt="설훈이 친구"><div class="bubble">${text}</div></div>`}
@@ -364,8 +455,7 @@ function renderHome(){
   const todayN=records.filter(r=>dayKey(r.at)===dayKey(new Date())).reduce((s,r)=>s+(r.total||0),0);
   const rv=reviewList();
   $app.innerHTML=`
-  <div class="hero"><img class="jump" src="${BUDDY}" alt=""><div><div class="muted">설훈이의</div><h1>파닉스 교실 🎧</h1>
-    <div class="hero-say">${records.length?(streak()>0?`벌써 ${streak()}일째! 오늘도 같이 하자 💪`:"다시 왔구나! 오늘도 같이 하자 📚"):"안녕 설훈아! STEP 1부터 시작하자!"}</div></div></div>
+  <div class="hero"><img class="jump" src="${BUDDY}" alt=""><div style="flex:1"><h1 class="ht">설훈이의 파닉스 교실 🎧</h1>${lvBadge(xpState.xp,true)}</div></div>
   <div class="stats">
     <div class="stat"><b>🔥 ${streak()}</b><span>연속 공부일</span></div>
     <div class="stat"><b style="color:var(--star)">★ ${totalStars}</b><span>모은 별 / ${STAGES.length*3}</span></div>
@@ -394,10 +484,9 @@ function renderStage(st){
   $app.innerHTML=`
   <div class="qhead"><button class="back" id="bk">←</button><div class="st-title">${st.emoji} STEP ${st.n} ${st.title}</div></div>
   <div class="card">
-    <div class="muted">${esc(st.desc)}</div>
     <div class="stars" style="font-size:20px">${starHtml(starsOf(best))} <span class="muted">${best==null?"아직 문제 풀기 기록 없음":"최고 "+best+"점"}</span></div>
     <div class="modes">
-      <button class="mode start-btn" id="m0"><span class="ic">🚀</span><span>한 번에 공부하기 ①②③<small>소리 듣기 → 따라 쓰기 → 문제 풀기</small></span></button>
+      <button class="mode start-btn" id="m0"><span class="ic">🚀</span><span>한 번에 공부하기<small>① 소리 → ② 쓰기 → ③ 문제</small></span></button>
       <div class="sec">📌 공부 순서</div>
       <div class="tiles3">
         <button class="mtile" id="ms"><span class="num">1</span><span class="ic">🔤</span>소리 듣기</button>
@@ -490,8 +579,8 @@ function renderTrace(st,flow){
     document.getElementById("sp").onclick=()=>{ if(ex) speak(ex.word) };
     setupCanvas(label(st,p), ok=>{
       if(!ok) return false;
-      done++; rep++;
-      document.getElementById("msg").innerHTML=`<span style="color:var(--ok)">잘 썼어! ✨ (${rep}/${REP})</span>`;
+      done++; rep++; addXP(XP_TRACE);
+      document.getElementById("msg").innerHTML=`<span style="color:var(--ok)">잘 썼어! ✨ (${rep}/${REP}) <span class="xpup">+${XP_TRACE} XP</span></span>`;
       setTimeout(()=>{
         if(rep>=REP){ ti++; rep=0; }
         if(ti>=items.length) finish(); else draw();
@@ -628,7 +717,7 @@ function pickType(x,types){
 /* ===== 퀴즈 진행 ===== */
 let qs=[], idx=0, results=[], answered=false, session=null;
 function startQuiz(items,label_,mode,types,stage){
-  session={label:label_,mode,types,stage:stage||"review",items};
+  session={label:label_,mode,types,stage:stage||"review",items}; sessXP=0;
   qs=items.map(x=>makeQ(x,pickType(x,types))); idx=0; results=[];
   renderQ();
 }
@@ -655,7 +744,7 @@ function renderQ(){
   }
   const n=q.opts?q.opts.length:0;
   $app.innerHTML=`
-  <div class="qhead"><button class="back" id="bk">✕</button><div class="bar"><i style="width:${idx/qs.length*100}%"></i></div><span class="qn">${idx+1}/${qs.length} · ✅${results.filter(r=>r.ok).length}</span></div>
+  <div class="qhead"><button class="back" id="bk">✕</button><div class="bar"><i style="width:${idx/qs.length*100}%"></i></div><span class="qn">${idx+1}/${qs.length} · ✅${results.filter(r=>r.ok).length} · Lv.${lvOf(xpState.xp)}</span></div>
   <div class="card qcard">
     <span class="tag">${session.flow?"③ ":""}${TYPES[q.type]}</span>
     ${body}
@@ -693,8 +782,14 @@ function choose(mine,btn){
   const fb=document.getElementById("fb");
   fb.className="fb "+(ok?"ok":"no");
   const cheers=["정답! 최고야! 🎉","우와, 맞았어! 👏","잘했어 설훈아! ⭐","딩동댕! 🎶"];
-  fb.innerHTML= ok ? buddy(`<b>${cheers[Math.floor(Math.random()*cheers.length)]}</b>`,"sm","jump")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`
-    : buddy(`<b>괜찮아! 정답은 "${esc(q.show?q.show(q.answer):q.answer)}"</b>`,"sm","shake")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`;
+  let xpMsg="";
+  if(ok){ xpState.wrongRun=0; addXP(XP_RIGHT); xpMsg=`<span class="xpup">+${XP_RIGHT} XP</span>`; }
+  else{ xpState.wrongRun=(xpState.wrongRun||0)+1;
+    if(xpState.wrongRun>=WRONG_RUN){ xpState.wrongRun=0; addXP(-XP_PENALTY); xpMsg=`<span class="xpdown">${WRONG_RUN}번 연속 틀려서 -${XP_PENALTY} XP</span>`; }
+    else { saveXP(); xpMsg=xpState.wrongRun===WRONG_RUN-1?`<span class="xpwarn">⚠️ 한 번 더 틀리면 XP가 줄어요!</span>`:""; }
+  }
+  fb.innerHTML= ok ? buddy(`<b>${cheers[Math.floor(Math.random()*cheers.length)]}</b> ${xpMsg}`,"sm","jump")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`
+    : buddy(`<b>괜찮아! 정답은 "${esc(q.show?q.show(q.answer):q.answer)}"</b> ${xpMsg}`,"sm","shake")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`;
   speak(x.word);
   document.getElementById("sheet").classList.remove("hidden"); document.getElementById("next").focus();
 }
@@ -702,7 +797,7 @@ function next(){ idx++; if(idx<qs.length) renderQ(); else renderResult(); }
 
 /* ===== 결과 ===== */
 function resultText(r){
-  let t=`[설훈 파닉스 교실] ${fmt(r.at)} (${r.label})\n점수: ${r.score} / ${r.total} (${Math.round(r.score/r.total*100)}점)\n`;
+  let t=`[설훈 파닉스 교실] ${fmt(r.at)} (${r.label})\n점수: ${r.score} / ${r.total} (${Math.round(r.score/r.total*100)}점)\n레벨: Lv.${lvOf(r.xp||0)} ${lvName(lvOf(r.xp||0)).join(" ")} (${r.xp||0} XP, 이번 ${r.gained>=0?"+":""}${r.gained||0})\n`;
   const wrong=results.filter(x=>!x.ok);
   if(wrong.length) t+=`\n틀린 문제 ${wrong.length}개\n`+wrong.map((w,i)=>`${i+1}. ${w.word} ${w.pic} - ${TYPES[w.type]} (정답: ${w.answer} / 고른 답: ${w.mine})`).join("\n");
   else t+="\n모두 맞았어요! 💯";
@@ -713,16 +808,16 @@ function renderResult(){
   const ok=results.filter(r=>r.ok).length, wrong=results.filter(r=>!r.ok);
   const pct=Math.round(ok/results.length*100), stars=starsOf(pct);
   const rec={id:"p"+Date.now(),at:new Date().toISOString(),label:session.label,stage:session.stage,mode:session.mode,score:ok,total:results.length,
-    wrong:wrong.map(w=>({key:w.key,word:w.word,type:w.type,answer:w.answer,mine:w.mine})),right:results.filter(r=>r.ok).map(r=>r.key)};
+    wrong:wrong.map(w=>({key:w.key,word:w.word,type:w.type,answer:w.answer,mine:w.mine})),right:results.filter(r=>r.ok).map(r=>r.key),xp:xpState.xp,gained:sessXP};
   saveRecord(rec);
   const msg=pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 것만 다시 해 보자! 🔁";
   $app.innerHTML=`
   <div class="card center">
     ${buddy(msg,"sm",pct>=60?"jump":"")}
-    <div class="muted">${fmt(rec.at)} · ${esc(rec.label)}</div>
-    ${session.mode==="quiz"?`<div class="big-stars">${starHtml(stars)}</div>`:""}
-    <div class="score">${ok} / ${results.length}</div>
-    <div style="font-size:24px;font-weight:bold">${pct}점</div>
+    <div class="muted" style="font-size:16px">${fmt(rec.at)} · ${esc(rec.label)}</div>
+    <div class="gain ${sessXP<0?"neg":""}">이번 공부 ${sessXP>=0?"+":""}${sessXP} XP</div>
+    ${lvBadge(xpState.xp)}
+    <div class="score-row">${session.mode==="quiz"?`<span class="big-stars">${starHtml(stars)}</span>`:""}<span class="score">${ok}/${results.length}</span><b>${pct}점</b></div>
   </div>
   ${wrong.length?`<div class="card">
     <b>틀린 문제 ${wrong.length}개</b> <span class="muted">📸 캡처해서 아빠한테</span>
