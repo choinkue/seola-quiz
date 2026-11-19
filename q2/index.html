@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>설아 영어단어 퀴즈 2회차</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff8ef;--card:#ffffff;--ink:#2b2a33;--sub:#7a7584;--accent:#f07b3f;--accent2:#ffd36e;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#efe6da}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:20px;line-height:1.55}
+  .wrap{max-width:600px;margin:0 auto;padding:20px 16px 48px}
+  h1{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:24px;margin:4px 0 2px}
+  .muted{color:var(--sub);font-size:16px}
+  .card{background:var(--card);border-radius:22px;padding:26px 22px;box-shadow:0 6px 24px rgba(120,80,30,.08);margin-top:16px}
+  .bar{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:14px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0;transition:width .3s}
+  .top{display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--sub);margin-top:8px}
+  .tag{display:inline-block;font-size:16px;padding:5px 13px;border-radius:99px;background:#fff1e3;color:#b9541f;font-weight:bold}
+  .tag.sp{background:#e9f0ff;color:#3559c7}
+  .prompt{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:44px;font-weight:800;margin:14px 0 4px;word-break:keep-all}
+  .prompt.ko{font-family:"Gowun Dodum",sans-serif;font-size:31px;font-weight:700}
+  .hint{color:var(--sub);font-size:18px;letter-spacing:2px;margin-bottom:12px;font-family:monospace}
+  input[type=text]{width:100%;font-size:25px;padding:18px 18px;border:2px solid var(--line);border-radius:14px;outline:none;font-family:inherit;background:#fffdf9}
+  input[type=text]:focus{border-color:var(--accent)}
+  button{font-family:inherit;font-size:22px;font-weight:bold;border:0;border-radius:16px;padding:18px 20px;cursor:pointer;width:100%;margin-top:12px;background:var(--accent);color:#fff}
+  button.ghost{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  button.soft{background:#f3ece3;color:var(--ink)}
+  button:disabled{opacity:.5}
+  .fb{margin-top:14px;border-radius:14px;padding:14px 16px;display:none}
+  .fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+  .fb.no{display:block;background:var(--nobg);color:var(--no)}
+  .fb b{font-size:23px}
+  .fb .ans{color:var(--ink);margin-top:6px}
+  .score{font-family:"Nunito",sans-serif;font-size:68px;font-weight:800;text-align:center;margin:6px 0 0;color:var(--accent)}
+  .center{text-align:center}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:18px}
+  th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--sub);font-weight:normal;font-size:15px}
+  td.w{font-family:"Nunito",sans-serif;font-weight:800}
+  td.mine{color:var(--no)}
+  .copied{color:var(--ok);font-size:14px;text-align:center;margin-top:6px;min-height:20px}
+  .start li{margin:4px 0}
+  .row{display:flex;gap:10px}.row button{flex:1}
+  .pg{display:flex;align-items:flex-end;gap:10px;margin:10px 0 -6px}
+  .pg svg{width:125px;height:125px;flex:none}
+  .pg.big svg{width:200px;height:200px}
+  .pg.big{justify-content:center}
+  .bubble{background:#fff;border-radius:18px;padding:10px 16px;box-shadow:0 3px 12px rgba(120,80,30,.1);font-size:19px;margin-bottom:22px;position:relative}
+  .bubble:after{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#fff;border-left:0}
+  .hop{animation:hop .5s ease}
+  .shake{animation:shake .5s ease}
+  @keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+  @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+  .quote{margin-top:22px;background:#fff3c9;border-radius:20px;padding:18px 20px;text-align:center}
+  .quote .lab{font-size:15px;color:#b98a12;font-weight:bold}
+  .quote .en{font-family:"Nunito",sans-serif;font-weight:800;font-size:22px;margin-top:6px}
+  .quote .ko{font-size:19px;margin-top:4px}
+  .quote .by{font-size:15px;color:var(--sub);margin-top:4px}
+  .lv{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:16px;margin-bottom:6px}
+  .lv span{white-space:nowrap}
+  .lv span{color:var(--sub);font-size:15px}
+  .lvbar{height:12px;background:#f3e3b0;border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .lvbar>i{display:block;height:100%;background:linear-gradient(90deg,#ffe27a,#ffb800);transition:width .4s}
+  .ov{position:fixed;inset:0;background:rgba(40,30,10,.45);display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}
+  .ovc{background:#fff;border-radius:26px;padding:24px 22px;text-align:center;max-width:380px;width:100%;animation:pop .4s ease}
+  .lvtitle{font-size:26px;font-weight:bold;color:var(--accent)}
+  .lvname{font-size:24px;font-weight:bold;margin-top:4px}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .vil{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .vrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.vrow div{width:56px}.vrow svg{width:100%;height:auto}
+  .dex{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;text-align:center;font-size:13px}
+  .dx svg{width:100%;height:auto}
+  .dx.lock{color:var(--sub)}
+  .dx .q{aspect-ratio:120/130;display:flex;align-items:center;justify-content:center;background:#f3ece3;border-radius:14px;font-size:30px;color:#c9bca9}
+  .gain{font-size:20px;font-weight:bold;color:#c98a00;margin-top:8px}
+  .tag.rv{background:#fff3c9;color:#b98a12}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div id="app"></div>
+  <div class="quote" id="quote"></div>
+</div>
+
+<script>
+// [단어, 품사, 정답 뜻(표시용), 인정 키워드, 출처]
+const WORDS = [
+ ["slime", "n.", "슬라임, 끈적끈적한 물질", "슬라임,끈적", "L4"],
+ ["value", "v.", "가치, 소중하게 여기다", "가치,소중", "L4"],
+ ["ancient", "adj.", "고대의", "고대,옛날", "L4"],
+ ["inspire", "v.", "영감을 주다, 고무하다, 격려하다", "영감,고무,격려", "L4"],
+ ["natural", "adj.", "자연의, 천연의", "자연,천연", "L4"],
+ ["show off", "", "자랑하다, 뽐내다", "자랑,뽐내,뽐냈,과시", "L4"],
+ ["worth", "adj.", "~의 가치가 있는", "가치", "L4"],
+ ["official", "n.", "공무원, 관리, 임원", "공무원,관리,임원", "L4"],
+ ["royal", "adj.", "왕의, 왕실의", "왕의,왕실,국왕,왕족", "L4"],
+ ["empire", "n.", "제국", "제국", "L4"],
+ ["collect", "v.", "모으다, 수집하다", "모으,모아,모은,수집", "L4"],
+ ["rule", "v.", "통치하다, 지배하다 (n. 규칙)", "통치,지배,규칙", "L4"],
+ ["robe", "n.", "예복, 가운", "예복,가운", "L4"],
+ ["effort", "n.", "노력", "노력", "L4"],
+ ["luxurious", "adj.", "호화로운, 사치스러운", "호화,사치,고급", "L4"],
+ ["musician", "명", "음악가", "음악가,뮤지션", "D22"],
+ ["painter", "명", "화가, 페인트공", "화가,페인트", "D22"],
+ ["artwork", "명", "예술품, 삽화", "예술품,미술품,작품,삽화", "D22"],
+ ["museum", "명", "박물관, 미술관", "박물관,미술관", "D22"],
+ ["theater", "명", "극장", "극장", "D22"],
+ ["stage", "명", "무대, 단계, 시기", "무대,단계,시기", "D22"],
+ ["opera", "명", "오페라, 가극", "오페라,가극", "D22"],
+ ["scene", "명", "장면, 현장", "장면,현장", "D22"],
+ ["admire", "동", "감탄하다, 존경하다", "감탄,존경", "D22"],
+ ["newspaper", "명", "신문, 신문지", "신문", "D22"],
+ ["article", "명", "기사, 글", "기사,글", "D22"],
+ ["popular", "형", "인기 있는, 대중적인", "인기,대중", "D22"],
+ ["well-known", "형", "유명한, 잘 알려진", "유명,잘알려,알려진", "D22"],
+ ["perfect", "형", "완벽한, 완전한", "완벽,완전", "D22"],
+ ["series", "명", "시리즈, 연속물, 연속, 일련", "시리즈,연속,일련", "D22"],
+ ["create", "동", "만들다, 창조하다, 창작하다", "만들,창조,창작", "D22"],
+ ["rhythm", "명", "리듬, 박자", "리듬,박자", "D22"],
+ ["statue", "명", "조각상, 상", "조각상,조각,동상,상", "D22"],
+ ["parade", "명", "행진, 퍼레이드", "행진,퍼레이드", "D22"],
+ ["laugh at", "", "~을 비웃다, 놀리다", "비웃,놀리,놀려", "D22"],
+ ["poem", "명", "시, 운문", "시,운문,동시", "D22"],
+ ["audience", "명", "청중, 관객", "청중,관객", "D22"],
+ ["performance", "명", "공연, 수행, 연기, 연주", "공연,수행,연기,연주", "D22"],
+ ["instrument", "명", "악기, 도구, 기구", "악기,도구,기구", "D22"],
+ ["shoot", "동", "촬영하다, 발사하다, 공을 차다", "촬영,발사,슛,쏘,차다,공을차", "D22"],
+ ["artificial", "형", "인공의, 인조의", "인공,인조", "D22"],
+ ["publish", "동", "출판하다, 발행하다", "출판,발행", "D22"],
+ ["exhibit", "동", "전시하다", "전시", "D22"],
+ ["harmony", "명", "화음, 화성, 조화, 화합", "화음,화성,조화,화합", "D22"],
+ ["deal with", "", "~을 다루다, 처리하다", "다루,다뤄,처리", "D22"],
+ ["party", "명", "파티, 모임, 정당", "파티,모임,정당", "D23"],
+ ["event", "명", "행사, 사건, 일", "행사,사건,이벤트,일", "D23"],
+ ["festival", "명", "축제", "축제,페스티벌", "D23"],
+ ["balloon", "명", "풍선, 열기구", "풍선,열기구", "D23"],
+ ["candle", "명", "양초, 초", "양초,초,촛불", "D23"],
+ ["card", "명", "카드, 엽서", "카드,엽서", "D23"],
+ ["celebrate", "동", "기념하다, 축하하다", "기념,축하", "D23"],
+ ["ring", "명/동", "반지, 고리, (종·벨 등이) 울리다", "반지,고리,울리,울려,링", "D23"],
+ ["wedding", "명", "결혼식, 혼례", "결혼,혼례,웨딩", "D23"],
+ ["honeymoon", "명", "신혼여행", "신혼여행,신혼,허니문", "D23"],
+ ["trick", "명/동", "재주, 속임수, 장난, 속이다", "재주,속임,장난,속이,묘기,트릭", "D23"],
+ ["witch", "명", "마녀", "마녀", "D23"],
+ ["wish", "동/명", "기원하다, 빌다, 바라다, 소망", "기원,빌다,빌어,바라,바람,소망,소원", "D23"],
+ ["birth", "명", "출생, 탄생, 출산", "출생,탄생,출산", "D23"],
+ ["vacation", "명", "방학, 휴가", "방학,휴가", "D23"],
+ ["prepare", "동", "준비하다, 대비하다", "준비,대비", "D23"],
+ ["special", "형", "특별한, 고유의, 독특한", "특별,고유,독특", "D23"],
+ ["host", "동/명", "주최하다, 열다, 주인, 주최자", "주최,열다,주인,호스트", "D23"],
+ ["guest", "명", "손님, 객", "손님,객,방문객", "D23"],
+ ["cheer up", "", "격려하다, 기운을 내다", "격려,기운,힘내,응원", "D23"],
+ ["stuff", "명", "물건, 것", "물건,것,물품", "D23"],
+ ["launch", "동/명", "시작하다, 착수하다, 출시, 개시", "시작,착수,출시,개시", "D23"],
+ ["graduate", "동/명", "졸업하다, 졸업생", "졸업", "D23"],
+ ["arrange", "동", "준비하다, 마련하다, 정리하다, 배열하다", "준비,마련,정리,배열", "D23"],
+ ["crowded", "형", "붐비는, 복잡한", "붐비,붐빈,복잡,사람이많", "D23"],
+ ["riddle", "명", "수수께끼", "수수께끼,퀴즈", "D23"],
+ ["decorate", "동", "장식하다, 꾸미다", "장식,꾸미,꾸며", "D23"],
+ ["congratulation", "명", "축하, 축하 인사", "축하", "D23"],
+ ["thankful", "형", "감사하는, 고맙게 여기는", "감사,고맙,고마", "D23"],
+ ["look forward to", "", "~을 기대하다, 고대하다", "기대,고대", "D23"],
+ ["among", "전", "~ 중에서, ~에 둘러싸여", "중에서,사이,둘러싸", "복습"],
+ ["valuable", "형", "값비싼, 고가의, 귀중한", "값비,비싼,고가,귀중,소중", "복습"],
+ ["ordinary", "형", "보통의, 평범한", "보통,평범", "복습"],
+ ["especially", "부", "특히, 유난히", "특히,유난", "복습"],
+ ["unbelievable", "형", "믿을 수 없는, 믿기 어려운", "믿을수없,믿기어려,믿을수가없,믿기힘", "복습"],
+ ["dramatic", "형", "극적인", "극적", "복습"],
+ ["precious", "형", "귀중한, 값진", "귀중,값진,값비,소중", "복습"],
+ ["feature", "명/동", "특징, 특색, 특징을 이루다", "특징,특색", "복습"],
+ ["exactly", "부", "정확하게, 틀림없이", "정확,틀림없", "복습"]
+];
+// 2회차 고정 문제 (새 단어 60개 + 지난 회차 틀린 단어 12개). 순서만 매번 섞임
+const FIXED = [["cheer up", "meaning"], ["crowded", "spell"], ["create", "spell"], ["ancient", "meaning"], ["poem", "spell"], ["vacation", "spell"], ["candle", "meaning"], ["empire", "meaning"], ["instrument", "meaning"], ["publish", "spell"], ["natural", "spell"], ["event", "spell"], ["party", "meaning"], ["effort", "spell"], ["arrange", "spell"], ["opera", "meaning"], ["value", "spell"], ["stuff", "meaning"], ["laugh at", "spell"], ["riddle", "meaning"], ["newspaper", "spell"], ["scene", "meaning"], ["launch", "spell"], ["ring", "meaning"], ["painter", "spell"], ["look forward to", "meaning"], ["slime", "spell"], ["artwork", "spell"], ["festival", "spell"], ["parade", "spell"], ["prepare", "spell"], ["robe", "spell"], ["admire", "spell"], ["well-known", "spell"], ["balloon", "spell"], ["deal with", "spell"], ["collect", "spell"], ["performance", "meaning"], ["exhibit", "meaning"], ["card", "spell"], ["trick", "spell"], ["thankful", "spell"], ["congratulation", "meaning"], ["celebrate", "meaning"], ["decorate", "spell"], ["witch", "spell"], ["perfect", "spell"], ["guest", "spell"], ["wedding", "meaning"], ["graduate", "meaning"], ["theater", "meaning"], ["rule", "spell"], ["birth", "meaning"], ["article", "meaning"], ["special", "spell"], ["artificial", "meaning"], ["statue", "meaning"], ["wish", "spell"], ["popular", "spell"], ["host", "spell"], ["among", "spell"], ["valuable", "spell"], ["inspire", "meaning"], ["ordinary", "meaning"], ["luxurious", "spell"], ["especially", "spell"], ["unbelievable", "spell"], ["dramatic", "spell"], ["worth", "spell"], ["precious", "meaning"], ["feature", "spell"], ["exactly", "meaning"]];
+const REVIEW = new Set(["among", "valuable", "inspire", "ordinary", "luxurious", "especially", "unbelievable", "dramatic", "worth", "precious", "feature", "exactly"]);
+const BYWORD = Object.fromEntries(WORDS.map(w=>[w[0],w]));
+const RATIO = 0.8;
+
+
+const STAGES=[
+ [0,"신비한 알","알 속에서 누가 자라고 있어! 단어를 맞히면 깨어나"],
+ [30,"아기 펭귄","알을 깨고 아기 펭귄이 태어났어!"],
+ [80,"꼬마 펭귄","뒤뚱뒤뚱 걷기 시작했어!"],
+ [150,"새싹 펭귄","머리에 해바라기 꽃잎이 돋아나기 시작했어!"],
+ [250,"해바라기 펭귄","해바라기 모자가 활짝 피었어!"],
+ [380,"여행가 펭귄","별꽃 가방을 메고 단어 모험을 떠나!"],
+ [540,"모험가 펭귄","따뜻한 목도리를 두르고 더 멀리 가 보자!"],
+ [730,"박사 펭귄","동글 안경을 쓴 단어 박사가 됐어! 🤓"],
+ [950,"왕관 펭귄","단어 왕 펭귄이 됐어! 👑"],
+ [1200,"황금 해바라기 펭귄","전설의 황금 펭귄이 나타났어! ✨"]
+];
+const CYCLE=1500; // 황금 펭귄(1200) 다음 300개를 더 모으면 마을로 이사 + 새 알
+const PETAL=[["#ffd84d","#f0bf2a"],["#ffb3cf","#ef8fb2"],["#a9dcff","#78bde8"],["#cdb4ff","#a98ae8"],["#ffb48a","#ee8f5d"]];
+const XPKEY="seola_penguin_xp";
+let memXP=0;
+function getXP(){try{const v=localStorage.getItem(XPKEY);return v?+v:memXP}catch(e){return memXP}}
+function setXP(v){memXP=v;try{localStorage.setItem(XPKEY,String(v))}catch(e){}}
+function info(xp){const gen=Math.floor(xp/CYCLE),w=xp-gen*CYCLE;let st=0;for(let i=0;i<STAGES.length;i++)if(w>=STAGES[i][0])st=i;return{gen,st,w}}
+function stageOf(xp){return info(xp).st}
+function addXP(n){const b=info(getXP());setXP(getXP()+n);window.__gain=(window.__gain||0)+n;const a=info(getXP());
+  if(a.gen>b.gen) window.__levelUp={st:0,gen:a.gen,newGen:true};
+  else if(a.st>b.st) window.__levelUp={st:a.st,gen:a.gen};
+  renderLv();}
+function lvHTML(){
+  const I=info(getXP()),cur=STAGES[I.st][0],nx=STAGES[I.st+1];
+  const target=nx?nx[0]:CYCLE, pct=Math.round((I.w-cur)/(target-cur)*100);
+  const right = nx?`다음 성장까지 ⭐${nx[0]-I.w}`:`마을 이사까지 ⭐${CYCLE-I.w}`;
+  return `<div class="lv"><b>🐧 ${I.gen?`${I.gen+1}번째 친구 · `:""}Lv.${I.st+1} ${STAGES[I.st][1]}</b><span>${right}</span></div><div class="lvbar"><i style="width:${pct}%"></i></div>`;
+}
+function renderLv(){document.querySelectorAll(".lvbox").forEach(e=>e.innerHTML=lvHTML());}
+function showLevelUp(L,cb){
+  const o=document.createElement("div");o.className="ov";
+  const title=L.newGen?"🏡 황금 펭귄이 펭귄 마을로 이사했어!":"🎉 펭귄이 자랐어!";
+  const desc=L.newGen?`그리고 새 친구 알이 도착했어! ${L.gen+1}번째 펭귄 친구를 키워 보자 🥚`:STAGES[L.st][2];
+  o.innerHTML=`<div class="ovc"><div class="lvtitle">${title}</div><div class="pg big">${penguin("happy",L.st,L.gen)}</div><div class="lvname">${L.gen?`${L.gen+1}번째 친구 · `:""}Lv.${L.st+1} ${STAGES[L.st][1]}</div><div class="muted" style="margin:6px 0 4px">${desc}</div><button id="ovok">좋아! 계속하기</button></div>`;
+  document.body.appendChild(o);
+  document.getElementById("ovok").onclick=()=>{o.remove();cb&&cb();};
+}
+function dexHTML(){
+  const I=info(getXP());
+  const village = I.gen ? `<div class="vil"><b>🏡 펭귄 마을</b> <span class="muted">다 키운 친구 ${I.gen}마리</span><div class="vrow">${Array.from({length:I.gen},(_,g)=>`<div>${penguin("happy",9,g)}</div>`).join("")}</div></div>` : `<div class="muted" style="margin-top:10px">Lv.10까지 키우면 황금 펭귄이 🏡펭귄 마을로 이사 가고, 새 친구 알이 생겨!</div>`;
+  return `<div class="card"><b>🌻 펭귄 성장 도감</b> <span class="muted">${I.gen?`${I.gen+1}번째 친구`:""}</span><div class="dex">${STAGES.map((s,i)=>`<div class="dx ${i>I.st?"lock":""}">${i<=I.st?penguin("normal",i,I.gen):'<div class="q">?</div>'}<div>${i<=I.st?s[1]:`⭐${s[0]}`}</div></div>`).join("")}</div>${village}</div>`;
+}
+function penguin(mood, st, gen){
+  if(st===undefined||gen===undefined){const I=info(getXP()); if(st===undefined) st=I.st; if(gen===undefined) gen=I.gen;}
+  const cls = mood==="happy"?"hop":mood==="sad"?"shake":"";
+  const gold = st>=9;
+  const [pf0,ps0]=PETAL[0];   // 설아가 좋아하는 노란 해바라기로 고정
+  const pf = gold?"#ffc21a":pf0, ps = gold?"#e0a000":ps0;
+  if(st===0){
+    const face = mood==="happy" ? '<path d="M50 70 q4 -4 8 0 M62 70 q4 -4 8 0" stroke="#1f1f24" stroke-width="2.5" fill="none" stroke-linecap="round"/>' : mood==="sad" ? '<circle cx="54" cy="70" r="2.5" fill="#1f1f24"/><circle cx="66" cy="70" r="2.5" fill="#1f1f24"/>' : '<circle cx="54" cy="70" r="3" fill="#1f1f24"/><circle cx="66" cy="70" r="3" fill="#1f1f24"/>';
+    return `<svg viewBox="0 0 120 130" class="${cls}"><ellipse cx="60" cy="125" rx="26" ry="3.5" fill="rgba(0,0,0,.08)"/>
+    <path d="M60 22 C 30 22 22 72 26 96 C 30 118 90 118 94 96 C 98 72 90 22 60 22 z" fill="#fbf3e6" stroke="#e8dcc6" stroke-width="2"/>
+    <circle cx="44" cy="48" r="5" fill="${pf}"/><circle cx="78" cy="88" r="6" fill="${pf}"/><circle cx="74" cy="44" r="3.5" fill="${pf}"/>
+    <path d="M34 62 l10 6 l8 -7 l8 7 l8 -7 l8 7 l10 -6" stroke="#cdbb9e" stroke-width="2" fill="none"/>
+    ${face}<circle cx="47" cy="78" r="3.5" fill="#ff9e9e" opacity=".6"/><circle cx="73" cy="78" r="3.5" fill="#ff9e9e" opacity=".6"/></svg>`;
+  }
+  const eyes = mood==="happy"
+    ? '<path d="M44 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M68 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/>'
+    : mood==="sad"
+    ? '<circle cx="48" cy="55" r="3.8" fill="#1f1f24"/><circle cx="72" cy="55" r="3.8" fill="#1f1f24"/><path d="M43 48 l8 3 M77 48 l-8 3" stroke="#1f1f24" stroke-width="2.2" stroke-linecap="round"/><path d="M47 61 q-3 6 0 8 q3 -2 0 -8" fill="#7cc4ff"/>'
+    : '<circle cx="48" cy="55" r="4.3" fill="#1f1f24"/><circle cx="72" cy="55" r="4.3" fill="#1f1f24"/><circle cx="49.4" cy="53.5" r="1.4" fill="#fff"/><circle cx="73.4" cy="53.5" r="1.4" fill="#fff"/>';
+  const nose = mood==="sad" ? '<ellipse cx="60" cy="60" rx="6" ry="4" fill="#8a4a2a"/>' : '<ellipse cx="60" cy="59" rx="6.5" ry="4.5" fill="#8a4a2a"/><ellipse cx="58" cy="57.5" rx="2" ry="1" fill="#b06a45"/>';
+  const mouth = mood==="happy" ? '<path d="M56 66 q4 4 8 0" stroke="#8a4a2a" stroke-width="2" fill="none" stroke-linecap="round"/>' : '';
+  let petals="";
+  const PR=[0,0,0,6,8,9.5,11,12,13,14][st];   // 단계별 해바라기 꽃잎 크기 (천천히 커짐)
+  if(PR){ const off=22+PR*0.85; for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="${52-off}" rx="${PR}" ry="${PR}" fill="${pf}" stroke="${ps}" stroke-width="1.2" transform="rotate(${i*36+18} 60 52)"/>`} }
+  const scarf = st>=6 ? '<path d="M35 77 q25 11 50 0 l1 8 q-26 12 -52 0 z" fill="#e8574a"/><path d="M74 84 l7 17 l-9 -1 z" fill="#d94a3e"/>' : "";
+  let bag="";
+  if(st>=5){ let star=""; for(let i=0;i<5;i++){star+=`<ellipse cx="30" cy="85" rx="4.5" ry="6" fill="${pf}" stroke="${ps}" stroke-width="1" transform="rotate(${i*72} 30 92)"/>`}
+    bag=`<path d="M84 82 L34 108" stroke="#2b2b30" stroke-width="3.2" stroke-linecap="round"/>${star}<circle cx="30" cy="92" r="4" fill="#e86a2e"/>`; }
+  const glasses = st>=7 ? '<circle cx="48" cy="55" r="8.5" fill="none" stroke="#5a3b22" stroke-width="2.2"/><circle cx="72" cy="55" r="8.5" fill="none" stroke="#5a3b22" stroke-width="2.2"/><path d="M56.5 55 h7" stroke="#5a3b22" stroke-width="2.2"/>' : "";
+  const crown = st>=8 ? `<path d="M46 26 l4 -14 l6 9 l4 -12 l4 12 l6 -9 l4 14 z" fill="#ffcf33" stroke="#d99a00" stroke-width="1.5" stroke-linejoin="round"/><circle cx="60" cy="20" r="2.4" fill="#ff6b8a"/>` : "";
+  const glow = gold ? `<circle cx="60" cy="66" r="58" fill="url(#gl)"/><path d="M14 30 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z M104 70 l2.5 5 l5 2.5 l-5 2.5 l-2.5 5 l-2.5 -5 l-5 -2.5 l5 -2.5 z" fill="#ffd84d"/>` : "";
+  const tuft = st===1 ? '<path d="M56 24 q2 -8 4 0 q2 -8 4 0" stroke="#5f5f66" stroke-width="3" fill="none" stroke-linecap="round"/>' : "";
+  const shell = st===1 ? '<path d="M28 100 l8 -8 l7 8 l8 -8 l9 8 l9 -8 l8 8 l7 -8 l8 8 q0 26 -32 26 q-32 0 -32 -26 z" fill="#fbf3e6" stroke="#e8dcc6" stroke-width="2"/>' : "";
+  const scale = [1,.7,.78,.84,.88,.92,.95,.98,1,1.02][st];   // 단계별 몸 크기 (천천히 커짐)
+  return `<svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="${cls}">
+    <defs><radialGradient id="gl"><stop offset="0" stop-color="#fff2a8" stop-opacity=".9"/><stop offset="1" stop-color="#fff2a8" stop-opacity="0"/></radialGradient></defs>
+    ${glow}
+    <ellipse cx="60" cy="126" rx="28" ry="3.5" fill="rgba(0,0,0,.08)"/>
+    <g transform="translate(60 128) scale(${scale}) translate(-60 -128)">
+    <ellipse cx="49" cy="122" rx="8" ry="4" fill="#9d8f84"/><ellipse cx="71" cy="122" rx="8" ry="4" fill="#9d8f84"/>
+    <path d="M30 78 q-12 10 -8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M90 78 q12 10 8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M32 74 q-6 48 28 47 q34 1 28 -47 z" fill="#b3a397"/>
+    ${petals}${tuft}
+    <circle cx="60" cy="52" r="29" fill="#5f5f66"/>
+    <path d="M33 58 q0 -18 13 -22 q8 -2 14 6 q6 -8 14 -6 q13 4 13 22 q0 20 -27 20 q-27 0 -27 -20 z" fill="#fbf3e6"/>
+    <circle cx="41" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/><circle cx="79" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/>
+    ${eyes}${nose}${mouth}${glasses}${scarf}${bag}${crown}${shell}
+    </g>
+  </svg>`;
+}
+const CHEER=["화이팅! 🐧","할 수 있어!","천천히 생각해 봐","설아 최고!","거의 다 왔어!"];
+const $app = document.getElementById("app");
+let qs = [], idx = 0, results = [], answered = false, dbRef = null;
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function normKo(s){return s.replace(/[\s~()（）\[\]…\.\-·'"]/g,"")}
+function normEn(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/\s+/g," ").trim()}
+
+function checkMeaning(ans, keys){
+  const parts = ans.split(/[,，\/、]/).map(normKo).filter(Boolean);
+  const ks = keys.split(",").map(normKo);
+  return parts.some(p => ks.some(k => k.length===1 ? (p===k || p===k+"의" || p.startsWith(k+"은") || p.startsWith(k+"게")) : p.includes(k)));
+}
+
+function makeQuiz(pool){
+  if(pool===WORDS) return shuffle(FIXED.map(([w,t])=>({w:BYWORD[w], type:t})));
+  return shuffle(pool.map(p=>({w:BYWORD[p.word], type:p.type})));
+}
+
+function start(pool, label){
+  qs = makeQuiz(pool); idx = 0; results = []; window.__label = label || "전체"; window.__gain = 0;
+  renderQ();
+}
+
+function renderIntro(){
+  $app.innerHTML = `
+  <div class="card start">
+    <p style="margin-top:0">설아야, 오늘 단어 시험이야! ✏️</p>
+    <ul>
+      <li>전체 <b>${WORDS.length}개</b> 단어 중 <b>${Math.round(WORDS.length*RATIO)}문제</b>가 무작위로 나와</li>
+      <li><span class="tag">뜻 쓰기</span> 영어를 보고 한국어 뜻 쓰기</li>
+      <li><span class="tag sp">철자 쓰기</span> 뜻을 보고 영어 철자 쓰기</li>
+      <li>뜻이 여러 개면 <b>하나만</b> 맞게 써도 정답!</li>
+      <li>다 풀면 결과 화면을 <b>캡처해서 아빠한테</b> 보내줘 📸</li>
+    </ul>
+    <button id="go">시작하기</button>
+  </div>`;
+  document.getElementById("go").onclick = ()=>start(WORDS,"2회차");
+}
+
+function renderQ(){
+  answered = false;
+  const q = qs[idx], w = q.w;
+  const isSp = q.type==="spell";
+  const hint = isSp ? w[0].split("").map(c=>c===" "?"  ":/[a-z]/i.test(c)?"_":c).join(" ") + `  (${w[0].replace(/[^a-z]/gi,"").length}글자)` : (w[1]?w[1]:"");
+  $app.innerHTML = `
+  <div class="lvbox">${lvHTML()}</div>
+  <div class="bar"><i style="width:${idx/qs.length*100}%"></i></div>
+  <div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${results.filter(r=>r.ok).length}</span></div>
+  <div class="pg" id="pg">${penguin("normal")}<div class="bubble" id="bub">${CHEER[Math.floor(Math.random()*CHEER.length)]}</div></div>
+  <div class="card">
+    <span class="tag ${isSp?"sp":""}">${isSp?"철자 쓰기":"뜻 쓰기"}</span>${REVIEW.has(w[0])?' <span class="tag rv">🔁 복습</span>':""}
+    <div class="prompt ${isSp?"ko":""}">${esc(isSp?w[2]:w[0])}</div>
+    <div class="hint">${esc(hint)}</div>
+    <form id="f" autocomplete="off">
+      <input type="text" id="a" placeholder="${isSp?"영어로 써 보세요":"한국어 뜻을 써 보세요"}" autocapitalize="off" autocorrect="off" spellcheck="false" lang="${isSp?"en":"ko"}">
+      <button id="btn" type="submit">확인</button>
+    </form>
+    <div class="fb" id="fb"></div>
+  </div>`;
+  const inp = document.getElementById("a"); inp.focus();
+  document.getElementById("f").onsubmit = e=>{
+    e.preventDefault();
+    if(answered){ next(); return; }
+    const v = inp.value.trim();
+    if(!v){ inp.focus(); return; }
+    const ok = isSp ? normEn(v)===normEn(w[0]) : checkMeaning(v, w[3]);
+    results.push({word:w[0], meaning:w[2], type:q.type, mine:v, ok});
+    answered = true; inp.readOnly = true;
+    if(ok) addXP(1);
+    document.getElementById("pg").innerHTML = penguin(ok?"happy":"sad") + `<div class="bubble">${ok?"정답! ⭐+1":"괜찮아, 다시 외우자!"}</div>`;
+    if(window.__levelUp!==undefined){ const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L,()=>{document.getElementById("pg").innerHTML=penguin("happy")+`<div class="bubble">나 자랐어! 고마워 🌻</div>`;document.getElementById("btn").focus();}),500); }
+    const fb = document.getElementById("fb");
+    fb.className = "fb " + (ok?"ok":"no");
+    fb.innerHTML = ok
+      ? `<b>정답! 🎉</b><div class="ans">${esc(w[0])} = ${esc(w[2])}</div>`
+      : `<b>아쉬워요 😢</b><div class="ans">정답: <b>${esc(w[0])}</b> = ${esc(w[2])}</div>`;
+    document.getElementById("btn").textContent = idx+1<qs.length ? "다음 문제 →" : "결과 보기";
+    document.getElementById("btn").focus();
+  };
+}
+
+function next(){ idx++; if(idx<qs.length) renderQ(); else renderResult(); }
+
+function today(){const d=new Date();return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`}
+
+function resultText(){
+  const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
+  let t = `[설아 영어단어 퀴즈] ${today()} (${window.__label})\n점수: ${ok} / ${results.length} (${Math.round(ok/results.length*100)}점)\n`;
+  if(wrong.length){ t += `\n틀린 단어 ${wrong.length}개\n` + wrong.map((r,i)=>`${i+1}. ${r.word} = ${r.meaning} (${r.type==="spell"?"철자":"뜻"} / 내 답: ${r.mine})`).join("\n"); }
+  else t += "\n모두 맞았어요! 💯";
+  const st=stageOf(getXP());
+  const I2=info(getXP()); t += `\n\n🐧 펭귄: ${I2.gen?`${I2.gen+1}번째 친구 `:""}Lv.${st+1} ${STAGES[st][1]} (모은 별 ${getXP()}개, 마을 친구 ${I2.gen}마리)`;
+  return t;
+}
+
+function renderResult(){
+  const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
+  const pct = Math.round(ok/results.length*100);
+  const msg = pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 단어만 다시 해 보자! 🔁";
+  const bonus = results.length>=10 ? (10 + (pct===100?20:0)) : 3;
+  addXP(bonus);
+  const gain = window.__gain;
+  $app.innerHTML = `
+  <div class="pg big">${penguin(pct>=60?"happy":"sad")}</div>
+  <div class="card center">
+    <div class="muted">${today()} · ${esc(window.__label)}</div>
+    <div class="score">${ok} / ${results.length}</div>
+    <div style="font-size:20px;font-weight:bold">${pct}점 · ${msg}</div>
+    <div class="gain">이번에 모은 별 ⭐+${gain} <span class="muted">(보너스 +${bonus})</span></div>
+  </div>
+  <div class="card lvbox">${lvHTML()}</div>
+  ${wrong.length?`<div class="card">
+    <b>틀린 단어 ${wrong.length}개</b> <span class="muted">아래 메일 버튼으로 아빠한테 보내줘</span>
+    <table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>
+    ${wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine)}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}
+    </table></div>`:""}
+  ${dexHTML()}
+  <div class="card">
+    <button id="mail">📧 아빠한테 메일 보내기</button>
+    <button class="ghost" id="sms">💬 아빠한테 문자 보내기</button>
+    <button class="soft" id="copy">📋 결과 복사하기</button>
+    <div class="copied" id="cp"></div>
+    ${wrong.length?`<button class="ghost" id="retry">틀린 단어만 다시 풀기 (${wrong.length}개)</button>`:""}
+    <button class="soft" id="again">처음부터 새로 풀기</button>
+  </div>`;
+  document.getElementById("mail").onclick = ()=>{
+    const to = atob("Y2hvaW5rdWVAZ21haWwuY29t");
+    const subj = `[설아 단어퀴즈] ${window.__label} ${ok}/${results.length} (${pct}점)`;
+    location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(resultText());
+    document.getElementById("cp").textContent = "메일 앱이 열리면 '보내기'를 눌러줘 📨";
+    setTimeout(()=>{ if(!document.hidden) document.getElementById("cp").textContent = "메일이 안 열리면 아래 '문자 보내기'를 눌러줘 💬"; }, 1800);
+  };
+  document.getElementById("sms").onclick = async ()=>{
+    const t = resultText();
+    try{ await navigator.clipboard.writeText(t); }catch(e){}
+    location.href = "sms:?body=" + encodeURIComponent(t);
+    document.getElementById("cp").textContent = "문자 앱에서 받는 사람에 '아빠'를 고르고 보내줘 💬 (내용이 비어 있으면 꾹 눌러 붙여넣기)";
+  };
+  document.getElementById("copy").onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(resultText()); document.getElementById("cp").textContent="복사됐어! 문자나 메일에 꾹 눌러 붙여넣기 해서 아빠한테 보내줘 ✅"; }
+    catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
+  };
+  if(wrong.length) document.getElementById("retry").onclick = ()=>{
+    start(wrong.map(r=>({word:r.word,type:r.type})),"오답 다시 풀기");
+  };
+  document.getElementById("again").onclick = ()=>start(WORDS,"2회차");
+  if(window.__levelUp!==undefined){ const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L),600); }
+}
+
+
+const QUOTES=[
+ ["Little by little, one travels far.","조금씩 조금씩 가면 멀리 갈 수 있어.","스페인 속담"],
+ ["Slow and steady wins the race.","천천히 꾸준히 가는 쪽이 이겨.","이솝 우화 〈토끼와 거북이〉"],
+ ["Practice makes perfect.","연습하면 완벽해져.","영어 속담"],
+ ["Rome wasn't built in a day.","로마는 하루아침에 만들어지지 않았어.","영어 속담"],
+ ["A journey of a thousand miles begins with a single step.","천 리 길도 한 걸음부터.","노자"],
+ ["Where there's a will, there's a way.","뜻이 있는 곳에 길이 있어.","영어 속담"],
+ ["Knowledge is power.","아는 것이 힘이야.","프랜시스 베이컨"],
+ ["Many drops make a shower.","작은 물방울이 모여 소나기가 돼.","영어 속담"],
+ ["Every day is a new chance to learn.","매일매일이 새로 배울 기회야.","오늘의 응원"],
+ ["Don't put off till tomorrow what you can do today.","오늘 할 수 있는 일을 내일로 미루지 마.","영어 속담"],
+ ["Constant dripping wears away the stone.","낙숫물이 바위를 뚫어.","영어 속담"],
+ ["Small steps every day add up to big results.","매일의 작은 걸음이 모여 큰 결과가 돼.","오늘의 응원"],
+ ["Learning is a treasure that follows its owner everywhere.","배움은 어디든 주인을 따라다니는 보물이야.","중국 속담"],
+ ["It does not matter how slowly you go as long as you do not stop.","멈추지만 않는다면 얼마나 천천히 가는지는 중요하지 않아.","공자"],
+ ["Today's effort is tomorrow's strength.","오늘의 노력이 내일의 힘이 돼.","오늘의 응원"],
+ ["Mistakes help you learn.","틀려도 괜찮아, 틀리면서 배우는 거야.","오늘의 응원"],
+ ["An hour in the morning is worth two in the evening.","아침 한 시간은 저녁 두 시간만큼 값져.","영어 속담"],
+ ["Many a little makes a mickle.","티끌 모아 태산.","영어 속담"],
+ ["The more you learn, the more you can do.","많이 배울수록 할 수 있는 게 많아져.","오늘의 응원"],
+ ["Keep going. You are doing great!","계속 가자. 정말 잘하고 있어!","해바라기 펭귄"]
+];
+function showQuote(){
+  const d=new Date(); const day=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
+  const q=QUOTES[day%QUOTES.length];
+  document.getElementById("quote").innerHTML=`<div class="lab">🌻 오늘의 한마디</div><div class="en">${esc(q[0])}</div><div class="ko">${esc(q[1])}</div><div class="by">— ${esc(q[2])}</div>`;
+}
+
+showQuote();
+start(WORDS,"2회차");
+</script>
+</body>
+</html>
