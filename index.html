@@ -1,1 +1,275 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>설아 영어단어 퀴즈</title><meta http-equiv="refresh" content="0; url=q3/"><script>location.replace("q3/")</script></head><body><a href="q3/">퀴즈 시작</a></body></html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>조펭솜 공부 마을</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff8ef;--card:#ffffff;--ink:#2b2a33;--sub:#7a7584;--accent:#f07b3f;--accent2:#ffd36e;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#efe6da}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:20px;line-height:1.55}
+  .homebtn{background:#fff;border:2px solid #f0bf2a;border-radius:12px;padding:3px 10px;color:#6b4f00;text-decoration:none;margin-right:8px;white-space:nowrap}
+  .upd{display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:bold;color:#6b4f00;background:#fff3c4;border:2px solid #f0bf2a;border-radius:14px;padding:6px 10px;margin-bottom:8px}
+  .wrap{max-width:600px;margin:0 auto;padding:20px 16px 48px}
+  h1{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:24px;margin:4px 0 2px}
+  .muted{color:var(--sub);font-size:16px}
+  .card{background:var(--card);border-radius:22px;padding:26px 22px;box-shadow:0 6px 24px rgba(120,80,30,.08);margin-top:16px}
+  .bar{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:14px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0;transition:width .3s}
+  .top{display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--sub);margin-top:8px}
+  .tag{display:inline-block;font-size:16px;padding:5px 13px;border-radius:99px;background:#fff1e3;color:#b9541f;font-weight:bold}
+  .tag.sp{background:#e9f0ff;color:#3559c7}
+  .prompt{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:44px;font-weight:800;margin:14px 0 4px;word-break:keep-all}
+  .prompt.ko{font-family:"Gowun Dodum",sans-serif;font-size:31px;font-weight:700}
+  .hint{color:var(--sub);font-size:18px;letter-spacing:2px;margin-bottom:12px;font-family:monospace}
+  input[type=text]{width:100%;font-size:25px;padding:18px 18px;border:2px solid var(--line);border-radius:14px;outline:none;font-family:inherit;background:#fffdf9}
+  input[type=text]:focus{border-color:var(--accent)}
+  button{font-family:inherit;font-size:22px;font-weight:bold;border:0;border-radius:16px;padding:18px 20px;cursor:pointer;width:100%;margin-top:12px;background:var(--accent);color:#fff}
+  button.ghost{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  button.soft{background:#f3ece3;color:var(--ink)}
+  button:disabled{opacity:.5}
+  .fb{margin-top:14px;border-radius:14px;padding:14px 16px;display:none}
+  .fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+  .fb.no{display:block;background:var(--nobg);color:var(--no)}
+  .fb b{font-size:23px}
+  .fb .ans{color:var(--ink);margin-top:6px}
+  .score{font-family:"Nunito",sans-serif;font-size:68px;font-weight:800;text-align:center;margin:6px 0 0;color:var(--accent)}
+  .center{text-align:center}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:18px}
+  th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--sub);font-weight:normal;font-size:15px}
+  td.w{font-family:"Nunito",sans-serif;font-weight:800}
+  td.mine{color:var(--no)}
+  .copied{color:var(--ok);font-size:14px;text-align:center;margin-top:6px;min-height:20px}
+  .start li{margin:4px 0}
+  .row{display:flex;gap:10px}.row button{flex:1}
+  .pg{display:flex;align-items:flex-end;gap:10px;margin:10px 0 -6px}
+  .pg svg{width:125px;height:125px;flex:none}
+  .pg.big svg{width:200px;height:200px}
+  .pg.big{justify-content:center}
+  .bubble{background:#fff;border-radius:18px;padding:10px 16px;box-shadow:0 3px 12px rgba(120,80,30,.1);font-size:19px;margin-bottom:22px;position:relative}
+  .bubble:after{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#fff;border-left:0}
+  .hop{animation:hop .5s ease}
+  .shake{animation:shake .5s ease}
+  @keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+  @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+  .quote{margin-top:22px;background:#fff3c9;border-radius:20px;padding:18px 20px;text-align:center}
+  .quote .lab{font-size:15px;color:#b98a12;font-weight:bold}
+  .quote .en{font-family:"Nunito",sans-serif;font-weight:800;font-size:22px;margin-top:6px}
+  .quote .ko{font-size:19px;margin-top:4px}
+  .quote .by{font-size:15px;color:var(--sub);margin-top:4px}
+  .lv{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:16px;margin-bottom:6px}
+  .lv span{white-space:nowrap}
+  .lv span{color:var(--sub);font-size:15px}
+  .lvbar{height:12px;background:#f3e3b0;border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .lvbar>i{display:block;height:100%;background:linear-gradient(90deg,#ffe27a,#ffb800);transition:width .4s}
+  .ov{position:fixed;inset:0;background:rgba(40,30,10,.45);display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}
+  .ovc{background:#fff;border-radius:26px;padding:24px 22px;text-align:center;max-width:380px;width:100%;animation:pop .4s ease}
+  .lvtitle{font-size:26px;font-weight:bold;color:var(--accent)}
+  .lvname{font-size:24px;font-weight:bold;margin-top:4px}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .vil{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .vrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.vrow div{width:56px}.vrow svg{width:100%;height:auto}
+  .dex{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;text-align:center;font-size:13px}
+  .dx svg{width:100%;height:auto}
+  .dx.lock{color:var(--sub)}
+  .dx .q{aspect-ratio:120/130;display:flex;align-items:center;justify-content:center;background:#f3ece3;border-radius:14px;font-size:30px;color:#c9bca9}
+  .gain{font-size:20px;font-weight:bold;color:#c98a00;margin-top:8px}
+  .tag.rv{background:#fff3c9;color:#b98a12}
+
+  .logbtn{background:#fff3c4;border:2px solid #f0bf2a;color:#6b4f00;border-radius:14px;padding:4px 12px;font-size:16px;font-weight:bold;width:auto;margin:0;cursor:pointer}
+  .logov{position:fixed;inset:0;background:#fffaf0;z-index:10;overflow:auto;padding:16px 14px 40px}
+  .logov h2{margin:4px 0 10px;font-size:26px}
+  .logov .close{position:sticky;top:0;float:right;width:auto;padding:8px 16px;font-size:18px;margin:0}
+  .logov .ent{background:#fff;border:2px solid #f3e1a8;border-radius:16px;padding:12px;margin:12px 0}
+  .logov .ent h3{margin:0 0 6px;font-size:21px}
+  .logov table{width:100%;border-collapse:collapse;font-size:18px}
+  .logov td,.logov th{padding:6px 4px;border-bottom:1px solid #f3e9c6;text-align:left;vertical-align:top}
+  .logov .chip{display:inline-block;background:#ffe3e3;border:2px solid #ef8f8f;color:#8a1f1f;border-radius:14px;padding:4px 10px;margin:3px;font-weight:bold;font-size:18px}
+</style>
+<style>
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .mi{display:block;text-decoration:none;color:var(--ink);background:#fff;border:2px solid #f3e1a8;border-radius:20px;padding:16px 12px;text-align:center;box-shadow:0 4px 14px rgba(120,80,30,.07);font-weight:bold;font-size:21px}
+  .mi small{display:block;font-weight:normal;color:var(--sub);font-size:14px;margin-top:2px}
+  .mi .em{font-size:34px;display:block}
+  .mi.wide{grid-column:1/3}
+  h2.sec{font-size:22px;margin:0 0 8px}
+  .ck{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--line);font-size:20px}
+  .ck input[type=checkbox]{width:26px;height:26px;flex:none;accent-color:var(--accent)}
+  .ck.done span{text-decoration:line-through;color:var(--sub)}
+  .ck button.del{width:auto;margin:0 0 0 auto;padding:2px 10px;font-size:16px;background:#f3ece3;color:var(--sub)}
+  .addrow{display:flex;gap:8px;margin-top:10px}.addrow input{flex:1;font-size:19px;padding:12px 12px}.addrow button{width:auto;margin:0;font-size:18px;padding:12px 16px}
+  input[type=text],input[type=time],textarea{font-family:inherit}
+  input[type=time]{font-size:19px;padding:8px;border:2px solid var(--line);border-radius:10px}
+  .acad{padding:8px 0;border-bottom:1px solid var(--line)}
+  .acad .t{font-weight:bold}.st{display:inline-block;border-radius:99px;padding:2px 10px;font-size:15px;font-weight:bold;margin-left:6px}
+  .st.soon{background:#fff3c9;color:#b98a12}.st.now{background:#e6f6ee;color:#2e9e6a}.st.end{background:#f3ece3;color:var(--sub)}
+  .days label{display:inline-block;margin:3px 6px 3px 0;font-size:18px}
+  .meal{padding:8px 0;border-bottom:1px solid var(--line)}.meal b{display:block}
+  .note{padding:8px 4px;border-bottom:1px solid var(--line);font-size:19px}.note .d{color:var(--sub);font-size:14px}
+  .toast{background:#e6f6ee;color:#2e9e6a;border-radius:12px;padding:8px 12px;margin-top:8px;font-weight:bold;text-align:center}
+  details.set{margin-top:16px}details.set summary{font-weight:bold;cursor:pointer;font-size:19px}
+  .opt{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:2px solid var(--line);margin-top:10px;font-size:21px;font-weight:normal}
+  .opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.no{background:var(--nobg);border-color:var(--no)}
+  .q{font-size:26px;font-weight:700;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="upd"><span>📅 영어단어 업데이트 11/22 (3회차)</span></div>
+<h1>🐧 조펭솜 공부 마을</h1>
+<div class="muted" id="today"></div>
+<div class="pg big" id="pgbox" style="margin-top:6px"></div>
+<div class="card lvbox" id="lv"></div>
+
+<div class="card" id="acadcard"><h2 class="sec">🏫 오늘 학원</h2><div id="acadlist"></div></div>
+
+<div class="menu">
+  <a class="mi wide" href="q3/"><span class="em">🔤</span>영어단어<small>3회차 · 업데이트 11/22</small></a>
+  <a class="mi" href="study.html?s=elem"><span class="em">📚</span>초등과정<small>5학년 2학기</small></a>
+  <a class="mi" href="study.html?s=mid"><span class="em">🚀</span>중등과정<small>선행 학습</small></a>
+  <a class="mi" href="study.html?s=hist"><span class="em">🏯</span>한국사<small>3급 대비</small></a>
+  <a class="mi" href="#dexbox" id="dexbtn"><span class="em">🌍</span>조펭솜 이야기<small>도감 · 여행 수첩</small></a>
+</div>
+
+<div class="card" id="todo"></div>
+<div class="card" id="bag"></div>
+<div class="card" id="notes"></div>
+<div class="card" id="meal"><h2 class="sec">🍚 급식 메뉴</h2><div id="meallist" class="muted">불러오는 중…</div></div>
+
+<div id="dexbox" style="display:none"></div>
+
+<details class="set"><summary>⚙ 설정 (학교 · 학원)</summary>
+ <div class="card">
+  <h2 class="sec">🏫 학교 (급식용)</h2>
+  <div class="muted" id="schoolnow"></div>
+  <div class="addrow"><input type="text" id="schoolin" placeholder="학교 이름 (예: ○○초등학교)"><button id="schoolbtn">찾기</button></div>
+  <div id="schoolres"></div>
+ </div>
+ <div class="card">
+  <h2 class="sec">📚 학원 시간표</h2>
+  <div id="acadedit"></div>
+  <div class="days" id="daysel"></div>
+  <div class="addrow"><input type="text" id="an" placeholder="학원 이름"></div>
+  <div class="addrow"><input type="time" id="as" value="16:00"> ~ <input type="time" id="ae" value="17:30"><button id="aadd">추가</button></div>
+ </div>
+</details>
+<div class="muted" style="text-align:center;margin-top:20px">별과 기록은 이 폰의 브라우저에 저장돼요</div>
+</div>
+<script src="common.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const DAYS=["일","월","화","수","목","금","토"];
+function ld(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function ymd(d){return d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")}
+const NOW=new Date(), TODAY=ymd(NOW);
+$("today").textContent=`${NOW.getFullYear()}년 ${NOW.getMonth()+1}월 ${NOW.getDate()}일 ${DAYS[NOW.getDay()]}요일`;
+
+/* 펭귄 + 레벨 */
+function paintPg(){ $("pgbox").innerHTML=penguin("normal"); }
+paintPg(); $("lv").className="card lvbox"; renderLv();
+$("pgbox").onclick=()=>{ $("pgbox").innerHTML=penguin("happy"); setTimeout(paintPg,700); };
+function afterXP(){ if(window.__levelUp!==undefined){const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L,()=>{paintPg();renderLv();}),300);} }
+
+/* 체크리스트 (설아가 직접 추가) */
+function mkList(box,key,title,emoji,placeholder,onAllDone){
+  let S=ld(key,{date:TODAY,items:[]});
+  if(S.date!==TODAY){ S.items.forEach(i=>i.d=false); S.date=TODAY; sv(key,S); }
+  function draw(){
+    const done=S.items.filter(i=>i.d).length;
+    $(box).innerHTML=`<h2 class="sec">${emoji} ${title} <span class="muted">${done}/${S.items.length}</span></h2>`+
+      (S.items.length?S.items.map((it,i)=>`<label class="ck ${it.d?"done":""}"><input type="checkbox" data-i="${i}" ${it.d?"checked":""}><span>${escH(it.t)}</span><button class="del" data-x="${i}" type="button">✕</button></label>`).join(""):`<div class="muted">아래에 직접 추가해 봐!</div>`)+
+      `<div class="addrow"><input type="text" id="${box}in" placeholder="${placeholder}"><button id="${box}add">추가</button></div><div id="${box}msg"></div>`;
+    $(box).querySelectorAll('input[type=checkbox]').forEach(c=>c.onchange=()=>{S.items[+c.dataset.i].d=c.checked;sv(key,S);draw();onAllDone&&onAllDone(S,box)});
+    $(box).querySelectorAll('button.del').forEach(b=>b.onclick=e=>{e.preventDefault();S.items.splice(+b.dataset.x,1);sv(key,S);draw()});
+    const add=()=>{const v=$(box+"in").value.trim(); if(!v) return; S.items.push({t:v,d:false}); sv(key,S); draw(); $(box+"in").focus();};
+    $(box+"add").onclick=add; $(box+"in").onkeydown=e=>{if(e.key==="Enter")add()};
+  }
+  draw();
+}
+mkList("todo","seola_todo","오늘 공부 체크","✅","오늘 할 일 (예: 수학 문제집 2쪽)",(S,box)=>{
+  const all=S.items.length>=3 && S.items.every(i=>i.d);
+  if(all && ld("seola_todo_bonus","")!==TODAY){
+    sv("seola_todo_bonus",TODAY); window.__gain=0; addXP(3);
+    $("todomsg").innerHTML='<div class="toast">오늘 할 일을 다 했어! ⭐+3</div>'; paintPg(); afterXP();
+  }
+});
+mkList("bag","seola_bag","챙길 것","🎒","챙길 것 (예: 체육복, 리코더)");
+
+/* 알림장 */
+(function(){
+  let N=ld("seola_notes",[]);
+  function draw(){
+    const show=N.slice().reverse().slice(0,8);
+    $("notes").innerHTML=`<h2 class="sec">📒 알림장</h2>`+(show.length?show.map((n,k)=>{const idx=N.length-1-k;return `<div class="note"><div class="d">${escH(n.d)} <button class="del" data-x="${idx}" type="button" style="width:auto;margin:0 0 0 8px;padding:0 8px;font-size:14px;background:#f3ece3;color:var(--sub)">✕</button></div>${escH(n.t)}</div>`}).join(""):`<div class="muted">학교 알림장 내용을 적어 봐!</div>`)+
+      `<div class="addrow"><input type="text" id="notein" placeholder="알림장 내용"><button id="noteadd">추가</button></div>`;
+    $("notes").querySelectorAll('button.del').forEach(b=>b.onclick=()=>{N.splice(+b.dataset.x,1);sv("seola_notes",N);draw()});
+    const add=()=>{const v=$("notein").value.trim(); if(!v) return; N.push({d:`${NOW.getMonth()+1}/${NOW.getDate()} (${DAYS[NOW.getDay()]})`,t:v}); N=N.slice(-60); sv("seola_notes",N); draw();};
+    $("noteadd").onclick=add; $("notein").onkeydown=e=>{if(e.key==="Enter")add()};
+  }
+  draw();
+})();
+
+/* 학원 */
+let ACAD=ld("seola_acad",[]), selDays=new Set([NOW.getDay()]);
+function hm(s){const [h,m]=s.split(":").map(Number);return h*60+m}
+function fmtLeft(m){const h=Math.floor(m/60),mm=m%60;return h?`${h}시간 ${mm}분`:`${mm}분`}
+function paintAcad(){
+  const nowM=new Date().getHours()*60+new Date().getMinutes(), dow=new Date().getDay();
+  const todays=ACAD.filter(a=>a.days.includes(dow)).sort((a,b)=>hm(a.s)-hm(b.s));
+  $("acadlist").innerHTML = todays.length ? todays.map(a=>{
+    const s=hm(a.s),e=hm(a.e); let st,cl;
+    if(nowM<s){st=`${fmtLeft(s-nowM)} 후 시작`;cl="soon"} else if(nowM<e){st=`수업 중 · ${fmtLeft(e-nowM)} 남음`;cl="now"} else {st="끝났어";cl="end"}
+    return `<div class="acad"><div class="t">${escH(a.n)} <span class="st ${cl}">${st}</span></div><div class="muted">${a.s} ~ ${a.e}</div></div>`}).join("")
+    : `<div class="muted">${ACAD.length?"오늘은 학원이 없어요 🎉":"설정에서 학원 시간표를 넣으면 오늘 시간을 알려 줘요"}</div>`;
+}
+function drawAcadEdit(){
+  $("acadedit").innerHTML=ACAD.length?ACAD.map((a,i)=>`<div class="acad"><div class="t">${escH(a.n)} <button class="del" data-x="${i}" type="button" style="width:auto;margin:0 0 0 8px;padding:0 8px;font-size:14px;background:#f3ece3;color:var(--sub)">삭제</button></div><div class="muted">${a.days.map(d=>DAYS[d]).join("·")} ${a.s}~${a.e}</div></div>`).join(""):'<div class="muted">아직 없어요</div>';
+  $("acadedit").querySelectorAll("button.del").forEach(b=>b.onclick=()=>{ACAD.splice(+b.dataset.x,1);sv("seola_acad",ACAD);drawAcadEdit();paintAcad()});
+  $("daysel").innerHTML=DAYS.map((d,i)=>`<label><input type="checkbox" data-d="${i}" ${selDays.has(i)?"checked":""}> ${d}</label>`).join("");
+  $("daysel").querySelectorAll("input").forEach(c=>c.onchange=()=>{c.checked?selDays.add(+c.dataset.d):selDays.delete(+c.dataset.d)});
+}
+$("aadd").onclick=()=>{
+  const n=$("an").value.trim(); if(!n||!selDays.size) return;
+  ACAD.push({n,days:[...selDays].sort(),s:$("as").value,e:$("ae").value}); sv("seola_acad",ACAD); $("an").value=""; drawAcadEdit(); paintAcad();
+};
+drawAcadEdit(); paintAcad(); setInterval(paintAcad,30000);
+
+/* 급식 (나이스 교육정보 개방 포털) */
+const NEIS="https://open.neis.go.kr/hub/";
+function cleanDish(s){return s.split(/<br\s*\/?>/i).map(x=>x.replace(/\s*\([\d.\s]+\)/g,"").trim()).filter(Boolean)}
+async function neis(path,params){
+  const r=await fetch(NEIS+path+"?Type=json&"+new URLSearchParams(params)); const j=await r.json(); return j[path]?j[path][1].row:[];
+}
+async function loadMeal(){
+  const sc=ld("seola_school",null);
+  $("schoolnow").textContent=sc?`등록된 학교: ${sc.name}`:"아직 학교가 없어요";
+  if(!sc){ $("meallist").textContent="설정에서 학교를 등록하면 오늘 급식이 나와요"; return; }
+  const cache=ld("seola_meal",null);
+  if(cache&&cache.date===TODAY&&cache.code===sc.code){ $("meallist").innerHTML=cache.html; return; }
+  try{
+    const tm=new Date(NOW.getTime()+86400000);
+    const rows=await neis("mealServiceDietInfo",{ATPT_OFCDC_SC_CODE:sc.atpt,SD_SCHUL_CODE:sc.code,MLSV_FROM_YMD:TODAY,MLSV_TO_YMD:ymd(tm)});
+    if(!rows.length){ $("meallist").textContent="오늘·내일 급식 정보가 없어요 (방학이나 휴일일 수 있어요)"; return; }
+    const html=rows.map(r=>`<div class="meal"><b>${r.MLSV_YMD===TODAY?"오늘":"내일"} ${escH(r.MMEAL_SC_NM)}</b>${cleanDish(r.DDISH_NM).map(escH).join(" · ")}</div>`).join("");
+    $("meallist").innerHTML=html; sv("seola_meal",{date:TODAY,code:sc.code,html});
+  }catch(e){ $("meallist").textContent="급식 정보를 불러오지 못했어요. 학교 앱에서 확인해 줘 🍚"; }
+}
+$("schoolbtn").onclick=async()=>{
+  const n=$("schoolin").value.trim(); if(!n) return; $("schoolres").textContent="찾는 중…";
+  try{
+    const rows=await neis("schoolInfo",{SCHUL_NM:n,pSize:"10"});
+    if(!rows.length){ $("schoolres").textContent="학교를 못 찾았어요. 이름을 다시 확인해 줘"; return; }
+    $("schoolres").innerHTML=rows.map((r,i)=>`<button class="opt" data-i="${i}" type="button">${escH(r.SCHUL_NM)}<br><span class="muted">${escH(r.ORG_RDNMA||"")}</span></button>`).join("");
+    $("schoolres").querySelectorAll("button").forEach(b=>b.onclick=()=>{const r=rows[+b.dataset.i]; sv("seola_school",{name:r.SCHUL_NM,atpt:r.ATPT_OFCDC_SC_CODE,code:r.SD_SCHUL_CODE}); try{localStorage.removeItem("seola_meal")}catch(e){} $("schoolres").textContent="등록했어요 ✅"; loadMeal();});
+  }catch(e){ $("schoolres").textContent="학교 정보를 불러오지 못했어요. 인터넷을 확인해 줘"; }
+};
+loadMeal();
+
+/* 도감 */
+$("dexbtn").onclick=e=>{e.preventDefault(); const b=$("dexbox"); if(b.style.display==="none"){b.innerHTML=dexHTML();b.style.display="block";b.scrollIntoView({behavior:"smooth"});} else b.style.display="none";};
+</script>
+</body></html>

@@ -9,7 +9,8 @@
   :root{--bg:#fff8ef;--card:#ffffff;--ink:#2b2a33;--sub:#7a7584;--accent:#f07b3f;--accent2:#ffd36e;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#efe6da}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:20px;line-height:1.55}
-  .upd{text-align:center;font-size:16px;font-weight:bold;color:#6b4f00;background:#fff3c4;border:2px solid #f0bf2a;border-radius:14px;padding:6px 10px;margin-bottom:8px}
+  .homebtn{background:#fff;border:2px solid #f0bf2a;border-radius:12px;padding:3px 10px;color:#6b4f00;text-decoration:none;margin-right:8px;white-space:nowrap}
+  .upd{display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:bold;color:#6b4f00;background:#fff3c4;border:2px solid #f0bf2a;border-radius:14px;padding:6px 10px;margin-bottom:8px}
   .wrap{max-width:600px;margin:0 auto;padding:20px 16px 48px}
   h1{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:24px;margin:4px 0 2px}
   .muted{color:var(--sub);font-size:16px}
@@ -90,11 +91,12 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="upd">📅 영어단어 업데이트 · 2026.11.22 (3회차)</div>
+    <div class="upd"><a class="homebtn" href="../">🏠 홈</a><span>📅 영어단어 업데이트 11/22 (3회차)</span></div>
     <div id="app"></div>
   <div class="quote" id="quote"></div>
 </div>
 
+<script src="../common.js"></script>
 <script>
 // [단어, 품사, 정답 뜻(표시용), 인정 키워드, 출처]
 const WORDS = [
@@ -152,101 +154,6 @@ const BYWORD = Object.fromEntries(WORDS.map(w=>[w[0],w]));
 const RATIO = 0.8;
 
 
-const STAGES=[
- [0,"신비한 알","알 속에서 누가 자라고 있어! 단어를 맞히면 깨어나"],
- [30,"아기 펭귄","알을 깨고 아기 펭귄이 태어났어!"],
- [80,"꼬마 펭귄","뒤뚱뒤뚱 걷기 시작했어!"],
- [150,"새싹 펭귄","머리에 해바라기 꽃잎이 돋아나기 시작했어!"],
- [250,"해바라기 펭귄","해바라기 모자가 활짝 피었어!"],
- [380,"여행가 펭귄","별꽃 가방을 메고 단어 모험을 떠나!"],
- [540,"모험가 펭귄","따뜻한 목도리를 두르고 더 멀리 가 보자!"],
- [730,"박사 펭귄","동글 안경을 쓴 단어 박사가 됐어! 🤓"],
- [950,"왕관 펭귄","단어 왕 펭귄이 됐어! 👑"],
- [1200,"황금 해바라기 펭귄","전설의 황금 펭귄이 나타났어! ✨"]
-];
-const CYCLE=1500; // 황금 펭귄(1200) 다음 300개를 더 모으면 마을로 이사 + 새 알
-const PETAL=[["#ffd84d","#f0bf2a"],["#ffb3cf","#ef8fb2"],["#a9dcff","#78bde8"],["#cdb4ff","#a98ae8"],["#ffb48a","#ee8f5d"]];
-const XPKEY="seola_penguin_xp";
-let memXP=0;
-function getXP(){try{const v=localStorage.getItem(XPKEY);return v?+v:memXP}catch(e){return memXP}}
-function setXP(v){memXP=v;try{localStorage.setItem(XPKEY,String(v))}catch(e){}}
-function info(xp){const gen=Math.floor(xp/CYCLE),w=xp-gen*CYCLE;let st=0;for(let i=0;i<STAGES.length;i++)if(w>=STAGES[i][0])st=i;return{gen,st,w}}
-function stageOf(xp){return info(xp).st}
-function addXP(n){const b=info(getXP());setXP(getXP()+n);window.__gain=(window.__gain||0)+n;const a=info(getXP());
-  if(a.gen>b.gen) window.__levelUp={st:0,gen:a.gen,newGen:true};
-  else if(a.st>b.st) window.__levelUp={st:a.st,gen:a.gen};
-  renderLv();}
-function lvHTML(){
-  const I=info(getXP()),cur=STAGES[I.st][0],nx=STAGES[I.st+1];
-  const target=nx?nx[0]:CYCLE, pct=Math.round((I.w-cur)/(target-cur)*100);
-  const right = nx?`다음 성장까지 ⭐${nx[0]-I.w}`:`마을 이사까지 ⭐${CYCLE-I.w}`;
-  return `<div class="lv"><b>🐧 ${I.gen?`${I.gen+1}번째 친구 · `:""}Lv.${I.st+1} ${STAGES[I.st][1]}</b><span>${right}</span></div><div class="lvbar"><i style="width:${pct}%"></i></div>`;
-}
-function renderLv(){document.querySelectorAll(".lvbox").forEach(e=>e.innerHTML=lvHTML());}
-function showLevelUp(L,cb){
-  const o=document.createElement("div");o.className="ov";
-  const title=L.newGen?"🏡 황금 펭귄이 펭귄 마을로 이사했어!":"🎉 펭귄이 자랐어!";
-  const desc=L.newGen?`그리고 새 친구 알이 도착했어! ${L.gen+1}번째 펭귄 친구를 키워 보자 🥚`:STAGES[L.st][2];
-  o.innerHTML=`<div class="ovc"><div class="lvtitle">${title}</div><div class="pg big">${penguin("happy",L.st,L.gen)}</div><div class="lvname">${L.gen?`${L.gen+1}번째 친구 · `:""}Lv.${L.st+1} ${STAGES[L.st][1]}</div><div class="muted" style="margin:6px 0 4px">${desc}</div><button id="ovok">좋아! 계속하기</button></div>`;
-  document.body.appendChild(o);
-  document.getElementById("ovok").onclick=()=>{o.remove();cb&&cb();};
-}
-function dexHTML(){
-  const I=info(getXP());
-  const village = I.gen ? `<div class="vil"><b>🏡 펭귄 마을</b> <span class="muted">다 키운 친구 ${I.gen}마리</span><div class="vrow">${Array.from({length:I.gen},(_,g)=>`<div>${penguin("happy",9,g)}</div>`).join("")}</div></div>` : `<div class="muted" style="margin-top:10px">Lv.10까지 키우면 황금 펭귄이 🏡펭귄 마을로 이사 가고, 새 친구 알이 생겨!</div>`;
-  return `<div class="card"><b>🌻 펭귄 성장 도감</b> <span class="muted">${I.gen?`${I.gen+1}번째 친구`:""}</span><div class="dex">${STAGES.map((s,i)=>`<div class="dx ${i>I.st?"lock":""}">${i<=I.st?penguin("normal",i,I.gen):'<div class="q">?</div>'}<div>${i<=I.st?s[1]:`⭐${s[0]}`}</div></div>`).join("")}</div>${village}</div>`;
-}
-function penguin(mood, st, gen){
-  if(st===undefined||gen===undefined){const I=info(getXP()); if(st===undefined) st=I.st; if(gen===undefined) gen=I.gen;}
-  const cls = mood==="happy"?"hop":mood==="sad"?"shake":"";
-  const gold = st>=9;
-  const [pf0,ps0]=PETAL[0];   // 설아가 좋아하는 노란 해바라기로 고정
-  const pf = gold?"#ffc21a":pf0, ps = gold?"#e0a000":ps0;
-  if(st===0){
-    const face = mood==="happy" ? '<path d="M50 70 q4 -4 8 0 M62 70 q4 -4 8 0" stroke="#1f1f24" stroke-width="2.5" fill="none" stroke-linecap="round"/>' : mood==="sad" ? '<circle cx="54" cy="70" r="2.5" fill="#1f1f24"/><circle cx="66" cy="70" r="2.5" fill="#1f1f24"/>' : '<circle cx="54" cy="70" r="3" fill="#1f1f24"/><circle cx="66" cy="70" r="3" fill="#1f1f24"/>';
-    return `<svg viewBox="0 0 120 130" class="${cls}"><ellipse cx="60" cy="125" rx="26" ry="3.5" fill="rgba(0,0,0,.08)"/>
-    <path d="M60 22 C 30 22 22 72 26 96 C 30 118 90 118 94 96 C 98 72 90 22 60 22 z" fill="#fbf3e6" stroke="#e8dcc6" stroke-width="2"/>
-    <circle cx="44" cy="48" r="5" fill="${pf}"/><circle cx="78" cy="88" r="6" fill="${pf}"/><circle cx="74" cy="44" r="3.5" fill="${pf}"/>
-    <path d="M34 62 l10 6 l8 -7 l8 7 l8 -7 l8 7 l10 -6" stroke="#cdbb9e" stroke-width="2" fill="none"/>
-    ${face}<circle cx="47" cy="78" r="3.5" fill="#ff9e9e" opacity=".6"/><circle cx="73" cy="78" r="3.5" fill="#ff9e9e" opacity=".6"/></svg>`;
-  }
-  const eyes = mood==="happy"
-    ? '<path d="M44 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M68 55 q4 -5 8 0" stroke="#1f1f24" stroke-width="3" fill="none" stroke-linecap="round"/>'
-    : mood==="sad"
-    ? '<circle cx="48" cy="55" r="3.8" fill="#1f1f24"/><circle cx="72" cy="55" r="3.8" fill="#1f1f24"/><path d="M43 48 l8 3 M77 48 l-8 3" stroke="#1f1f24" stroke-width="2.2" stroke-linecap="round"/><path d="M47 61 q-3 6 0 8 q3 -2 0 -8" fill="#7cc4ff"/>'
-    : '<circle cx="48" cy="55" r="4.3" fill="#1f1f24"/><circle cx="72" cy="55" r="4.3" fill="#1f1f24"/><circle cx="49.4" cy="53.5" r="1.4" fill="#fff"/><circle cx="73.4" cy="53.5" r="1.4" fill="#fff"/>';
-  const nose = mood==="sad" ? '<ellipse cx="60" cy="60" rx="6" ry="4" fill="#8a4a2a"/>' : '<ellipse cx="60" cy="59" rx="6.5" ry="4.5" fill="#8a4a2a"/><ellipse cx="58" cy="57.5" rx="2" ry="1" fill="#b06a45"/>';
-  const mouth = mood==="happy" ? '<path d="M56 66 q4 4 8 0" stroke="#8a4a2a" stroke-width="2" fill="none" stroke-linecap="round"/>' : '';
-  let petals="";
-  const PR=[0,0,0,6,8,9.5,11,12,13,14][st];   // 단계별 해바라기 꽃잎 크기 (천천히 커짐)
-  if(PR){ const off=22+PR*0.85; for(let i=0;i<10;i++){petals+=`<ellipse cx="60" cy="${52-off}" rx="${PR}" ry="${PR}" fill="${pf}" stroke="${ps}" stroke-width="1.2" transform="rotate(${i*36+18} 60 52)"/>`} }
-  const scarf = st>=6 ? '<path d="M35 77 q25 11 50 0 l1 8 q-26 12 -52 0 z" fill="#e8574a"/><path d="M74 84 l7 17 l-9 -1 z" fill="#d94a3e"/>' : "";
-  let bag="";
-  if(st>=5){ let star=""; for(let i=0;i<5;i++){star+=`<ellipse cx="30" cy="85" rx="4.5" ry="6" fill="${pf}" stroke="${ps}" stroke-width="1" transform="rotate(${i*72} 30 92)"/>`}
-    bag=`<path d="M84 82 L34 108" stroke="#2b2b30" stroke-width="3.2" stroke-linecap="round"/>${star}<circle cx="30" cy="92" r="4" fill="#e86a2e"/>`; }
-  const glasses = st>=7 ? '<circle cx="48" cy="55" r="8.5" fill="none" stroke="#5a3b22" stroke-width="2.2"/><circle cx="72" cy="55" r="8.5" fill="none" stroke="#5a3b22" stroke-width="2.2"/><path d="M56.5 55 h7" stroke="#5a3b22" stroke-width="2.2"/>' : "";
-  const crown = st>=8 ? `<path d="M46 26 l4 -14 l6 9 l4 -12 l4 12 l6 -9 l4 14 z" fill="#ffcf33" stroke="#d99a00" stroke-width="1.5" stroke-linejoin="round"/><circle cx="60" cy="20" r="2.4" fill="#ff6b8a"/>` : "";
-  const glow = gold ? `<circle cx="60" cy="66" r="58" fill="url(#gl)"/><path d="M14 30 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 z M104 70 l2.5 5 l5 2.5 l-5 2.5 l-2.5 5 l-2.5 -5 l-5 -2.5 l5 -2.5 z" fill="#ffd84d"/>` : "";
-  const tuft = st===1 ? '<path d="M56 24 q2 -8 4 0 q2 -8 4 0" stroke="#5f5f66" stroke-width="3" fill="none" stroke-linecap="round"/>' : "";
-  const shell = st===1 ? '<path d="M28 100 l8 -8 l7 8 l8 -8 l9 8 l9 -8 l8 8 l7 -8 l8 8 q0 26 -32 26 q-32 0 -32 -26 z" fill="#fbf3e6" stroke="#e8dcc6" stroke-width="2"/>' : "";
-  const scale = [1,.7,.78,.84,.88,.92,.95,.98,1,1.02][st];   // 단계별 몸 크기 (천천히 커짐)
-  return `<svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" class="${cls}">
-    <defs><radialGradient id="gl"><stop offset="0" stop-color="#fff2a8" stop-opacity=".9"/><stop offset="1" stop-color="#fff2a8" stop-opacity="0"/></radialGradient></defs>
-    ${glow}
-    <ellipse cx="60" cy="126" rx="28" ry="3.5" fill="rgba(0,0,0,.08)"/>
-    <g transform="translate(60 128) scale(${scale}) translate(-60 -128)">
-    <ellipse cx="49" cy="122" rx="8" ry="4" fill="#9d8f84"/><ellipse cx="71" cy="122" rx="8" ry="4" fill="#9d8f84"/>
-    <path d="M30 78 q-12 10 -8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
-    <path d="M90 78 q12 10 8 24" stroke="#d6c7b8" stroke-width="10" fill="none" stroke-linecap="round"/>
-    <path d="M32 74 q-6 48 28 47 q34 1 28 -47 z" fill="#b3a397"/>
-    ${petals}${tuft}
-    <circle cx="60" cy="52" r="29" fill="#5f5f66"/>
-    <path d="M33 58 q0 -18 13 -22 q8 -2 14 6 q6 -8 14 -6 q13 4 13 22 q0 20 -27 20 q-27 0 -27 -20 z" fill="#fbf3e6"/>
-    <circle cx="41" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/><circle cx="79" cy="64" r="4.5" fill="#ff9e9e" opacity=".75"/>
-    ${eyes}${nose}${mouth}${glasses}${scarf}${bag}${crown}${shell}
-    </g>
-  </svg>`;
-}
 const CHEER=["화이팅! 🐧","할 수 있어!","천천히 생각해 봐","설아 최고!","거의 다 왔어!"];
 const $app = document.getElementById("app");
 let qs = [], idx = 0, results = [], answered = false, dbRef = null;
@@ -340,8 +247,7 @@ function resultText(){
   let t = `[설아 영어단어 퀴즈] ${today()} (${window.__label})\n점수: ${ok} / ${results.length} (${Math.round(ok/results.length*100)}점)\n`;
   if(wrong.length){ t += `\n틀린 단어 ${wrong.length}개\n` + wrong.map((r,i)=>`${i+1}. ${r.word} = ${r.meaning} (${r.type==="spell"?"철자":"뜻"} / 내 답: ${r.mine})`).join("\n"); }
   else t += "\n모두 맞았어요! 💯";
-  const st=stageOf(getXP());
-  const I2=info(getXP()); t += `\n\n🐧 펭귄: ${I2.gen?`${I2.gen+1}번째 친구 `:""}Lv.${st+1} ${STAGES[st][1]} (모은 별 ${getXP()}개, 마을 친구 ${I2.gen}마리)`;
+  const I2=info(getXP()); t += `\n\n🐧 조펭솜: Lv.${I2.st+1} ${STAGES[I2.st][1]} (모은 별 ${getXP()}개${I2.trip>0?`, 지금 ${STOPS[I2.trip-1].co.c} ${STOPS[I2.trip-1].ct.n}`:""})`;
   return t;
 }
 
@@ -368,7 +274,7 @@ function renderResult(){
   const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
   const pct = Math.round(ok/results.length*100);
   const msg = pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 단어만 다시 해 보자! 🔁";
-  const bonus = results.length>=10 ? (10 + (pct===100?20:0)) : 3;
+  const bonus = results.length>=10 ? (5 + (pct===100?10:0)) : 2;
   addXP(bonus);
   addLog({label:window.__label,date:today(),ok:ok,n:results.length,wrong:wrong.map(r=>({word:r.word,meaning:r.meaning,type:r.type,mine:r.mine}))});
   const gain = window.__gain;
@@ -381,12 +287,6 @@ function renderResult(){
     <div class="gain">이번에 모은 별 ⭐+${gain} <span class="muted">(보너스 +${bonus})</span></div>
   </div>
   <div class="card lvbox">${lvHTML()}</div>
-  ${wrong.length?`<div class="card">
-    <b>틀린 단어 ${wrong.length}개</b> <span class="muted">아래 메일 버튼으로 아빠한테 보내줘</span>
-    <table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>
-    ${wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine)}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}
-    </table></div>`:""}
-  ${dexHTML()}
   <div class="card">
     <button id="mail">📧 아빠한테 메일 보내기</button>
     <button class="ghost" id="sms">💬 아빠한테 문자 보내기</button>
@@ -395,7 +295,14 @@ function renderResult(){
     <div class="copied" id="cp"></div>
     ${wrong.length?`<button class="ghost" id="retry">틀린 단어만 다시 풀기 (${wrong.length}개)</button>`:""}
     <button class="soft" id="again">처음부터 새로 풀기</button>
-  </div>`;
+  </div>
+  ${wrong.length?`<div class="card">
+    <b>틀린 단어 ${wrong.length}개</b> <span class="muted">아래 메일 버튼으로 아빠한테 보내줘</span>
+    <table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>
+    ${wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine)}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}
+    </table></div>`:""}
+  ${dexHTML()}
+`;
   document.getElementById("logr").onclick = showLog;
   document.getElementById("mail").onclick = ()=>{
     const to = atob("Y2hvaW5rdWVAZ21haWwuY29t");
