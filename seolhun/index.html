@@ -530,16 +530,16 @@ function shade(h,p){const n=parseInt(h.slice(1),16);let r=(n>>16)+p,g=(n>>8&255)
 function robotSVG(r,parts,w,ghost){
   const c=RC[r-1][1], d=shade(c,-45), l=shade(c,40), g="#ffd34e";
   const P={
-   5:`<path d="M30 58 L6 44 L8 78 L30 86Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
-   6:`<path d="M70 58 L94 44 L92 78 L70 86Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
-   3:`<rect x="12" y="56" width="14" height="36" rx="6" fill="${c}" stroke="${d}" stroke-width="2"/><circle cx="19" cy="94" r="6" fill="#fff" stroke="${d}" stroke-width="2"/>`,
-   4:`<rect x="74" y="56" width="14" height="36" rx="6" fill="${c}" stroke="${d}" stroke-width="2"/><circle cx="81" cy="94" r="6" fill="#fff" stroke="${d}" stroke-width="2"/>`,
-   1:`<rect x="32" y="98" width="15" height="24" rx="4" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="53" y="98" width="15" height="24" rx="4" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="28" y="118" width="22" height="9" rx="4" fill="${d}"/><rect x="50" y="118" width="22" height="9" rx="4" fill="${d}"/>`,
-   2:`<rect x="30" y="54" width="40" height="48" rx="8" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="38" y="90" width="24" height="8" rx="3" fill="${d}" opacity=".35"/>`,
-   7:`<circle cx="24" cy="56" r="9" fill="${l}" stroke="${d}" stroke-width="2"/>`,
-   8:`<circle cx="76" cy="56" r="9" fill="${l}" stroke="${d}" stroke-width="2"/>`,
-   9:`<path d="M50 62 L58 72 L50 82 L42 72Z" fill="${g}" stroke="${d}" stroke-width="2"/>`,
-   10:`<path d="M50 4 L44 20 L56 20Z" fill="${g}" stroke="${d}" stroke-width="1.5"/><rect x="33" y="18" width="34" height="34" rx="11" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="38" y="30" width="24" height="9" rx="4" fill="#fff"/><circle cx="45" cy="34.5" r="2.4" fill="${d}"/><circle cx="55" cy="34.5" r="2.4" fill="${d}"/><rect x="42" y="44" width="16" height="3" rx="1.5" fill="${d}" opacity=".5"/>`
+   5:`<path d="M30 58 L5 46 L7 80 L30 88Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   6:`<path d="M70 58 L95 46 L93 80 L70 88Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   3:`<rect x="12" y="58" width="15" height="26" rx="3" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M12 88 h15 v8 h-6 v-3 h-3 v3 h-6Z" fill="${g}" stroke="${d}" stroke-width="1.5"/>`,
+   4:`<rect x="73" y="58" width="15" height="26" rx="3" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M73 88 h15 v8 h-6 v-3 h-3 v3 h-6Z" fill="${g}" stroke="${d}" stroke-width="1.5"/>`,
+   1:`<rect x="31" y="98" width="17" height="24" rx="2" fill="${d}" stroke="${d}" stroke-width="2"/><rect x="52" y="98" width="17" height="24" rx="2" fill="${d}" stroke="${d}" stroke-width="2"/><rect x="29" y="118" width="21" height="9" rx="2" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="50" y="118" width="21" height="9" rx="2" fill="${c}" stroke="${d}" stroke-width="2"/>`,
+   2:`<path d="M28 54 h44 l-4 46 h-36Z" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="30" y="92" width="40" height="8" fill="${d}" opacity=".45"/>`,
+   7:`<rect x="14" y="52" width="16" height="10" rx="3" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   8:`<rect x="70" y="52" width="16" height="10" rx="3" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   9:`<rect x="43" y="64" width="14" height="14" rx="2" fill="${g}" stroke="${d}" stroke-width="2"/><circle cx="50" cy="71" r="3" fill="${d}"/>`,
+   10:`<rect x="43" y="6" width="14" height="9" rx="3" fill="${l}" stroke="${d}" stroke-width="2"/><rect x="31" y="14" width="38" height="38" rx="9" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="36" y="27" width="28" height="11" rx="3" fill="#fff"/><circle cx="44" cy="32.5" r="2.6" fill="${d}"/><circle cx="56" cy="32.5" r="2.6" fill="${d}"/><path d="M42 44 q8 5 16 0" fill="none" stroke="${d}" stroke-width="2.4" stroke-linecap="round"/>`
   };
   let out="";
   [5,6,3,4,1,2,7,8,9,10].forEach(i=>{
