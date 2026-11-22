@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>설훈이의 파닉스 교실</title>
+<title>설훈이의 공부방</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
+
   :root{--bg:#eef7ff;--card:#fff;--ink:#23303d;--sub:#6f7d8a;--accent:#2f80ed;--accent2:#7cd3ff;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#dde8f3;--hl:#ff7a45;--star:#ffb400}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:21px;line-height:1.5}
@@ -297,11 +298,41 @@
   .r2{gap:8px}.r2>*{flex:1;margin-top:8px!important;line-height:1.25;font-size:20px!important;padding:10px 6px!important}
   .btn.sms{background:linear-gradient(135deg,#ffb020,#ff8a00);color:#fff;border-radius:14px}
   .copied{font-size:16px!important;color:var(--ok)}
+.inp{width:100%;font-family:inherit;font-size:21px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);margin-top:8px;background:#fff;color:var(--ink);-webkit-user-select:text;user-select:text}
+textarea.inp{resize:vertical}
+.cells{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+.cells.cc{grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:6px}
+.cell{margin:0;padding:8px 2px;border:2px solid rgba(0,0,0,.06);border-radius:14px;color:var(--ink);display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.cell b{font-family:Nunito,sans-serif;font-weight:900;font-size:30px}
+.cell span{font-family:Nunito,sans-serif;font-weight:800;font-size:16px;color:#5b7fa8}
+.cell small{font-size:15px;color:var(--hl);font-weight:bold;word-break:keep-all}
+.cell.cm{padding:6px 0}.cell.cm b{font-size:22px}
+.legend{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}.legend span{font-size:15px;padding:3px 10px;border-radius:99px}
+.shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.slotb{margin:0;min-height:100px;padding:4px;background:#f4f8fc;color:var(--sub);border:3px dashed var(--line);border-radius:16px;font-size:28px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.slotb.has{border-style:solid;border-color:#ffd98a;background:#fff9ec}
+.slotb small{font-size:13px;color:var(--ink);font-weight:bold;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.invg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.inv{margin:0;padding:6px 2px;background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:16px;display:flex;flex-direction:column;align-items:center}
+.inv.sel{border-color:var(--hl);background:#fff3ea}.inv.dim{opacity:.85}
+.inv small{font-size:13px;font-weight:bold;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.shelfmini{display:flex;gap:4px;overflow-x:auto;background:#fff;border-radius:16px;padding:6px 10px;margin-top:8px;box-shadow:0 4px 14px rgba(30,80,130,.06)}
+.dow{display:flex;gap:6px;margin-top:8px}.dow button{margin:0;padding:10px 0;background:#e9eff5;color:var(--ink);flex:1;font-size:20px}.dow button.on{background:var(--accent);color:#fff}
+.today{display:grid;gap:4px;margin-top:6px;font-size:19px}
+.tiles4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.big4{margin:0;padding:16px 8px;background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:22px;box-shadow:0 4px 14px rgba(30,80,130,.07);font-size:24px;line-height:1.25}
+.big4 span{display:block;font-size:44px}.big4 small{display:block;font-weight:normal;font-size:16px;color:var(--sub)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.pad button{margin:0;font-size:28px;padding:12px 0;font-family:Nunito,sans-serif}
+.start-btn{background:linear-gradient(135deg,#ff9a3c,#ff6a3d)!important;color:#fff!important;border:0!important}
+.start-btn small{color:#fff!important}
+.sheet .fb .buddy{margin-top:0}
+.big4{padding:8px 6px!important;font-size:21px!important}.big4 span{font-size:30px!important}
+.today{font-size:17px!important}
+
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
-
 <script>
 /* ===== 단계별 단어 데이터: [단어, 그림, 핵심 소리] ===== */
 const STAGES = [
@@ -338,276 +369,55 @@ const STAGES = [
 const BUDDY = "data:image/jpeg;base64,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";
 const KOM={"apple":"사과","ball":"공","cat":"고양이","dog":"개","egg":"달걀","fish":"물고기","goat":"염소","hat":"모자","ink":"잉크","jam":"잼","kite":"연","lion":"사자","moon":"달","nest":"둥지","octopus":"문어","pig":"돼지","queen":"여왕","rabbit":"토끼","sun":"해","tiger":"호랑이","umbrella":"우산","van":"승합차","watch":"손목시계","yo-yo":"요요","zebra":"얼룩말","bat":"박쥐","map":"지도","bag":"가방","can":"깡통","fan":"부채","bed":"침대","hen":"암탉","pen":"펜","net":"그물","web":"거미줄","leg":"다리","ten":"10(열)","jet":"제트기","pin":"핀","lip":"입술","six":"6(여섯)","zip":"지퍼","kid":"아이","sit":"앉다","bin":"쓰레기통","fox":"여우","box":"상자","pot":"냄비","mop":"대걸레","log":"통나무","hop":"깡충 뛰다","hot":"뜨거운","bus":"버스","cup":"컵","bug":"벌레","nut":"견과","hug":"안아 주다","tub":"욕조","gum":"껌","ship":"배","shell":"조개껍데기","shoe":"신발","chick":"병아리","chair":"의자","cheese":"치즈","chip":"감자칩","thumb":"엄지손가락","three":"3(셋)","bath":"목욕","teeth":"이빨들","whale":"고래","wheel":"바퀴","white":"하얀색","duck":"오리","sock":"양말","rock":"바위","clock":"시계","frog":"개구리","flag":"깃발","clap":"박수 치다","crab":"게","drum":"북","tree":"나무","star":"별","snake":"뱀","sled":"썰매","plant":"식물","grapes":"포도","brush":"솔·칫솔","spoon":"숟가락","swim":"수영하다","block":"블록","globe":"지구본","cake":"케이크","game":"게임","plane":"비행기","gate":"대문","bike":"자전거","five":"5(다섯)","dice":"주사위","rice":"밥·쌀","rose":"장미","bone":"뼈","nose":"코","home":"집","cone":"아이스크림콘","cube":"정육면체·얼음조각","flute":"플루트(피리)","bee":"벌","sheep":"양","feet":"발(두 발)","sea":"바다","leaf":"나뭇잎","peach":"복숭아","tea":"차","boat":"배(보트)","coat":"외투","soap":"비누","rain":"비","snail":"달팽이","train":"기차","paint":"물감","book":"책","foot":"발"};
 const KOW={"apple":"애플","ball":"볼","cat":"캣","dog":"독","egg":"에그","fish":"피쉬","goat":"고트","hat":"햇","ink":"잉크","jam":"잼","kite":"카이트","lion":"라이언","moon":"문","nest":"네스트","octopus":"옥토퍼스","pig":"피그","queen":"퀸","rabbit":"래빗","sun":"썬","tiger":"타이거","umbrella":"엄브렐라","van":"밴","watch":"워치","yo-yo":"요요","zebra":"지브라","bat":"뱃","map":"맵","bag":"백","can":"캔","fan":"팬","bed":"베드","hen":"헨","pen":"펜","net":"넷","web":"웹","leg":"레그","ten":"텐","jet":"젯","pin":"핀","lip":"립","six":"식스","zip":"집","kid":"키드","sit":"싯","bin":"빈","fox":"폭스","box":"박스","pot":"팟","mop":"맙","log":"로그","hop":"합","hot":"핫","bus":"버스","cup":"컵","bug":"버그","nut":"넛","hug":"허그","tub":"텁","gum":"검","ship":"쉽","shell":"쉘","shoe":"슈","chick":"칙","chair":"체어","cheese":"치즈","chip":"칩","thumb":"썸","three":"쓰리","bath":"배쓰","teeth":"티-쓰","whale":"웨일","wheel":"휠","white":"화이트","duck":"덕","sock":"삭","rock":"락","clock":"클락","frog":"프로그","flag":"플래그","clap":"클랩","crab":"크랩","drum":"드럼","tree":"트리","star":"스타","snake":"스네이크","sled":"슬레드","plant":"플랜트","grapes":"그레입스","brush":"브러쉬","spoon":"스푼","swim":"스윔","block":"블락","globe":"글로브","cake":"케이크","game":"게임","plane":"플레인","gate":"게이트","bike":"바이크","five":"파이브","dice":"다이스","rice":"라이스","rose":"로즈","bone":"본","nose":"노즈","home":"홈","cone":"콘","cube":"큐브","flute":"플루트","bee":"비-","sheep":"쉬-입","feet":"피-트","sea":"씨-","leaf":"리-프","peach":"피-치","tea":"티-","boat":"보트","coat":"코트","soap":"소프","rain":"레인","snail":"스네일","train":"트레인","paint":"페인트","book":"북","foot":"풋"};
-function kw(w,big){const m=KOM[w];if(big)return `<span class="kw big">(${KOW[w]||""})</span>${m?`<span class="mean big">뜻: ${m}</span>`:""}`;const k=KOW[w];return (k?`<span class="kw">(${k})</span>`:"")+(m?`<span class="mean">${m}</span>`:"")}
-const DAD_EMAIL = "choinkue@gmail.com";
-const QN = 12; // 퀴즈 문제 수
-const ALL = STAGES.flatMap(s=>s.words.map(w=>({word:w[0],pic:w[1],p:w[2],st:s,key:s.id+":"+w[0]})));
-const BYKEY = Object.fromEntries(ALL.map(x=>[x.key,x]));
-const TYPES = {sound:"소리 찾기", fill:"빈칸 채우기", listen:"듣고 고르기", read:"읽고 고르기", build:"단어 만들기"};
-const LETTERS = "abcdefghijklmnoprstuvwy".split("");
-
-/* ===== 유틸 ===== */
-const $app = document.getElementById("app");
-function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function upper(st,p){const l=label(st,p);return l[0].toUpperCase()+l.slice(1)}
-function both(st,p){return `${esc(label(st,p))}<span class="upc">${esc(upper(st,p))}</span>`}
-function label(st,p){return (st.labels&&st.labels[p])||p}
-function pIndex(x){return x.word.indexOf(x.p)}
-function dayKey(d){d=new Date(d);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
-function fmt(d){d=new Date(d);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`}
-
-/* ===== 소리 ===== */
-let tts=null;
-(async()=>{try{ if(window.claude&&window.claude.use) tts=await window.claude.use("tts"); }catch(e){}})();
-function browserSpeak(text){
-  try{ const s=window.speechSynthesis; if(!s) return; if(s.speaking||s.pending) s.cancel();
-    const u=new SpeechSynthesisUtterance(text); u.lang="en-US"; u.rate=0.75;
-    const vs=s.getVoices().filter(v=>/^en[-_]US/i.test(v.lang)); const v=vs.find(v=>/Samantha|Enhanced|Premium/i.test(v.name+v.voiceURI))||vs[0]; if(v) u.voice=v; s.speak(u);
-  }catch(e){}
-}
-try{ window.speechSynthesis&&speechSynthesis.getVoices(); }catch(e){}
-function speak(text){
-  text=text.replace("-"," ");
-  if(tts){ tts.speak(text,{language:"en",rate:0.8}).catch(()=>browserSpeak(text)); }
-  else browserSpeak(text);
-}
-
-/* ===== 기록 (db + 이 기기) ===== */
-let records=[];
-function loadLocal(){try{return JSON.parse(localStorage.getItem("phonics_records")||"[]")}catch(e){return []}}
-function saveLocal(){try{localStorage.setItem("phonics_records",JSON.stringify(records.slice(0,300)))}catch(e){}}
-function merge(list){
-  const m=new Map(records.map(r=>[r.id,r])); list.forEach(r=>{ if(r&&r.id) m.set(r.id,r) });
-  records=[...m.values()].sort((a,b)=>String(b.at).localeCompare(String(a.at)));
-}
-records=loadLocal();
-async function getDb(){try{ if(!window.claude||!window.claude.use) return null; return await window.claude.use("db"); }catch(e){return null}}
-async function loadDb(){
-  const db=await getDb(); if(!db) return;
-  try{
-    let snap;
-    try{ snap=await db.collection("results").orderBy("at","desc").limit(300).get(); }
-    catch(e){ snap=await db.collection("results").get(); }
-    const docs=Array.isArray(snap)?snap:(snap&&(snap.docs||snap.items))||[];
-    const list=docs.map(d=>{ const data=typeof d.data==="function"?d.data():(d.data||d); return {id:d.id||data.id, ...data}; })
-      .filter(r=>r.stage); // 파닉스 교실 기록만
-    merge(list); saveLocal();
-    const withXP=records.filter(r=>typeof r.xp==="number");
-    if(withXP.length&&String(withXP[0].at)>String(xpState.at||"")){ xpState.xp=withXP[0].xp; saveXP(); }
-    if(view==="home") renderHome();
-  }catch(e){}
-}
-async function saveRecord(r){
-  merge([r]); saveLocal();
-  const db=await getDb(); if(!db) return;
-  try{ const {id,...rest}=r; await db.doc("results/"+id).set(rest); }catch(e){}
-}
-function bestPct(stId){ const rs=records.filter(r=>r.stage===stId&&r.mode==="quiz"); return rs.length?Math.max(...rs.map(r=>Math.round(r.score/r.total*100))):null }
-function starsOf(p){ return p==null?0: p>=90?3: p>=70?2: p>=50?1:0 }
-function starHtml(n){ return "★".repeat(n)+`<span class="off">${"★".repeat(3-n)}</span>` }
-function streak(){
-  const days=new Set(records.map(r=>dayKey(r.at)));
-  let d=new Date(), c=0;
-  if(!days.has(dayKey(d))) d.setDate(d.getDate()-1);
-  while(days.has(dayKey(d))){ c++; d.setDate(d.getDate()-1); }
-  return c;
-}
-function reviewList(){
-  // 최근 기록에서 틀린 단어 모으기. 이후 다시 맞힌 단어는 빼기
-  const status=new Map();
-  [...records].reverse().forEach(r=>{
-    (r.wrong||[]).forEach(w=>{ if(w.key&&BYKEY[w.key]) status.set(w.key,false) });
-    (r.right||[]).forEach(k=>{ if(status.has(k)) status.set(k,true) });
-  });
-  return [...status].filter(([k,ok])=>!ok).map(([k])=>BYKEY[k]);
-}
-
-
-/* ===== 레벨 (경험치) ===== */
-const XP_PER_LV=100, XP_RIGHT=10, XP_TRACE=3, WRONG_RUN=3, XP_PENALTY=20;
-const LV_NAMES=[["🥚","알"],["🐣","아기 병아리"],["🐥","병아리"],["🐤","꼬마 새"],["🐦","파랑새"],["🦜","앵무새"],["🦉","부엉이 박사"],["🦅","독수리"],["🐉","파닉스 용"],["👑","파닉스 왕"]];
-function loadXP(){try{const v=JSON.parse(localStorage.getItem("phonics_xp")||"null");if(v&&typeof v.xp==="number")return v}catch(e){}return {xp:0,wrongRun:0,at:""}}
-let xpState=loadXP();
-function saveXP(){xpState.at=new Date().toISOString();try{localStorage.setItem("phonics_xp",JSON.stringify(xpState))}catch(e){}}
-function lvOf(xp){return Math.floor(Math.max(0,xp)/XP_PER_LV)+1}
-function lvName(l){return LV_NAMES[Math.min(l,LV_NAMES.length)-1]}
-function lvBadge(xp,big){const l=lvOf(xp),[e,n]=lvName(l),cur=xp%XP_PER_LV;
-  return `<div class="lv ${big?"big":""}"><span class="lv-e">${e}</span><div class="lv-b"><div class="lv-t"><b>Lv.${l}</b> ${n}</div><div class="xpbar"><i style="width:${cur}%"></i></div><div class="lv-x">${cur} / ${XP_PER_LV} XP</div></div></div>`}
-let sessXP=0;
-function addXP(d){
-  const old=xpState.xp, before=lvOf(old); xpState.xp=Math.max(0,old+d); saveXP(); sessXP+=xpState.xp-old;
-  const after=lvOf(xpState.xp);
-  if(after>before) toast(`${lvName(after)[0]}`,`레벨 업! Lv.${after}`,`이제 "${lvName(after)[1]}" 레벨이야! 최고야!`,"up");
-  else if(after<before) toast(`${lvName(after)[0]}`,`레벨이 내려갔어… Lv.${after}`,"괜찮아! 천천히 다시 올라가자 💪","down");
-  return after-before;
-}
-function toast(emo,title,sub,kind){
-  const t=document.createElement("div"); t.className="toast "+kind;
-  t.innerHTML=`<div class="toast-in"><div class="toast-e">${emo}</div><img src="${BUDDY}" class="${kind==="up"?"jump":"shake"}"><b>${title}</b><div>${sub}</div></div>`;
-  document.body.appendChild(t); t.onclick=()=>t.remove(); setTimeout(()=>t.remove(),2600);
-  if(kind==="up") speak("Level up!");
-}
-
-/* ===== 화면: 홈 ===== */
-let view="home", curStage=null;
-function buddy(text,cls,anim){return `<div class="buddy ${cls||""}"><img class="${anim||""}" src="${BUDDY}" alt="설훈이 친구"><div class="bubble">${text}</div></div>`}
-function renderHome(){
-  view="home"; try{scrollTo(0,0)}catch(e){}
-  const totalStars=STAGES.reduce((s,st)=>s+starsOf(bestPct(st.id)),0);
-  const todayN=records.filter(r=>dayKey(r.at)===dayKey(new Date())).reduce((s,r)=>s+(r.total||0),0);
-  const rv=reviewList();
-  $app.innerHTML=`
-  <div class="hero"><img class="jump" src="${BUDDY}" alt=""><div style="flex:1"><h1 class="ht">설훈이의 파닉스 교실 🎧</h1>${lvBadge(xpState.xp,true)}</div></div>
-  <div class="stats">
-    <div class="stat"><b>🔥 ${streak()}</b><span>연속 공부일</span></div>
-    <div class="stat"><b style="color:var(--star)">★ ${totalStars}</b><span>모은 별 / ${STAGES.length*3}</span></div>
-    <div class="stat"><b>${todayN}</b><span>오늘 푼 문제</span></div>
-  </div>
-  <div class="sec">📌 STEP 1부터 차례대로 공부해요</div>
-  <div class="stages s3">
-    ${STAGES.map(st=>`<button class="stg" data-s="${st.id}">
-      <div class="n"><b>${st.n}</b></div><div class="e">${st.emoji}</div>
-      <div class="t">${st.title}</div>
-      <div class="stars">${starHtml(starsOf(bestPct(st.id)))}</div></button>`).join("")}
-  </div>
-  ${rv.length?`<button class="ghost" id="rv">🔁 오답 복습 (틀린 단어 ${rv.length}개)</button>`:`<div class="muted center" style="margin-top:10px">🔁 틀린 단어가 생기면 오답 복습이 나와요</div>`}
-  <details class="card">
-    <summary><h2 style="display:inline">📒 최근 공부 기록 ▾</h2></summary>
-    ${records.length?`<ul class="hist">${records.slice(0,8).map(r=>`<li><span>${fmt(r.at)} · ${esc(r.label)}</span><b>${r.score} / ${r.total}</b></li>`).join("")}</ul>`:`<div class="muted">아직 기록이 없어요. STEP 1부터 시작해 볼까?</div>`}
-  </details>`;
-  document.querySelectorAll(".stg").forEach(b=>b.onclick=()=>renderStage(STAGES.find(s=>s.id===b.dataset.s)));
-  const rb=document.getElementById("rv"); if(rb) rb.onclick=()=>startQuiz(shuffle(rv).slice(0,QN),"오답 복습","review",["fill","listen","read","build","sound"]);
-}
-
-/* ===== 화면: 단계 ===== */
-function renderStage(st){
-  view="stage"; try{scrollTo(0,0)}catch(e){} curStage=st;
-  const best=bestPct(st.id);
-  $app.innerHTML=`
-  <div class="qhead"><button class="back" id="bk">←</button><div class="st-title">${st.emoji} STEP ${st.n} ${st.title}</div></div>
-  <div class="card">
-    <div class="stars" style="font-size:20px">${starHtml(starsOf(best))} <span class="muted">${best==null?"아직 문제 풀기 기록 없음":"최고 "+best+"점"}</span></div>
-    <div class="modes">
-      <button class="mode start-btn" id="m0"><span class="ic">🚀</span><span>한 번에 공부하기<small>① 소리 → ② 쓰기 → ③ 문제</small></span></button>
-      <div class="sec">📌 공부 순서</div>
-      <div class="tiles3">
-        <button class="mtile" id="ms"><span class="num">1</span><span class="ic">🔤</span>소리 듣기</button>
-        <button class="mtile" id="mt"><span class="num">2</span><span class="ic">✏️</span>따라 쓰기</button>
-        <button class="mtile" id="m2"><span class="num">3</span><span class="ic">🎯</span>문제 풀기</button>
-      </div>
-      <div class="sec">➕ 더 공부하기</div>
-      <div class="tiles3 t2">
-        <button class="mtile extra" id="m1"><span class="num">4</span><span class="ic">📖</span>단어 배우기</button>
-        <button class="mtile extra" id="m3"><span class="num">5</span><span class="ic">🧩</span>단어 만들기</button>
-      </div>
-    </div>
-  </div>
-  <details class="card"><summary><h2 style="display:inline">이 단계 단어 ${st.words.length}개 ▾</h2></summary>
-    <div class="chips">${st.words.map(w=>`<span class="chip">${w[1]} ${esc(w[0])} ${kw(w[0])}</span>`).join("")}</div></details>`;
-  document.getElementById("bk").onclick=renderHome;
-  const items=ALL.filter(x=>x.st===st);
-  document.getElementById("m1").onclick=()=>renderLearn(items,0);
-  document.getElementById("m0").onclick=()=>renderSounds(st,true);
-  document.getElementById("ms").onclick=()=>renderSounds(st,false);
-  document.getElementById("mt").onclick=()=>renderTrace(st,false);
-  document.getElementById("m2").onclick=()=>quizFor(st);
-  document.getElementById("m3").onclick=()=>startQuiz(shuffle(items.filter(x=>x.word.length<=6&&!x.word.includes("-"))).slice(0,8),`STEP${st.n} 단어 만들기`,"build",["build"],st.id);
-}
-
-
-/* ===== 소리 듣기 ===== */
-function steps(cur){
-  const L=["소리 듣기","따라 쓰기","문제 풀기"];
-  return `<div class="steps">${L.map((t,i)=>`<span class="st ${i+1<cur?"done":i+1===cur?"cur":""}"><b>${i+1<cur?"✓":i+1}</b>${t}</span>`).join('<span class="ar">›</span>')}</div>`;
-}
-function quizFor(st,flow){
-  curStage=st;
-  const items=ALL.filter(x=>x.st===st);
-  startQuiz(shuffle(items).slice(0,QN),`STEP${st.n} ${st.title} 퀴즈`,"quiz",["sound","fill","listen","read","build"],st.id);
-  session.flow=!!flow; renderQ();
-}
-function exampleOf(st,p){ return ALL.find(x=>x.st===st&&x.p===p) }
-function renderSounds(st,flow){
-  view="sounds"; try{scrollTo(0,0)}catch(e){} curStage=st;
-  const pats=[...new Set(st.words.map(w=>w[2]))];
-  const need=Math.min(pats.length,6);
-  const heard=new Set();
-  $app.innerHTML=`
-  <div class="qhead"><button class="back" id="bk">✕</button>${flow?steps(1):`<div class="st-title">① 소리 듣기</div>`}</div>
-  <div class="card">
-    <div class="panel" id="panel"><div class="muted" style="padding:18px 0">글자를 누르면 소리와 한글 발음이 나와요 👇</div></div>
-    <div class="sgrid">${pats.map(p=>{const ex=exampleOf(st,p);return `<button class="sbtn ${label(st,p).length>2?"long":""}" data-p="${esc(p)}">${both(st,p)}<small>${esc(st.ko[p]||"")}</small>${ex?`<span class="sw">${ex.pic} ${esc(ex.word)}</span><span class="sw" style="color:var(--hl);margin-top:0">${KOW[ex.word]||""}</span><span class="sw" style="color:#2e9e6a;margin-top:0">${KOM[ex.word]||""}</span>`:""}</button>`}).join("")}</div>
-    <div class="muted center" id="cnt" style="margin-top:6px">${flow?`글자 ${need}개 이상 들어 보면 다음으로 갈 수 있어 (0/${need})`:""}</div>
-    ${flow?`<button id="go" disabled style="opacity:.4">✏️ 따라 쓰러 가기</button>`:`<button class="soft" id="go">STEP ${st.n}으로 돌아가기</button>`}
-  </div>`;
-  document.getElementById("bk").onclick=()=>renderStage(st);
-  document.querySelectorAll(".sbtn").forEach(b=>b.onclick=()=>{
-    const p=b.dataset.p, ex=exampleOf(st,p);
-    document.querySelectorAll(".sbtn").forEach(x=>x.classList.remove("on"));
-    b.classList.add("on","heard"); heard.add(p);
-    document.getElementById("panel").innerHTML=`
-      <div class="big">${both(st,p)}</div><div class="muted">소문자 · 대문자</div>
-      <div class="ko">= "${esc(st.ko[p]||"")}" 소리</div>
-      ${ex?`<div style="margin-top:6px;font-size:22px">${ex.pic} <span style="font-family:Nunito;font-weight:900;font-size:32px">${hlWord(ex)}</span> ${kw(ex.word)}</div>`:""}`;
-    if(ex) speak(st.n===1?`${p}. ${ex.word}`:`${ex.word}. ${ex.word}`);
-    if(flow){
-      document.getElementById("cnt").textContent=heard.size>=need?"잘했어! 이제 따라 쓰러 가자 ✏️":`글자 ${need}개 이상 들어 보면 다음으로 갈 수 있어 (${heard.size}/${need})`;
-      if(heard.size>=need){ const g=document.getElementById("go"); g.disabled=false; g.style.opacity=1; }
-    }
-  });
-  document.getElementById("go").onclick=()=>{ if(flow){ if(heard.size>=need) renderTrace(st,true); } else renderStage(st); };
-}
-
-/* ===== 따라 쓰기 ===== */
-const REP=5;
-function renderTrace(st,flow){
-  view="trace"; try{scrollTo(0,0)}catch(e){} curStage=st;
-  const items=st.trace, total=items.length*REP;
-  let ti=0, rep=0, done=0;
-  function draw(){
-    try{scrollTo(0,0)}catch(e){}
-    const p=items[ti], ex=exampleOf(st,p), pct=Math.round(done/total*100);
-    $app.innerHTML=`
-    <div class="qhead"><button class="back" id="bk">✕</button><span class="qn">②</span><div class="bar"><i style="width:${pct}%"></i></div><span class="pct">${pct}%</span></div>
-    <div class="card trace-card">
-      <div class="trace-head"><span class="eng">${both(st,p)}</span><span class="ko">"${esc(st.ko[p]||"")}"</span>
-        <button class="speak" id="sp" style="margin:0">🔊</button></div>
-      ${ex?`<div class="center" style="font-size:30px;font-family:Nunito;font-weight:900">${ex.pic} ${hlWord(ex)} ${kw(ex.word)}</div>`:""}
-      <div class="canvas-wrap"><canvas id="cv"></canvas></div>
-      <div class="trace-foot"><div class="dots">${"●".repeat(rep)}<span class="off">${"●".repeat(REP-rep)}</span></div><button class="soft" id="clr">🧽 지우기</button></div>
-      <div id="msg" class="center" style="min-height:32px;font-size:20px;font-weight:bold"></div>
-    </div>`;
-    document.getElementById("bk").onclick=()=>renderStage(st);
-    document.getElementById("sp").onclick=()=>{ if(ex) speak(ex.word) };
-    setupCanvas(label(st,p), ok=>{
-      if(!ok) return false;
-      done++; rep++; addXP(XP_TRACE);
-      document.getElementById("msg").innerHTML=`<span style="color:var(--ok)">잘 썼어! ✨ (${rep}/${REP}) <span class="xpup">+${XP_TRACE} XP</span></span>`;
-      setTimeout(()=>{
-        if(rep>=REP){ ti++; rep=0; }
-        if(ti>=items.length) finish(); else draw();
-      },650);
-      return true;
-    });
-  }
-  function finish(){
-    saveRecord({id:"t"+Date.now(),at:new Date().toISOString(),label:`STEP${st.n} 따라 쓰기`,stage:st.id,mode:"trace",score:total,total});
-    $app.innerHTML=`
-    <div class="bar"><i style="width:100%"></i></div>
-    <div class="card center">
-      ${buddy(flow?"100% 완료! 정말 잘 썼어! 이제 문제 풀어 보자! 🎯":"100% 완료! 정말 잘 썼어! 💯","big","jump")}
-      <div class="score">100%</div>
-      ${flow?`<div class="muted" id="cd">곧 문제가 시작돼요…</div><button id="q">지금 문제 풀기 🎯</button>`:`<button id="q">🎯 퀴즈 풀러 가기</button><button class="soft" id="b">STEP ${st.n}으로</button>`}
-    </div>`;
-    let started=false; const go=()=>{ if(started) return; started=true; quizFor(st,flow); };
-    document.getElementById("q").onclick=go;
-    const b=document.getElementById("b"); if(b) b.onclick=()=>{ started=true; renderStage(st); };
-    if(flow) setTimeout(()=>{ if(view==="trace") go(); },2500);
-  }
-  draw();
-}
-
+/* ===== 초3 추가 단계 ===== */
+STAGES.push(
+ {id:"s7", ko:{ar:"아르",or:"오르",er:"어르",ir:"어르",ur:"어르"}, trace:["ar","or","er","ir","ur"], n:7, title:"r 모음", emoji:"🚗", desc:"car · fork · bird · turtle",
+  soundQ:"이 단어에 들어 있는 철자는?", fillQ:"빈칸에 들어갈 철자는?",
+  words:[["car","🚗","ar"],["star","⭐","ar"],["farm","🚜","ar"],["shark","🦈","ar"],["fork","🍴","or"],["corn","🌽","or"],["horse","🐴","or"],["storm","⛈️","or"],
+   ["tiger","🐯","er"],["sister","👭","er"],["letter","✉️","er"],["flower","🌸","er"],["bird","🐦","ir"],["girl","👧","ir"],["shirt","👕","ir"],["skirt","👗","ir"],
+   ["nurse","👩‍⚕️","ur"],["turtle","🐢","ur"],["purse","👛","ur"],["purple","🟣","ur"]]},
+ {id:"s8", ko:{ow:"아우",ou:"아우",oi:"오이",oy:"오이"}, trace:["ow","ou","oi","oy"], n:8, title:"이중모음", emoji:"🐄", desc:"cow · house · coin · boy",
+  soundQ:"이 단어에 들어 있는 철자는?", fillQ:"빈칸에 들어갈 철자는?",
+  words:[["cow","🐄","ow"],["owl","🦉","ow"],["clown","🤡","ow"],["down","⬇️","ow"],["house","🏠","ou"],["mouse","🐭","ou"],["cloud","☁️","ou"],["mouth","👄","ou"],
+   ["coin","🪙","oi"],["oil","🛢️","oi"],["soil","🌱","oi"],["point","👉","oi"],["boy","👦","oy"],["toy","🧸","oy"],["joy","😄","oy"],["enjoy","🎉","oy"]]},
+ {id:"s9", ko:{ci:"시",ce:"스",gi:"지",ge:"지",kn:"느 (k 묵음)",wr:"르 (w 묵음)",mb:"음 (b 묵음)"}, trace:["ci","ce","gi","ge","kn","wr","mb"], n:9, title:"특별한 소리 (soft c·g, 묵음)", emoji:"🏙️", desc:"city · giant · knee · write",
+  soundQ:"이 단어에 들어 있는 철자는?", fillQ:"빈칸에 들어갈 철자는?",
+  words:[["city","🏙️","ci"],["circle","⭕","ci"],["pencil","✏️","ci"],["cinema","🎬","ci"],["face","😀","ce"],["ice","🧊","ce"],["dance","💃","ce"],["juice","🧃","ce"],
+   ["giant","👹","gi"],["giraffe","🦒","gi"],["ginger","🫚","gi"],["gem","💎","ge"],["cage","🐦","ge"],["page","📄","ge"],["orange","🍊","ge"],
+   ["knee","🦵","kn"],["knife","🔪","kn"],["knot","🪢","kn"],["knock","🚪","kn"],["write","✍️","wr"],["wrong","❌","wr"],["wrap","🎁","wr"],["wrist","⌚","wr"],
+   ["lamb","🐑","mb"],["comb","💇","mb"],["climb","🧗","mb"],["thumb","👍","mb"]]},
+ {id:"s10", ko:{bb:"브",tt:"트",pp:"프",ll:"르",dd:"드"}, trace:["bb","tt","pp","ll","dd"], n:10, title:"두 음절 단어", emoji:"🐰", desc:"rabbit · button · puppy · yellow",
+  soundQ:"이 단어에 들어 있는 겹자음은?", fillQ:"빈칸에 들어갈 겹자음은?",
+  words:[["rabbit","🐰","bb"],["ribbon","🎀","bb"],["bubble","🫧","bb"],["button","🔘","tt"],["kitten","🐱","tt"],["butter","🧈","tt"],
+   ["puppy","🐶","pp"],["apple","🍎","pp"],["happy","😊","pp"],["yellow","💛","ll"],["hello","👋","ll"],["balloon","🎈","ll"],["pillow","🛏️","ll"],
+   ["ladder","🪜","dd"],["puddle","💧","dd"],["middle","🎯","dd"]]},
+ {id:"s11", ko:{ing:"잉",ed:"드·트·이드"}, trace:["ing","ed"], n:11, title:"-ing · -ed 단어", emoji:"🏃", desc:"jumping · played · wanted",
+  soundQ:"이 단어 끝의 철자는?", fillQ:"빈칸에 들어갈 끝 철자는?",
+  words:[["jumping","🦘","ing"],["running","🏃","ing"],["swimming","🏊","ing"],["singing","🎤","ing"],["reading","📖","ing"],
+   ["jumped","🦘","ed"],["played","🎮","ed"],["walked","🚶","ed"],["wanted","🙋","ed"],["cleaned","🧹","ed"]]},
+ {id:"s12", ko:{said:"세드",because:"비커즈",could:"쿠드",would:"우드",friend:"프렌드",people:"피플",want:"원트",were:"워",they:"데이",there:"데어"}, trace:["said","could","friend"], n:12, title:"사이트 워드", emoji:"📚", desc:"said · because · friend",
+  noSort:true, soundQ:"이 단어는?", fillQ:"빈칸에 들어갈 철자는?",
+  words:[["said","💬","said"],["because","🤔","because"],["could","🙆","could"],["would","🙏","would"],["friend","🧑‍🤝‍🧑","friend"],["people","👥","people"],["want","🙋","want"],["were","🕰️","were"],["they","👫","they"],["there","📍","there"]]}
+);
+Object.assign(KOW,{car:"카",star:"스타",farm:"팜",shark:"샤크",fork:"포크",corn:"콘",horse:"호스",storm:"스톰",tiger:"타이거",sister:"시스터",letter:"레터",flower:"플라워",bird:"버드",girl:"걸",shirt:"셔츠",skirt:"스커트",nurse:"너스",turtle:"터틀",purse:"퍼스",purple:"퍼플",
+ cow:"카우",owl:"아울",clown:"클라운",down:"다운",house:"하우스",mouse:"마우스",cloud:"클라우드",mouth:"마우스",coin:"코인",oil:"오일",soil:"소일",point:"포인트",boy:"보이",toy:"토이",joy:"조이",enjoy:"인조이",
+ city:"시티",circle:"서클",pencil:"펜슬",cinema:"시네마",face:"페이스",ice:"아이스",dance:"댄스",juice:"주스",giant:"자이언트",giraffe:"지라프",ginger:"진저",gem:"젬",cage:"케이지",page:"페이지",orange:"오렌지",knee:"니",knife:"나이프",knot:"낫",knock:"낙",write:"라이트",wrong:"롱",wrap:"랩",wrist:"리스트",lamb:"램",comb:"코움",climb:"클라임",
+ rabbit:"래빗",ribbon:"리본",bubble:"버블",button:"버튼",kitten:"키튼",butter:"버터",puppy:"퍼피",happy:"해피",yellow:"옐로우",hello:"헬로",balloon:"벌룬",pillow:"필로우",ladder:"래더",puddle:"퍼들",middle:"미들",
+ jumping:"점핑",running:"러닝",swimming:"스위밍",singing:"싱잉",reading:"리딩",jumped:"점프트",played:"플레이드",walked:"워크트",wanted:"원티드",cleaned:"클린드",
+ said:"세드",because:"비커즈",could:"쿠드",would:"우드",friend:"프렌드",people:"피플",want:"원트",were:"워",they:"데이",there:"데어"});
+Object.assign(KOM,{car:"자동차",star:"별",farm:"농장",shark:"상어",fork:"포크",corn:"옥수수",horse:"말",storm:"폭풍",tiger:"호랑이",sister:"언니·누나·여동생",letter:"편지·글자",flower:"꽃",bird:"새",girl:"소녀",shirt:"셔츠",skirt:"치마",nurse:"간호사",turtle:"거북이",purse:"지갑",purple:"보라색",
+ cow:"소",owl:"부엉이",clown:"광대",down:"아래로",house:"집",mouse:"쥐",cloud:"구름",mouth:"입",coin:"동전",oil:"기름",soil:"흙",point:"가리키다",boy:"소년",toy:"장난감",joy:"기쁨",enjoy:"즐기다",
+ city:"도시",circle:"원",pencil:"연필",cinema:"영화관",face:"얼굴",ice:"얼음",dance:"춤추다",juice:"주스",giant:"거인",giraffe:"기린",ginger:"생강",gem:"보석",cage:"새장",page:"쪽",orange:"오렌지",knee:"무릎",knife:"칼",knot:"매듭",knock:"두드리다",write:"쓰다",wrong:"틀린",wrap:"포장하다",wrist:"손목",lamb:"어린 양",comb:"빗",climb:"오르다",
+ rabbit:"토끼",ribbon:"리본",bubble:"거품",button:"단추",kitten:"새끼 고양이",butter:"버터",puppy:"강아지",happy:"행복한",yellow:"노란색",hello:"안녕",balloon:"풍선",pillow:"베개",ladder:"사다리",puddle:"물웅덩이",middle:"가운데",
+ jumping:"뛰는 중",running:"달리는 중",swimming:"수영하는 중",singing:"노래하는 중",reading:"읽는 중",jumped:"뛰었다",played:"놀았다",walked:"걸었다",wanted:"원했다",cleaned:"청소했다",
+ said:"말했다",because:"왜냐하면",could:"할 수 있었다",would:"~할 것이다",friend:"친구",people:"사람들",want:"원하다",were:"~였다",they:"그들",there:"거기에"});
+/* 가짜 단어 (처음 보는 글자 읽기용): "단계:소리" → 목록 */
+const NW={
+ "s2:a":["zat","vap","jad"],"s2:e":["zet","vep","jeb"],"s2:i":["zit","vip","jib"],"s2:o":["zot","vop","jod"],"s2:u":["zut","vup","jub"],
+ "s3:sh":["shup","shem","shib"],"s3:ch":["chub","chem","chib"],"s3:th":["thup","thib","thom"],"s3:wh":["whem","whib","whut"],"s3:ck":["zack","meck","fick"],
+ "s5:a":["bame","vake","zate"],"s5:i":["zike","bive","nide"],"s5:o":["zote","vope","bome"],"s5:u":["mube","zute","vule"],
+ "s6:ee":["zeep","pleet","meeb"],"s6:ea":["zeap","bleat","meab"],"s6:oa":["zoap","bloat","moab"],"s6:ai":["zaip","blait","maib"],"s6:oo":["zoop","bloot","moob"]
+};
 function setupCanvas(text,onDone){
   const cv=document.getElementById("cv");
   const dpr=window.devicePixelRatio||1, W=cv.clientWidth, H=cv.clientHeight;
@@ -660,198 +470,717 @@ function setupCanvas(text,onDone){
   document.getElementById("clr").onclick=()=>{ if(finished) return; ictx.clearRect(0,0,W,H); document.getElementById("msg").textContent=""; render(); };
   (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(layout);
 }
+/* ===================== 설훈이의 공부방 v2 ===================== */
+const DAD_EMAIL="choinkue@gmail.com";
+const $app=document.getElementById("app");
+const rand=n=>Math.floor(Math.random()*n);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rand(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function pad(n){return String(n).padStart(2,"0")}
+function isoDay(d){d=d||new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+const today=()=>isoDay();
+function kw(w,big){const m=KOM[w];if(big)return `<span class="kw big">(${KOW[w]||""})</span>${m?`<span class="mean big">뜻: ${m}</span>`:""}`;const k=KOW[w];return (k?`<span class="kw">(${k})</span>`:"")+(m?`<span class="mean">${m}</span>`:"")}
+function buddy(text,cls,anim){return `<div class="buddy ${cls||""}"><img class="${anim||""}" src="${BUDDY}" alt="수달 친구"><div class="bubble">${text}</div></div>`}
+function label(st,p){return (st.labels&&st.labels[p])||p}
+function upper(st,p){const l=label(st,p);return l[0].toUpperCase()+l.slice(1)}
+function both(st,p){return `${esc(label(st,p))}<span class="upc">${esc(upper(st,p))}</span>`}
 
-/* ===== 배우기 ===== */
-function hlWord(x){
-  const i=pIndex(x), w=x.word;
-  if(i<0) return esc(w);
-  let html=esc(w.slice(0,i))+`<span class="hl">${esc(x.p)}</span>`+esc(w.slice(i+x.p.length));
-  if(x.st.labels){ // 매직 e: 끝 e도 강조
-    html=esc(w.slice(0,i))+`<span class="hl">${esc(x.p)}</span>`+esc(w.slice(i+1,-1))+`<span class="hl">e</span>`;
-  }
-  return html;
-}
-function renderLearn(items,i){
-  view="learn"; try{scrollTo(0,0)}catch(e){}
-  const x=items[i];
-  $app.innerHTML=`
-  <button class="back" id="bk">← STEP ${x.st.n}</button>
-  <div class="bar"><i style="width:${(i+1)/items.length*100}%"></i></div>
-  <div class="top"><span>${i+1} / ${items.length}</span><span>${esc(x.st.title)}</span></div>
-  <div class="card center">
-    ${buddy(`<span class="hl" style="font-family:Nunito">${esc(label(x.st,x.p))} ${esc(upper(x.st,x.p))}</span> 소리를 잘 들어 봐! 🔊`,"sm")}
-    <div class="pic" style="font-size:110px">${x.pic}</div>
-    <div class="word">${hlWord(x)}</div>${kw(x.word,true)}
-    <button class="speak" id="sp">🔊 듣고 따라 읽기</button>
-    <div class="row">
-      <button class="soft" id="pv" ${i===0?"disabled style='opacity:.4'":""}>← 이전</button>
-      <button id="nx">${i+1<items.length?"다음 →":"다 배웠어! 🎉"}</button>
-    </div>
-  </div>`;
-  document.getElementById("bk").onclick=()=>renderStage(x.st);
-  document.getElementById("sp").onclick=()=>speak(x.word);
-  document.getElementById("pv").onclick=()=>{ if(i>0) renderLearn(items,i-1) };
-  document.getElementById("nx").onclick=()=>{ if(i+1<items.length){ renderLearn(items,i+1); speak(items[i+1].word); } else renderStage(x.st) };
-}
+/* ---------- 저장 ---------- */
+const LS="seolhun_v2";
+function defaults(){return {mast:{},conf:{},due:{},days:{},xp:0,dayxp:{},names:{},shelf:[0,0,0,0,0,0,0,0],sched:{},dict:[],notes:[],meal:{},hist:[],seen:{},mathBest:{}}}
+function loadS(){try{const v=JSON.parse(localStorage.getItem(LS)||"{}");return Object.assign(defaults(),v)}catch(e){return defaults()}}
+let S=loadS();
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+function D(){return S.days[today()]||(S.days[today()]={})}
 
-/* ===== 문제 만들기 ===== */
-function makeQ(x,type){
-  const st=x.st, pats=[...new Set(st.words.map(w=>w[2]))].filter(p=>p!==x.p);
-  const nOpt=Math.min(4,pats.length+1);
-  if(type==="sound"||type==="fill"){
-    const opts=shuffle([x.p,...shuffle(pats).slice(0,nOpt-1)]);
-    return {x,type,answer:x.p,opts,show:o=>type==="sound"?label(st,o):o};
-  }
-  if(type==="listen"||type==="read"){
-    const others=shuffle(st.words.filter(w=>w[0]!==x.word&&w[1]!==x.pic)).slice(0,2);
-    if(type==="listen") return {x,type,answer:x.word,opts:shuffle([x.word,...others.map(w=>w[0])]),show:o=>o};
-    return {x,type,answer:x.pic,opts:shuffle([x.pic,...others.map(w=>w[1])]),show:o=>o};
-  }
-  // build
-  const letters=x.word.split("");
-  const extra=shuffle(LETTERS.filter(l=>!letters.includes(l))).slice(0,2);
-  return {x,type,answer:x.word,tiles:shuffle([...letters,...extra]),built:[]};
+/* ---------- 소리(말하기) ---------- */
+let tts=null;
+(async()=>{try{ if(window.claude&&window.claude.use) tts=await window.claude.use("tts"); }catch(e){}})();
+function browserSpeak(text,lang,rate){
+  try{ const s=window.speechSynthesis; if(!s) return; if(s.speaking||s.pending) s.cancel();
+    const u=new SpeechSynthesisUtterance(text); u.lang=lang||"en-US"; u.rate=rate||0.75;
+    const re=new RegExp("^"+(lang||"en-US").replace("_","[-_]"),"i");
+    const vs=s.getVoices().filter(v=>re.test(v.lang)); const v=vs.find(v=>/Samantha|Enhanced|Premium|Yuna/i.test(v.name+v.voiceURI))||vs[0]; if(v) u.voice=v; s.speak(u);
+  }catch(e){}
 }
-function pickType(x,types){
-  let ok=types.filter(t=>!(t==="build"&&(x.word.length>6||x.word.includes("-"))));
-  return ok[Math.floor(Math.random()*ok.length)];
-}
+try{ window.speechSynthesis&&speechSynthesis.getVoices(); }catch(e){}
+function speak(text){ text=String(text).replace("-"," ");
+  if(tts){ tts.speak(text,{language:"en",rate:0.8}).catch(()=>browserSpeak(text)); } else browserSpeak(text); }
+function speakKo(text){ if(tts){ tts.speak(text,{language:"ko",rate:0.8}).catch(()=>browserSpeak(text,"ko-KR",0.8)); } else browserSpeak(text,"ko-KR",0.8); }
 
-/* ===== 퀴즈 진행 ===== */
-let qs=[], idx=0, results=[], answered=false, session=null;
-function startQuiz(items,label_,mode,types,stage){
-  session={label:label_,mode,types,stage:stage||"review",items}; sessXP=0;
-  qs=items.map(x=>makeQ(x,pickType(x,types))); idx=0; results=[];
-  renderQ();
+/* ---------- 소리 목록 ---------- */
+const ALL=STAGES.flatMap(s=>s.words.map(w=>({word:w[0],pic:w[1],p:w[2],st:s,key:s.id+":"+w[0]})));
+const SOUNDS={};
+ALL.forEach(x=>{const k=x.st.id+":"+x.p;(SOUNDS[k]||(SOUNDS[k]={k,st:x.st,p:x.p,words:[]})).words.push(x)});
+const SKEYS=Object.keys(SOUNDS);
+const stOf=sk=>SOUNDS[sk].st, pOf=sk=>SOUNDS[sk].p;
+function slabel(sk){const s=SOUNDS[sk];return label(s.st,s.p)}
+function sname(sk){const s=SOUNDS[sk];return `${label(s.st,s.p)} (${s.st.ko[s.p]||""})`}
+function mval(k){const m=S.mast[k];return m&&m.s!=null?m.s:null}
+function upd(k,ok){const m=S.mast[k]||(S.mast[k]={s:null,n:0});m.s=m.s==null?(ok?0.7:0.25):0.6*m.s+0.4*(ok?1:0);m.n++;m.last=Date.now()}
+function mcolor(k){const v=mval(k);return v==null?"#eef2f6":v>=0.8?"#bfe8d1":v>=0.5?"#ffe9a8":"#ffc6c6"}
+function dueIn(k,days){const d=new Date();d.setDate(d.getDate()+days);S.due[k]=isoDay(d)}
+
+/* ---------- 레벨·XP·로봇 ---------- */
+const XPL=100, LMAX=80, DAY_CAP=100;
+const lvOf=xp=>Math.min(LMAX,1+Math.floor(xp/XPL));
+const RC=[["파랑","#2f80ed"],["초록","#2e9e6a"],["검정","#3d4452"],["빨강","#e04b4b"],["보라","#8a5be0"],["금색","#e8b42a"],["은색","#aab4c2"],["분홍","#f06fa8"]];
+const PARTS=["다리","몸통","왼팔","오른팔","왼쪽 날개","오른쪽 날개","왼쪽 어깨","오른쪽 어깨","가슴 장식","투구"];
+function shade(h,p){const n=parseInt(h.slice(1),16);let r=(n>>16)+p,g=(n>>8&255)+p,b=(n&255)+p;const c=v=>Math.max(0,Math.min(255,v));return "#"+((1<<24)+(c(r)<<16)+(c(g)<<8)+c(b)).toString(16).slice(1)}
+function robotSVG(r,parts,w,ghost){
+  const c=RC[r-1][1], d=shade(c,-45), l=shade(c,40), g="#ffd34e";
+  const P={
+   5:`<path d="M30 58 L6 44 L8 78 L30 86Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   6:`<path d="M70 58 L94 44 L92 78 L70 86Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   3:`<rect x="12" y="56" width="14" height="36" rx="6" fill="${c}" stroke="${d}" stroke-width="2"/><circle cx="19" cy="94" r="6" fill="#fff" stroke="${d}" stroke-width="2"/>`,
+   4:`<rect x="74" y="56" width="14" height="36" rx="6" fill="${c}" stroke="${d}" stroke-width="2"/><circle cx="81" cy="94" r="6" fill="#fff" stroke="${d}" stroke-width="2"/>`,
+   1:`<rect x="32" y="98" width="15" height="24" rx="4" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="53" y="98" width="15" height="24" rx="4" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="28" y="118" width="22" height="9" rx="4" fill="${d}"/><rect x="50" y="118" width="22" height="9" rx="4" fill="${d}"/>`,
+   2:`<rect x="30" y="54" width="40" height="48" rx="8" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="38" y="90" width="24" height="8" rx="3" fill="${d}" opacity=".35"/>`,
+   7:`<circle cx="24" cy="56" r="9" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   8:`<circle cx="76" cy="56" r="9" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   9:`<path d="M50 62 L58 72 L50 82 L42 72Z" fill="${g}" stroke="${d}" stroke-width="2"/>`,
+   10:`<path d="M50 4 L44 20 L56 20Z" fill="${g}" stroke="${d}" stroke-width="1.5"/><rect x="33" y="18" width="34" height="34" rx="11" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="38" y="30" width="24" height="9" rx="4" fill="#fff"/><circle cx="45" cy="34.5" r="2.4" fill="${d}"/><circle cx="55" cy="34.5" r="2.4" fill="${d}"/><rect x="42" y="44" width="16" height="3" rx="1.5" fill="${d}" opacity=".5"/>`
+  };
+  let out="";
+  [5,6,3,4,1,2,7,8,9,10].forEach(i=>{
+    if(i<=parts) out+=P[i];
+    else if(ghost) out+=`<g opacity=".28" style="filter:grayscale(1)">${P[i]}</g>`;
+  });
+  return `<svg viewBox="0 0 100 130" width="${w||80}" height="${Math.round((w||80)*1.3)}" xmlns="http://www.w3.org/2000/svg" role="img">${out}</svg>`;
 }
-function renderQ(){
-  view="quiz"; try{scrollTo(0,0)}catch(e){} answered=false;
-  const q=qs[idx], x=q.x, st=x.st;
-  let body="";
-  if(q.type==="sound"){
-    body=`<div class="q">${st.soundQ}</div><div class="pic">${x.pic}</div><button class="speak" id="sp">🔊 듣기</button>`;
-  }else if(q.type==="fill"){
-    const i=pIndex(x), w=x.word;
-    body=`<div class="q">${st.fillQ}</div><div class="pic">${x.pic}</div>
-      <div class="word">${esc(w.slice(0,i))}<span class="blank">?</span>${esc(w.slice(i+x.p.length))}</div><button class="speak" id="sp">🔊 듣기</button>`;
-  }else if(q.type==="listen"){
-    body=`<div class="q">🔊 잘 듣고 맞는 단어를 골라 봐!</div><div class="pic">🎧</div><button class="speak" id="sp">🔊 다시 듣기</button>`;
-  }else if(q.type==="read"){
-    body=`<div class="q">이 단어를 읽고 맞는 그림을 골라 봐!</div><div class="word" style="margin:14px 0">${esc(x.word)}</div>
-      <div class="muted center">소리 내서 읽어 보고 골라 봐</div>`;
+function robotInfo(L){return {r:Math.min(8,Math.ceil(L/10)),part:((L-1)%10)+1}}
+function robotName(r){return S.names[r]||`${r}호 ${RC[r-1][0]}`}
+function doneRobots(L){return Math.floor(L/10)}
+function addXP(n){
+  const d=today(), cur=S.dayxp[d]||0, g=Math.max(0,Math.min(n,DAY_CAP-cur));
+  const oldL=lvOf(S.xp); S.xp+=g; S.dayxp[d]=cur+g; save();
+  const newL=lvOf(S.xp);
+  return {gain:g,oldL,newL};
+}
+function modal(html,cls){
+  const m=document.createElement("div"); m.className="toast "+(cls||""); m.innerHTML=`<div class="toast-in">${html}</div>`;
+  document.body.appendChild(m); return m;
+}
+function levelUpModal(newL,then){
+  const {r,part}=robotInfo(newL);
+  if(part===10||newL%10===0){
+    const m=modal(`<div style="font-size:46px">🎉</div>${robotSVG(r,10,120,false)}<b>${r}호 로봇 완성!</b><div class="muted">레벨 ${newL} · 투구까지 씌웠어요</div><input id="nm" maxlength="8" placeholder="이름을 지어 줘 (8글자)" value="${esc(S.names[r]||"")}" style="width:100%;font-size:22px;padding:10px;border-radius:12px;border:2px solid var(--line);margin-top:10px;font-family:inherit;text-align:center"><button id="ok">이름 정하기</button><button class="soft" id="later">나중에 지을래요</button>`,"up");
+    m.querySelector("#ok").onclick=()=>{const v=m.querySelector("#nm").value.trim();if(v){S.names[r]=v;save()}m.remove();then&&then()};
+    m.querySelector("#later").onclick=()=>{m.remove();then&&then()};
   }else{
-    body=`<div class="q">그림을 보고 글자 블록으로 단어를 만들어 봐!</div><div class="pic">${x.pic}</div>
-      <button class="speak" id="sp">🔊 듣기</button>
-      <div class="slots" id="slots"></div><div class="tiles" id="tiles"></div>
-      <div class="row"><button class="soft" id="undo">⌫ 지우기</button></div>`;
+    const m=modal(`<div class="toast-e">⬆️</div><b>레벨 ${newL}!</b>${robotSVG(r,part,110,true)}<div class="muted"><b style="display:inline;font-size:20px">${PARTS[part-1]}</b> 부품을 얻었어요! (${r}호 ${part}/10)</div><button id="ok">좋아요!</button>`,"up");
+    m.querySelector("#ok").onclick=()=>{m.remove();then&&then()};
   }
-  const n=q.opts?q.opts.length:0;
-  $app.innerHTML=`
-  <div class="qhead"><button class="back" id="bk">✕</button><div class="bar"><i style="width:${idx/qs.length*100}%"></i></div><span class="qn">${idx+1}/${qs.length} · ✅${results.filter(r=>r.ok).length} · Lv.${lvOf(xpState.xp)}</span></div>
-  <div class="card qcard">
-    <span class="tag">${session.flow?"③ ":""}${TYPES[q.type]}</span>
-    ${body}
-    ${q.opts?`<div class="opts c${q.type==="listen"?1:n}">${q.opts.map((o,i)=>`<button class="opt ${q.type==="read"?"emo":""} ${q.type==="listen"||String(q.show(o)).length>2?"small":""}" data-i="${i}">${esc(q.show(o))}</button>`).join("")}</div>`:""}
-  </div>
-  <div class="sheet hidden" id="sheet"><div class="fb" id="fb"></div>
-    <button id="next">${idx+1<qs.length?"다음 문제 →":"결과 보기"}</button></div>`;
-  document.getElementById("bk").onclick=()=>{ session.stage!=="review"&&curStage?renderStage(curStage):renderHome() };
-  const sp=document.getElementById("sp"); if(sp) sp.onclick=()=>speak(x.word);
-  if(q.type==="listen") speak(x.word);
-  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>choose(q.opts[+b.dataset.i],b));
-  document.getElementById("next").onclick=next;
-  if(q.type==="build") renderBuild();
 }
-function renderBuild(){
-  const q=qs[idx];
-  document.getElementById("slots").innerHTML=q.x.word.split("").map((_,i)=>`<div class="slot">${esc(q.built[i]!=null?q.tiles[q.built[i]]:"")}</div>`).join("");
-  document.getElementById("tiles").innerHTML=q.tiles.map((t,i)=>`<button class="tile ${q.built.includes(i)?"used":""}" data-i="${i}">${esc(t)}</button>`).join("");
-  document.querySelectorAll(".tile").forEach(b=>b.onclick=()=>{
-    if(answered) return; const i=+b.dataset.i; if(q.built.includes(i)) return;
-    q.built.push(i); renderBuild();
-    if(q.built.length===q.x.word.length) choose(q.built.map(j=>q.tiles[j]).join(""),null);
-  });
-  document.getElementById("undo").onclick=()=>{ if(answered) return; q.built.pop(); renderBuild(); };
+function lvBar(){
+  const L=lvOf(S.xp), cur=L>=LMAX?XPL:S.xp%XPL, {r,part}=robotInfo(L), td=S.dayxp[today()]||0;
+  return `<div class="lv"><div style="flex:none">${robotSVG(r,part,46,true)}</div><div class="lv-b"><div class="lv-t">레벨 <b>${L}</b> · ${r}호 ${RC[r-1][0]} ${part}/10</div><div class="xpbar"><i style="width:${cur/XPL*100}%"></i></div><div class="lv-x">다음 부품까지 ${XPL-cur} XP · 오늘 ${td}/${DAY_CAP}</div></div></div>`;
 }
-function choose(mine,btn){
-  if(answered) return; answered=true;
-  const q=qs[idx], x=q.x, ok=mine===q.answer;
-  if(q.opts) document.querySelectorAll(".opt").forEach(b=>{
-    const v=q.opts[+b.dataset.i];
-    if(v===q.answer) b.classList.add("right"); else if(b===btn) b.classList.add("wrong");
-    b.disabled=true;
-  });
-  results.push({key:x.key,word:x.word,pic:x.pic,type:q.type,answer:q.show?q.show(q.answer):q.answer,mine:q.show?q.show(mine):mine,ok});
-  const fb=document.getElementById("fb");
-  fb.className="fb "+(ok?"ok":"no");
-  const cheers=["정답! 최고야! 🎉","우와, 맞았어! 👏","잘했어 설훈아! ⭐","딩동댕! 🎶"];
-  let xpMsg="";
-  if(ok){ xpState.wrongRun=0; addXP(XP_RIGHT); xpMsg=`<span class="xpup">+${XP_RIGHT} XP</span>`; }
-  else{ xpState.wrongRun=(xpState.wrongRun||0)+1;
-    if(xpState.wrongRun>=WRONG_RUN){ xpState.wrongRun=0; addXP(-XP_PENALTY); xpMsg=`<span class="xpdown">${WRONG_RUN}번 연속 틀려서 -${XP_PENALTY} XP</span>`; }
-    else { saveXP(); xpMsg=xpState.wrongRun===WRONG_RUN-1?`<span class="xpwarn">⚠️ 한 번 더 틀리면 XP가 줄어요!</span>`:""; }
+/* ---------- 문제 만들기 (그림 없이) ---------- */
+function hlWord(x){
+  const w=x.word,i=w.indexOf(x.p); if(i<0) return esc(w);
+  if(x.st.labels) return esc(w.slice(0,i))+`<span class="hl">${esc(x.p)}</span>`+esc(w.slice(i+1,-1))+`<span class="hl">e</span>`;
+  return esc(w.slice(0,i))+`<span class="hl">${esc(x.p)}</span>`+esc(w.slice(i+x.p.length));
+}
+function pickWord(sk,avoid){const ws=SOUNDS[sk].words,f=ws.filter(x=>!avoid.has(x.word));const a=f.length?f:ws;return a[rand(a.length)]}
+function distractWords(x,n){
+  const c=ALL.filter(y=>y.st===x.st&&y.p!==x.p&&y.word!==x.word);
+  const sorted=shuffle(c).sort((a,b)=>Math.abs(a.word.length-x.word.length)-Math.abs(b.word.length-x.word.length)+(Math.random()-.5)*2.5);
+  const out=[];sorted.forEach(y=>{if(out.length<n&&!out.includes(y.word))out.push(y.word)});return out;
+}
+function patOpts(st,p,n){const pats=[...new Set(st.words.map(w=>w[2]))].filter(q=>q!==p);return shuffle([p,...shuffle(pats).slice(0,(n||3)-1)])}
+function genQ(sk,avoid,type){
+  const sd=SOUNDS[sk],st=sd.st;
+  if(!type){const ts=["dictate","listen","sortp"];if(st.noSort)ts.splice(2,1);if(NW[sk]){ts.push("nonword","nonword")}type=ts[rand(ts.length)]}
+  if(type==="nonword"){
+    const nw=NW[sk][rand(NW[sk].length)];
+    return {t:"nonword",sk,x:{word:nw,p:sd.p,st,pic:"❓"},word:nw,opts:patOpts(st,sd.p)};
   }
-  fb.innerHTML= ok ? buddy(`<b>${cheers[Math.floor(Math.random()*cheers.length)]}</b> ${xpMsg}`,"sm","jump")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`
-    : buddy(`<b>괜찮아! 정답은 "${esc(q.show?q.show(q.answer):q.answer)}"</b> ${xpMsg}`,"sm","shake")+`<div class="ans">${x.pic} <span>${hlWord(x)}</span> ${kw(x.word)}</div>`;
-  speak(x.word);
-  document.getElementById("sheet").classList.remove("hidden"); document.getElementById("next").focus();
+  const x=pickWord(sk,avoid);avoid.add(x.word);
+  if(type==="dictate"){
+    const L=x.word.split(""),ex=shuffle("abcdefghiklmnoprstuw".split("").filter(c=>!L.includes(c))).slice(0,2);
+    return {t:"dictate",sk,x,word:x.word,tiles:shuffle([...L,...ex])};
+  }
+  if(type==="listen") return {t:"listen",sk,x,word:x.word,opts:shuffle([x.word,...distractWords(x,2)])};
+  return {t:"sortp",sk,x,word:x.word,opts:patOpts(st,sd.p)};
 }
-function next(){ idx++; if(idx<qs.length) renderQ(); else renderResult(); }
+const TLABEL={dictate:"듣고 쓰기",listen:"듣고 고르기",sortp:"소리 찾기",nonword:"가짜 단어 읽기"};
 
-/* ===== 결과 ===== */
-function resultText(r){
-  let t=`[설훈 파닉스 교실] ${fmt(r.at)} (${r.label})\n점수: ${r.score} / ${r.total} (${Math.round(r.score/r.total*100)}점)\n레벨: Lv.${lvOf(r.xp||0)} ${lvName(lvOf(r.xp||0)).join(" ")} (${r.xp||0} XP, 이번 ${r.gained>=0?"+":""}${r.gained||0})\n`;
-  const wrong=results.filter(x=>!x.ok);
-  if(wrong.length) t+=`\n틀린 문제 ${wrong.length}개\n`+wrong.map((w,i)=>`${i+1}. ${w.word} ${w.pic} - ${TYPES[w.type]} (정답: ${w.answer} / 고른 답: ${w.mine})`).join("\n");
-  else t+="\n모두 맞았어요! 💯";
-  return t;
+/* 문제 한 개 보여 주기. mode: normal | guided */
+function qCard(q,o,cb){
+  let answered=false,tries=0,chosen=[];
+  const x=q.x,st=x.st;
+  const head=o.head||"";
+  let body="";
+  if(q.t==="dictate"){
+    body=`<div class="tag">${TLABEL.dictate}</div><div class="q">들려주는 단어를 만들어 보세요</div>
+    <button class="speak" id="sp">🔊 다시 듣기</button>
+    <div class="slots" id="slots">${q.word.split("").map(()=>`<div class="slot"></div>`).join("")}</div>
+    <div class="tiles" id="tiles">${q.tiles.map((c,i)=>`<button class="tile" data-i="${i}">${c}</button>`).join("")}</div>
+    <div class="row"><button class="soft" id="bs">⌫ 지우기</button></div>`;
+  }else if(q.t==="listen"){
+    body=`<div class="tag">${TLABEL.listen}</div><div class="q">${o.mode==="guided"?"듣고 맞는 단어를 눌러요 (주황색이 이번 소리)":"듣고 맞는 철자를 고르세요"}</div>
+    <button class="speak" id="sp" style="font-size:28px;padding:14px 30px">🔊 듣기</button>
+    <div class="opts c1">${q.opts.map(w=>{const y=ALL.find(a=>a.word===w&&a.st===st)||{word:w,p:"",st};return `<button class="opt" data-v="${esc(w)}">${o.mode==="guided"&&y.p?hlWord(y):esc(w)}</button>`}).join("")}</div>`;
+  }else{
+    const nw=q.t==="nonword";
+    body=`<div class="tag">${nw?TLABEL.nonword:TLABEL.sortp}</div><div class="q">${nw?"처음 보는 글자예요! 어떤 소리가 들어 있을까?":"이 단어에 들어 있는 소리(철자)는?"}</div>
+    <div class="word">${esc(q.word)}</div><button class="speak" id="sp">🔊 ${nw?"읽어 줄까요?":"듣기"}</button>
+    <div class="opts c3">${q.opts.map(p=>`<button class="opt small" data-v="${esc(p)}">${both(st,p)}</button>`).join("")}</div>`;
+  }
+  $app.innerHTML=`${head}<div class="card qcard">${body}</div><div id="sheet"></div>`;
+  const bk=document.getElementById("bk"); if(bk) bk.onclick=()=>{ if(confirm("그만할까요? (오늘 코스는 이어서 할 수 있어요)")) o.onExit&&o.onExit() };
+  const sp=document.getElementById("sp"); if(sp) sp.onclick=()=>speak(q.word);
+  if(q.t==="dictate"||q.t==="listen") setTimeout(()=>speak(q.word),350);
+
+  function ansText(){return q.t==="dictate"||q.t==="listen"?esc(q.word):both(st,x.p)}
+  function judge(ok,mine,btn){
+    if(answered) return; tries++;
+    if(o.mode==="guided"){
+      if(ok){answered=true;if(btn)btn.classList.add("right");speak(q.word);setTimeout(()=>cb(true,tries===1),900)}
+      else{ if(btn){btn.classList.add("wrong");btn.disabled=true} const s=document.getElementById("sheet");s.innerHTML=`<div class="sheet"><div class="fb no" style="display:block">${buddy("아깝다! 다시 한 번 들어 보자 🎧","sm")}</div></div>`;setTimeout(()=>{const e=document.getElementById("sheet");if(e)e.innerHTML=""},1300);speak(q.word) }
+      return;
+    }
+    answered=true;
+    if(btn) btn.classList.add(ok?"right":"wrong");
+    if(ok){ if(btn) btn.classList.add("jump"); setTimeout(()=>cb(true,mine),750); return; }
+    speak(q.word);
+    if(q.t!=="dictate"){document.querySelectorAll(".opt").forEach(b=>{if(b.dataset.v===(q.t==="listen"?q.word:x.p)) b.classList.add("right")})}
+    document.getElementById("sheet").innerHTML=`<div class="sheet"><div class="fb no" style="display:block">${buddy("괜찮아, 이 소리는 이따 같이 공부하자!","sm","shake")}
+      <div class="ans">정답: <span>${ansText()}</span> ${q.t==="dictate"||q.t==="listen"?kw(q.word):""}</div></div><button id="nx">다음 →</button></div>`;
+    document.getElementById("nx").onclick=()=>cb(false,mine);
+  }
+  if(q.t==="dictate"){
+    const slots=[...document.querySelectorAll(".slot")];
+    function draw(){slots.forEach((s,i)=>s.textContent=chosen[i]?chosen[i].c:"")}
+    document.querySelectorAll(".tile").forEach(t=>t.onclick=()=>{
+      if(answered||t.classList.contains("used")||chosen.length>=q.word.length) return;
+      t.classList.add("used"); chosen.push({c:t.textContent,el:t}); draw();
+      if(chosen.length===q.word.length){const mine=chosen.map(a=>a.c).join("");const ok=mine===q.word;slots.forEach(s=>s.style.color=ok?"var(--ok)":"var(--no)");judge(ok,mine,null)}
+    });
+    document.getElementById("bs").onclick=()=>{if(answered)return;const l=chosen.pop();if(l)l.el.classList.remove("used");draw()};
+  }else{
+    document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+      const v=b.dataset.v; const ok=q.t==="listen"?v===q.word:v===x.p; judge(ok,v,b);
+    });
+  }
 }
-function renderResult(){
-  view="result"; try{scrollTo(0,0)}catch(e){}
-  const ok=results.filter(r=>r.ok).length, wrong=results.filter(r=>!r.ok);
-  const pct=Math.round(ok/results.length*100), stars=starsOf(pct);
-  const rec={id:"p"+Date.now(),at:new Date().toISOString(),label:session.label,stage:session.stage,mode:session.mode,score:ok,total:results.length,
-    wrong:wrong.map(w=>({key:w.key,word:w.word,type:w.type,answer:w.answer,mine:w.mine})),right:results.filter(r=>r.ok).map(r=>r.key),xp:xpState.xp,gained:sessXP};
-  saveRecord(rec);
-  const msg=pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 것만 다시 해 보자! 🔁";
+/* 여러 문제 연속 */
+function runQs(qs,o,done){
+  let i=0,res=[];
+  const mk=()=>`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">${esc(o.tag||"")}</span><div class="bar"><i style="width:${i/qs.length*100}%"></i></div><span class="qn">${i+1}/${qs.length}</span></div>`;
+  function show(){
+    if(i>=qs.length) return done(res);
+    const q=qs[i];
+    qCard(q,{head:mk(),mode:o.mode||"normal",onExit:o.onExit},(ok,mine)=>{
+      res.push({sk:q.sk,x:q.x,type:q.t,ok,mine,q});
+      if(o.mast&&(o.mode||"normal")==="normal"){upd(q.sk,ok);if(!ok&&q.t!=="dictate"&&q.t!=="listen"&&mine)S.conf[q.sk]=mine;save()}
+      i++;show();
+    });
+  }
+  show();
+}
+
+/* ---------- 소리 고르기 (오늘의 시작 체크) ---------- */
+function pickKeys(n,exclude){
+  exclude=exclude||[];
+  const keys=SKEYS.filter(k=>!exclude.includes(k));
+  const seen=keys.filter(k=>mval(k)!=null);
+  if(seen.length<6){ // 처음: 여러 단계에서 골고루 (진단)
+    const by={};shuffle(keys).forEach(k=>{(by[k.split(":")[0]]=by[k.split(":")[0]]||[]).push(k)});
+    const out=[];let more=true;while(out.length<n&&more){more=false;for(const s of Object.keys(by)){if(by[s].length&&out.length<n){out.push(by[s].shift());more=true}}}
+    return out;
+  }
+  const out=[];const add=a=>a.forEach(k=>{if(out.length<n&&!out.includes(k))out.push(k)});
+  add(keys.filter(k=>S.due[k]&&S.due[k]<=today()).slice(0,3));
+  add(seen.slice().sort((a,b)=>mval(a)-mval(b)).slice(0,5-out.length>0?5:0));
+  const unseenOrOld=keys.filter(k=>!out.includes(k)).sort((a,b)=>((S.mast[a]&&S.mast[a].last)||0)-((S.mast[b]&&S.mast[b].last)||0));
+  add(unseenOrOld.slice(0,3));
+  add(seen.slice().sort((a,b)=>mval(b)-mval(a)).slice(0,2));
+  add(shuffle(keys));
+  return shuffle(out);
+}
+function buildQs(keys,avoid){return keys.map(k=>genQ(k,avoid))}
+
+/* ---------- 코스 ---------- */
+function phaseNow(){const d=D();return !d.start?"start":!d.studyDone?"study":!d.end?"end":!d.fixDone?"fix":"done"}
+function renderCourse(){
+  const d=D(),ph=phaseNow(),L=lvOf(S.xp);
+  const steps=[["start","① 시작 체크","10문제 · 4분"],["study","② 약한 소리 공부","15분"],["end","③ 마무리 체크","10문제 · 5분"],["fix","④ 틀린 것 정리","4분"]];
+  const idx=["start","study","end","fix","done"].indexOf(ph);
   $app.innerHTML=`
-  <div class="card center">
-    ${buddy(msg,"sm",pct>=60?"jump":"")}
-    <div class="muted" style="font-size:16px">${fmt(rec.at)} · ${esc(rec.label)}</div>
-    <div class="gain ${sessXP<0?"neg":""}">이번 공부 ${sessXP>=0?"+":""}${sessXP} XP</div>
-    ${lvBadge(xpState.xp)}
-    <div class="score-row">${session.mode==="quiz"?`<span class="big-stars">${starHtml(stars)}</span>`:""}<span class="score">${ok}/${results.length}</span><b>${pct}점</b></div>
-  </div>
-  ${wrong.length?`<div class="card">
-    <b>틀린 문제 ${wrong.length}개</b> <span class="muted">📸 캡처해서 아빠한테</span>
-    <div class="wl">${wrong.map(r=>`<div><b>${r.pic} ${esc(r.word)}</b> <span class="muted">${TYPES[r.type]}</span> 정답 <b style="color:var(--ok)">${esc(r.answer)}</b> · <span class="mine">${esc(r.mine)}</span></div>`).join("")}</div>
-    </div>`:""}
-  <div class="row r2"><a class="btn mail" id="mail" href="mailto:${DAD_EMAIL}?subject=${encodeURIComponent(`[설훈 파닉스] ${fmt(rec.at)} ${rec.label} ${ok}/${results.length}`)}&body=${encodeURIComponent(resultText(rec))}">📧 아빠한테<br>메일</a><button class="btn sms" id="sms">💬 아빠한테<br>문자</button></div>
-  <div class="row r3">${wrong.length?`<button class="ghost" id="retry">🔁 틀린 것<br>다시 (${wrong.length})</button>`:""}<button class="soft" id="copy">📋 결과<br>복사</button><button class="soft" id="home">🏠 처음<br>화면</button></div>
-  <div class="copied" id="cp"></div>`;
-  document.getElementById("mail").addEventListener("click",()=>{
-    document.getElementById("cp").textContent="메일 앱이 열리면 '보내기'를 눌러줘 📨";
-    setTimeout(()=>{ if(!document.hidden) document.getElementById("cp").textContent="메일이 안 열리면 '💬 문자'를 눌러줘!"; },1800);
+  <button class="back" id="bk">← 영어 공부</button>
+  <div class="card"><h2>🎯 오늘의 30분 코스</h2>
+   ${buddy(ph==="done"?"오늘 공부 끝! 정말 잘했어! 🎉":ph==="start"?"먼저 오늘 내 실력을 가볍게 확인해 볼까?":"이어서 해 보자! 💪","sm")}
+   <div class="modes">${steps.map((s,i)=>`<div class="mode" style="${i<idx?"background:var(--okbg);border-color:var(--ok)":i===idx?"border-color:var(--accent)":""}"><span class="num" style="${i<idx?"background:var(--ok)":""}">${i<idx?"✓":i+1}</span><span>${s[1].slice(2)}<small>${s[2]}${i<idx&&s[0]==="start"&&d.start?` · ${d.start.pct}%`:""}${i<idx&&s[0]==="end"&&d.end?` · ${d.end.pct}%`:""}</small></span></div>`).join("")}</div>
+   ${ph==="done"?`<button id="rep">📋 오늘 결과 보기·아빠에게 보내기</button>`:`<button id="go">${ph==="start"?"시작하기 →":"이어서 하기 →"}</button>`}
+  </div>${lvBar()}`;
+  document.getElementById("bk").onclick=()=>go("english");
+  const g=document.getElementById("go"); if(g) g.onclick=()=>({start:startCheck,study:studyPhase,end:endCheck,fix:fixPhase})[ph]();
+  const r=document.getElementById("rep"); if(r) r.onclick=renderReport;
+}
+function startCheck(){
+  const d=D(); d.used=d.used||[]; const avoid=new Set(d.used);
+  const first=Object.keys(S.mast).length<6; const keys=pickKeys(first?12:10);
+  const qs=buildQs(keys,avoid); d.used=[...avoid]; d.t0=d.t0||Date.now(); save();
+  runQs(qs,{tag:first?"진단":"시작 체크",mast:true,onExit:renderCourse},res=>{
+    const ok=res.filter(r=>r.ok).length, pct=Math.round(ok/res.length*100);
+    const wrongK={};res.forEach(r=>{if(!r.ok)wrongK[r.sk]=(wrongK[r.sk]||0)+1});
+    let weak=Object.keys(wrongK).sort((a,b)=>wrongK[b]-wrongK[a]||mval(a)-mval(b)).slice(0,3);
+    if(weak.length<2){const low=SKEYS.filter(k=>mval(k)!=null&&!weak.includes(k)).sort((a,b)=>mval(a)-mval(b));for(const k of low){if(weak.length>=2)break;weak.push(k)}}
+    d.start={pct,n:res.length,ok,weak,wrong:Object.keys(wrongK)};
+    d.pre={};weak.forEach(k=>d.pre[k]=mval(k));
+    d.stars=pct>=90?3:pct>=70?2:pct>=50?1:0;
+    Object.keys(wrongK).forEach(k=>dueIn(k,1));
+    save(); renderPlan(res);
   });
-  document.getElementById("sms").onclick=async()=>{
-    const t=resultText(rec);
-    try{ await navigator.clipboard.writeText(t); }catch(e){}
-    document.getElementById("cp").textContent="문자 앱에서 받는 사람에 '아빠'를 고르고 보내줘 💬 (내용이 비어 있으면 꾹 눌러 붙여넣기)";
-    location.href="sms:?body="+encodeURIComponent(t);
-  };
-  document.getElementById("copy").onclick=async()=>{
-    try{ await navigator.clipboard.writeText(resultText(rec)); document.getElementById("cp").textContent="복사됐어! 문자나 카톡에 꾹 눌러 붙여넣기 해서 아빠한테 보내줘 ✅"; }
-    catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
-  };
-  if(wrong.length) document.getElementById("retry").onclick=()=>{
-    const items=wrong.map(w=>BYKEY[w.key]).filter(Boolean);
-    startQuiz(items,"틀린 것 다시 풀기",session.mode==="build"?"build":"retry",session.types,session.stage);
-  };
-  document.getElementById("home").onclick=renderHome;
+}
+function renderPlan(res){
+  const d=D(),s=d.start;
+  $app.innerHTML=`<div class="card center"><h2>시작 체크 결과</h2><div class="score">${s.pct}%</div>
+   <div class="big-stars">${"★".repeat(d.stars)}<span class="off">${"★".repeat(3-d.stars)}</span></div>
+   <div class="muted">${s.ok}/${s.n} 맞았어요 · 별은 첫 도전 점수로만 받아요</div>
+   ${buddy("오늘은 이 소리들을 공부할 거야!","sm")}
+   <div class="chips" style="justify-content:center">${s.weak.map(k=>`<span class="chip" style="background:${mcolor(k)}">${esc(sname(k))}</span>`).join("")}</div>
+   <button id="go">약한 소리 공부 시작 →</button></div>`;
+  document.getElementById("go").onclick=studyPhase;
+}
+function studyPhase(){
+  const d=D(),list=(d.start&&d.start.weak||[]).slice(); let i=d.studyIdx||0;
+  function nxt(){
+    if(i>=list.length){d.studyDone=true;d.studyIdx=0;save();return renderRest()}
+    const sk=list[i];
+    studySound(sk,{n:`${i+1}/${list.length}`,onExit:renderCourse},()=>{i++;d.studyIdx=i;save();nxt()});
+  }
+  nxt();
+}
+function renderRest(){
+  let t=60;
+  $app.innerHTML=`<div class="card center"><h2>☕ 잠깐 쉬어요</h2>${buddy("스트레칭하고 물 한 모금 마시고 와! 💧","big")}<div class="score" id="t">60</div><button id="go">바로 마무리 체크 →</button></div>`;
+  const iv=setInterval(()=>{t--;const e=document.getElementById("t");if(!e||t<=0){clearInterval(iv);if(e)document.getElementById("go").click();return}e.textContent=t},1000);
+  document.getElementById("go").onclick=()=>{clearInterval(iv);endCheck()};
+}
+function endCheck(){
+  const d=D(),weak=d.start.weak,avoid=new Set(d.used||[]);
+  const keys=[];weak.forEach(k=>{keys.push(k,k)});
+  pickKeys(10,weak).forEach(k=>{if(keys.length<10)keys.push(k)});
+  const qs=shuffle(buildQs(keys,avoid)); d.used=[...avoid];
+  runQs(qs,{tag:"마무리 체크",mast:true,onExit:renderCourse},res=>{
+    const ok=res.filter(r=>r.ok).length,pct=Math.round(ok/res.length*100);
+    const fix=[];res.forEach(r=>{if(!r.ok&&!fix.find(f=>f.sk===r.sk))fix.push({sk:r.sk,word:r.q.word})});
+    d.end={pct,ok,n:res.length,fix:fix.map(f=>f.sk),weakRes:weak.map(k=>({sk:k,ok:res.filter(r=>r.sk===k&&r.ok).length,n:res.filter(r=>r.sk===k).length}))};
+    d.fixList=fix; d.fixIdx=0; d.stamps=0;
+    fix.forEach(f=>dueIn(f.sk,1));weak.forEach(k=>{if(!fix.find(f=>f.sk===k))dueIn(k,3)});
+    save();
+    if(!fix.length){d.fixDone=true;save();renderReport()} else renderEndResult(res);
+  });
+}
+function renderEndResult(res){
+  const d=D(),e=d.end;
+  $app.innerHTML=`<div class="card center"><h2>마무리 체크 결과</h2><div class="score">${e.pct}%</div>
+   <div class="muted">시작 체크 ${d.start.pct}% → 마무리 ${e.pct}%</div>
+   ${buddy(e.fix.length?`틀린 ${e.fix.length}가지 소리는 지금 같이 정리하자!`:"전부 맞았어!","sm")}
+   <div class="muted">같은 문제를 다시 풀면 점수는 안 올라요. 대신 <b>공부하고 새 단어로 확인</b>하면 도장을 받아요.</div>
+   <button id="go">틀린 것 공부하기 →</button></div>`;
+  document.getElementById("go").onclick=fixPhase;
+}
+function fixPhase(){
+  const d=D(),list=d.fixList||[];let i=d.fixIdx||0;
+  function nxt(){
+    if(i>=list.length){d.fixDone=true;save();return renderReport()}
+    const f=list[i],sk=f.sk,x=ALL.find(a=>a.word===f.word&&a.st===stOf(sk))||SOUNDS[sk].words[0];
+    renderFixCard(x,sk,i,list.length,()=>{
+      const avoid=new Set(d.used||[]);const q=genQ(sk,avoid,SOUNDS[sk].st.noSort?"dictate":(Math.random()<.5?"listen":"dictate"));d.used=[...avoid];
+      runQs([q],{tag:"확인",mast:true,onExit:renderCourse},res=>{
+        if(res[0].ok){d.stamps=(d.stamps||0)+1;dueIn(sk,3)}else dueIn(sk,1);
+        i++;d.fixIdx=i;save();showStamp(res[0].ok,nxt);
+      });
+    });
+  }
+  nxt();
+}
+function renderFixCard(x,sk,i,n,next){
+  $app.innerHTML=`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">정리</span><div class="bar"><i style="width:${i/n*100}%"></i></div><span class="qn">${i+1}/${n}</span></div>
+  <div class="card center">${buddy(`<span class="hl" style="font-family:Nunito">${esc(slabel(sk))}</span> 소리를 다시 보자! 🔊`,"sm")}
+  <div class="pic">${x.pic}</div><div class="word">${hlWord(x)}</div>${kw(x.word,true)}
+  <button class="speak" id="sp">🔊 듣고 3번 따라 읽기</button>
+  <div class="muted">${esc(sname(sk))}</div><button id="nx">다 외웠어! 새 단어로 확인 →</button></div>`;
+  document.getElementById("bk").onclick=renderCourse;
+  document.getElementById("sp").onclick=()=>speak(x.word); speak(x.word);
+  document.getElementById("nx").onclick=next;
+}
+function showStamp(ok,next){
+  const m=modal(ok?`<div class="toast-e">💮</div><b>복습 완료!</b><div class="muted">도장을 받았어요</div>`:`<div class="toast-e">📌</div><b>내일 또 만나요</b><div class="muted">내일 맨 먼저 다시 나와요</div>`,ok?"up":"");
+  setTimeout(()=>{m.remove();next()},1100);
 }
 
-renderHome();
-loadDb();
+/* ---------- 소리 하나 공부 (카드 → 비교 → 도와주며 → 혼자) ---------- */
+function studySound(sk,o,done){
+  const sd=SOUNDS[sk],st=sd.st,p=sd.p,t0=Date.now();
+  const conf=S.conf[sk]&&SOUNDS[st.id+":"+S.conf[sk]]?st.id+":"+S.conf[sk]:null;
+  const dots=n=>`<span class="qn">${["①","②","③","④"].map((c,i)=>i===n?`<b style="color:var(--accent)">${c}</b>`:c).join(" ")}</span>`;
+  const head=n=>`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">${esc(label(st,p))}</span><div class="bar"><i style="width:${(n+1)*25}%"></i></div>${dots(n)}</div>`;
+  const exit=()=>{if(o.onExit)o.onExit()};
+  function wordRow(x){return `<div class="mode wr" data-w="${esc(x.word)}" style="margin-top:6px"><span class="ic">${x.pic}</span><span style="font-family:Nunito;font-weight:900;font-size:30px">${hlWord(x)} ${kw(x.word)}</span></div>`}
+  function card(){
+    $app.innerHTML=`${head(0)}<div class="card center"><div class="panel" style="margin-top:0"><div class="big">${both(st,p)}</div><div class="ko">"${esc(st.ko[p]||"")}"</div></div>
+     <div class="muted" style="margin-top:6px">눌러서 들어 보세요 🔊</div>${sd.words.slice(0,3).map(wordRow).join("")}<button id="nx">다음 →</button></div>`;
+    wire(); document.getElementById("nx").onclick=conf?pair:guided;
+  }
+  function wire(){document.getElementById("bk").onclick=()=>{if(confirm("그만할까요?"))exit()};document.querySelectorAll(".wr").forEach(r=>r.onclick=()=>speak(r.dataset.w))}
+  function pair(){
+    const o2=SOUNDS[conf];
+    $app.innerHTML=`${head(1)}<div class="card center">${buddy("헷갈리기 쉬운 두 소리를 비교해 보자!","sm")}
+     <div class="row" style="align-items:stretch"><div style="flex:1"><div class="word" style="font-size:40px;color:var(--hl)">${both(st,p)}</div>${sd.words.slice(0,2).map(wordRow).join("")}</div>
+     <div style="flex:1"><div class="word" style="font-size:40px;color:var(--accent)">${both(o2.st,o2.p)}</div>${o2.words.slice(0,2).map(wordRow).join("")}</div></div>
+     <button id="nx">다음 →</button></div>`;
+    wire(); document.getElementById("nx").onclick=guided;
+  }
+  function guided(){
+    const avoid=new Set(),qs=[];
+    for(let i=0;i<3;i++){const q=genQ(sk,avoid,"listen");q.opts=shuffle([q.word,q.opts.find(w=>w!==q.word)]);qs.push(q)}
+    runQs(qs,{tag:"도와주며",mode:"guided",onExit:exit},()=>{
+      if(!o.free&&Date.now()-t0>5*60000){dueIn(sk,1);return done()}
+      solo();
+    });
+  }
+  function solo(){
+    const avoid=new Set(),qs=[genQ(sk,avoid,"dictate"),genQ(sk,avoid,NW[sk]?"nonword":(st.noSort?"listen":"sortp"))];
+    runQs(qs,{tag:"혼자 풀기",mast:true,onExit:exit},res=>{
+      const ok=res.every(r=>r.ok);
+      if(ok)dueIn(sk,3);else dueIn(sk,1);
+      $app.innerHTML=`<div class="card center"><h2>${ok?"통과! 🎉":"조금만 더!"}</h2>${buddy(ok?`${esc(label(st,p))} 소리, 이제 잘 알아요!`:"괜찮아! 내일 맨 먼저 다시 해 보자.","big",ok?"jump":"")}<button id="nx">${o.n?"다음 소리 →":"끝내기"}</button></div>`;
+      document.getElementById("nx").onclick=done;
+    });
+  }
+  card();
+}
+/* ---------- 결과·아빠 리포트 ---------- */
+function streakDays(){let n=0;const d=new Date();for(let i=0;i<400;i++){const k=isoDay(d);const r=S.days[k];if(r&&r.fixDone)n++;else if(i>0)break;d.setDate(d.getDate()-1)}return n}
+function finishDay(){
+  const d=D(); if(d.xpGiven!=null||!d.end) return null;
+  const weak=d.start.weak;
+  const improved=weak.filter(k=>{const w=(d.end.weakRes||[]).find(a=>a.sk===k);return (w&&w.n>0&&w.ok===w.n)||(mval(k)||0)>(d.pre[k]==null?0:d.pre[k])+0.04}).length;
+  const total=Math.min(DAY_CAP,60+Math.min(30,improved*10)+Math.min(20,(d.stamps||0)*5));
+  const r=addXP(total); d.xpGiven=r.gain; d.lvUp=r.newL>r.oldL?r.newL:0; d.improved=improved;
+  S.hist.unshift({date:today(),s:d.start.pct,e:d.end.pct,xp:r.gain});S.hist=S.hist.slice(0,60);
+  save(); return r;
+}
+function reportText(){
+  const d=D(),L=lvOf(S.xp),{r,part}=robotInfo(L),dt=new Date();
+  const wk=(d.start&&d.start.weak||[]).map(k=>{const a=d.pre&&d.pre[k]!=null?Math.round(d.pre[k]*100):"?";return `${slabel(k)} ${a}→${Math.round((mval(k)||0)*100)}%`});
+  const mins=d.t0?Math.max(1,Math.round((Date.now()-d.t0)/60000)):"-";
+  return `[설훈이 오늘 공부 ${dt.getMonth()+1}/${dt.getDate()}]\n시작 체크 ${d.start?d.start.pct:"-"}% → 마무리 체크 ${d.end?d.end.pct:"-"}%\n공부한 소리: ${wk.join(", ")||"-"}\n복습 도장 ${d.stamps||0}개 · 약 ${mins}분\nXP +${d.xpGiven||0} · 레벨 ${L} (${r}호 ${RC[r-1][0]} ${part}/10)\n연속 공부 ${streakDays()}일`;
+}
+function renderReport(){
+  const d=D(); const g=finishDay(); const txt=reportText();
+  const L=lvOf(S.xp);
+  $app.innerHTML=`<div class="card center"><h2>🎉 오늘 공부 끝!</h2>
+   <div class="row" style="align-items:center;justify-content:center;gap:14px"><div><div class="muted">시작</div><div class="score" style="font-size:36px!important">${d.start?d.start.pct:"-"}%</div></div><div style="font-size:30px">→</div><div><div class="muted">마무리</div><div class="score" style="font-size:36px!important">${d.end?d.end.pct:"-"}%</div></div></div>
+   <div class="big-stars">${"★".repeat(d.stars||0)}<span class="off">${"★".repeat(3-(d.stars||0))}</span></div>
+   <div class="wl" style="max-height:none;text-align:left">${(d.start?d.start.weak:[]).map(k=>`${esc(sname(k))}: <b>${d.pre&&d.pre[k]!=null?Math.round(d.pre[k]*100):"?"}% → ${Math.round((mval(k)||0)*100)}%</b>`).join("<br>")}</div>
+   <div class="gain" style="margin:6px 0">+${d.xpGiven||0} XP</div>${lvBar()}
+   <a class="btn mail" id="mail" href="mailto:${DAD_EMAIL}?subject=${encodeURIComponent("설훈이 오늘 공부 결과")}&body=${encodeURIComponent(txt)}">📧 아빠에게 메일</a>
+   <div class="row r2"><button id="sms" class="soft">💬 문자로 보내기</button><button id="copy" class="soft">📋 복사</button></div>
+   <div class="copied" id="cp"></div><button class="ghost" id="home">홈으로</button></div>`;
+  const cp=async()=>{try{await navigator.clipboard.writeText(txt);document.getElementById("cp").textContent="복사됐어요!"}catch(e){document.getElementById("cp").textContent="길게 눌러 복사해 주세요"}};
+  document.getElementById("copy").onclick=cp;
+  document.getElementById("sms").onclick=async()=>{await cp();location.href="sms:?body="+encodeURIComponent(txt)};
+  document.getElementById("home").onclick=()=>go("home");
+  if(g&&d.lvUp&&!d.lvShown){d.lvShown=true;save();levelUpModal(d.lvUp)}
+}
+
+/* ---------- 정리표 · 실력 지도 ---------- */
+function cellHTML(sk,compact){
+  const sd=SOUNDS[sk];
+  return `<button class="cell ${compact?"cm":""}" data-k="${esc(sk)}" style="background:${mcolor(sk)}"><b>${esc(label(sd.st,sd.p))}</b>${compact?"":`<span>${esc(upper(sd.st,sd.p))}</span><small>${esc(sd.st.ko[sd.p]||"")}</small>`}</button>`;
+}
+function mapHTML(compact){
+  return STAGES.map(st=>`<div class="sec">${st.n}. ${esc(st.title)}</div><div class="cells ${compact?"cc":""}">${[...new Set(st.words.map(w=>w[2]))].map(p=>cellHTML(st.id+":"+p,compact)).join("")}</div>`).join("");
+}
+function legend(){return `<div class="legend"><span style="background:#bfe8d1">잘함</span><span style="background:#ffe9a8">보통</span><span style="background:#ffc6c6">약함</span><span style="background:#eef2f6">아직</span></div>`}
+function renderChart(){
+  $app.innerHTML=`<button class="back" id="bk">← 영어 공부</button><div class="card"><h2>📋 파닉스 정리표</h2><div class="muted">칸을 누르면 소리가 나요. 색은 내 실력이에요.</div>${legend()}${mapHTML(false)}</div><div id="sheet"></div>`;
+  document.getElementById("bk").onclick=()=>go("english");
+  document.querySelectorAll(".cell").forEach(c=>c.onclick=()=>chartDetail(c.dataset.k));
+}
+function chartDetail(sk){
+  const sd=SOUNDS[sk],st=sd.st,v=mval(sk);
+  const el=document.getElementById("sheet")||document.body.appendChild(Object.assign(document.createElement("div"),{id:"sheet"}));
+  el.innerHTML=`<div class="sheet" style="max-height:78vh;overflow:auto"><div class="row" style="align-items:center"><div class="word" style="font-size:44px;text-align:left;flex:1;margin:0">${both(st,sd.p)}</div><div class="ko" style="font-size:26px;font-weight:bold;color:var(--hl)">"${esc(st.ko[sd.p]||"")}"</div></div>
+   <div class="muted">내 실력: ${v==null?"아직 안 해 봤어요":Math.round(v*100)+"%"}</div>
+   ${sd.words.slice(0,4).map(x=>`<div class="mode wr" data-w="${esc(x.word)}" style="margin-top:6px;padding:6px 10px"><span class="ic">${x.pic}</span><span style="font-family:Nunito;font-weight:900;font-size:26px">${hlWord(x)} ${kw(x.word)}</span></div>`).join("")}
+   <div class="row"><button id="st">이 소리 공부하기</button><button class="soft" id="wr">✍️ 쓰기</button></div><button class="ghost" id="cl">닫기</button></div>`;
+  el.querySelectorAll(".wr").forEach(r=>r.onclick=()=>speak(r.dataset.w));
+  speak(sd.words[0].word);
+  el.querySelector("#cl").onclick=()=>{el.innerHTML=""};
+  el.querySelector("#st").onclick=()=>{studySound(sk,{free:true,onExit:renderChart},()=>renderChart())};
+  el.querySelector("#wr").onclick=()=>renderTrace(sk);
+}
+function renderTrace(sk){
+  const sd=SOUNDS[sk],st=sd.st,text=label(st,sd.p),REP=3;let rep=0;
+  function draw(){
+    $app.innerHTML=`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">쓰기 연습</span><div class="bar"><i style="width:${rep/REP*100}%"></i></div></div>
+    <div class="card trace-card"><div class="trace-head"><span class="eng">${both(st,sd.p)}</span><span class="ko">"${esc(st.ko[sd.p]||"")}"</span><button class="speak" id="sp" style="margin:0">🔊</button></div>
+    <div class="canvas-wrap"><canvas id="cv"></canvas></div>
+    <div class="trace-foot"><div class="dots">${"●".repeat(rep)}<span class="off">${"●".repeat(REP-rep)}</span></div><button class="soft" id="clr">🧽 지우기</button></div><div id="msg" class="center" style="min-height:30px;font-weight:bold"></div></div>`;
+    document.getElementById("bk").onclick=renderChart;
+    document.getElementById("sp").onclick=()=>speak(sd.words[0].word);
+    setupCanvas(text,ok=>{if(!ok)return false;rep++;document.getElementById("msg").innerHTML=`<span style="color:var(--ok)">잘 썼어! ✨ (${rep}/${REP})</span>`;setTimeout(()=>{if(rep>=REP)renderChart();else draw()},700);return true});
+  }
+  draw();
+}
+
+/* ---------- 영어 메뉴 ---------- */
+function renderEnglish(){
+  const d=D(),ph=phaseNow();
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button>
+  <div class="card"><h2>🔤 영어 · 파닉스</h2>
+   <div class="modes">
+    <button class="mode start-btn" id="course"><span class="ic">🎯</span><span>오늘의 30분 코스<small>${ph==="done"?"오늘 완료! 결과 보기":ph==="start"?"시작 체크 → 약점 공부 → 마무리":"이어서 하기"}</small></span></button>
+    <button class="mode" id="chart"><span class="ic">📋</span><span>파닉스 정리표<small>소리와 글자를 한눈에 · 눌러서 공부</small></span></button>
+   </div></div>
+  <div class="card"><h2>🗺️ 내 실력 지도</h2>${legend()}${mapHTML(true)}</div>
+  ${S.hist.length?`<div class="card"><h2>📊 최근 기록</h2><ul class="hist">${S.hist.slice(0,6).map(h=>`<li><span>${h.date.slice(5).replace("-","/")}</span><b>${h.s}% → ${h.e}%</b><span>+${h.xp}XP</span></li>`).join("")}</ul></div>`:""}
+  <div id="sheet"></div>`;
+  document.getElementById("bk").onclick=()=>go("home");
+  document.getElementById("course").onclick=()=>go("course");
+  document.getElementById("chart").onclick=()=>go("chart");
+  document.querySelectorAll(".cell").forEach(c=>c.onclick=()=>{chartDetail(c.dataset.k);const s=document.querySelector(".sheet");if(s){const st=document.querySelector("#st");if(st)st.onclick=()=>studySound(c.dataset.k,{free:true,onExit:renderEnglish},()=>renderEnglish());const w=document.querySelector("#wr");if(w)w.onclick=()=>renderTrace(c.dataset.k)}});
+}
+
+/* ---------- 로봇방 ---------- */
+let robSel=0;
+function renderRobots(){
+  const L=lvOf(S.xp),dn=doneRobots(L),{r:cur,part}=robotInfo(L);
+  const shelf=S.shelf.map((r,i)=>`<button class="slotb ${r?"has":""}" data-i="${i}">${r?robotSVG(r,10,50,false)+`<small>${esc(robotName(r))}</small>`:"＋"}</button>`).join("");
+  const inv=RC.map((c,i)=>{const r=i+1,comp=r<=dn,isCur=!comp&&r===cur;
+    return `<button class="inv ${robSel===r?"sel":""} ${comp?"":"dim"}" data-r="${r}">${robotSVG(r,comp?10:isCur?part:0,54,true)}<small>${comp?esc(robotName(r)):isCur?`조립 중 ${part}/10`:"🔒"}</small></button>`}).join("");
+  const selInfo=robSel&&robSel<=dn?`<div class="card" style="margin-top:8px"><b>${esc(robotName(robSel))}</b> 선택됨 — 위 진열칸을 누르면 놓아요.<div class="row"><button class="soft" id="rn">이름 바꾸기</button>${S.shelf.includes(robSel)?`<button class="soft" id="rm">진열장에서 빼기</button>`:""}</div></div>`:"";
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card"><h2>🤖 내 로봇 진열장</h2><div class="shelf">${shelf}</div></div>${selInfo}<div class="card"><h2>🎒 내 인벤토리</h2><div class="muted">레벨 ${L} · 완성 ${dn}/8 · 레벨이 1 오를 때마다 부품 1개!</div><div class="invg">${inv}</div></div>`;
+  document.getElementById("bk").onclick=()=>go("home");
+  document.querySelectorAll(".inv").forEach(b=>b.onclick=()=>{const r=+b.dataset.r;if(r<=dn){robSel=robSel===r?0:r;renderRobots()}});
+  document.querySelectorAll(".slotb").forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i;
+    if(robSel&&robSel<=dn){S.shelf=S.shelf.map(v=>v===robSel?0:v);S.shelf[i]=robSel;save();robSel=0;renderRobots()}
+    else if(S.shelf[i]){robSel=S.shelf[i];renderRobots()}
+  });
+  const rn=document.getElementById("rn");if(rn)rn.onclick=()=>{const r=robSel;const m=modal(`<b>이름 바꾸기</b><input id="nm" maxlength="8" value="${esc(S.names[r]||"")}" placeholder="최대 8글자" style="width:100%;font-size:22px;padding:10px;border-radius:12px;border:2px solid var(--line);margin-top:10px;font-family:inherit;text-align:center"><button id="ok">저장</button><button class="soft" id="no">취소</button>`);m.querySelector("#ok").onclick=()=>{const v=m.querySelector("#nm").value.trim();if(v){S.names[r]=v;save()}m.remove();renderRobots()};m.querySelector("#no").onclick=()=>m.remove()};
+  const rm=document.getElementById("rm");if(rm)rm.onclick=()=>{S.shelf=S.shelf.map(v=>v===robSel?0:v);save();renderRobots()};
+}
+
+/* ---------- 시간표 ---------- */
+const DOW=["일","월","화","수","목","금","토"];
+function schedFor(dow){return (S.sched[dow]||[]).slice().sort((a,b)=>a.t<b.t?-1:1)}
+let schedDay=new Date().getDay();
+function renderSched(){
+  const list=schedFor(schedDay);
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card"><h2>🗓️ 시간표 (방과후·학원)</h2>
+  <div class="dow">${[1,2,3,4,5,6,0].map(d=>`<button class="${d===schedDay?"on":""}" data-d="${d}">${DOW[d]}</button>`).join("")}</div>
+  <ul class="hist">${list.length?list.map((e,i)=>`<li><span><b>${esc(e.t)}</b> ${esc(e.n)}</span><button class="soft" data-x="${i}" style="width:auto;margin:0;padding:4px 12px">✕</button></li>`).join(""):`<li class="muted">${DOW[schedDay]}요일 일정이 없어요</li>`}</ul></div>
+  <div class="card"><b>일정 추가 (${DOW[schedDay]}요일)</b><div class="row" style="margin-top:6px"><input type="time" id="tm" value="15:00" class="inp" style="max-width:150px"><input id="nm" class="inp" placeholder="예: 방과후 영어"></div><button id="add">추가</button></div>`;
+  document.getElementById("bk").onclick=()=>go("home");
+  document.querySelectorAll(".dow button").forEach(b=>b.onclick=()=>{schedDay=+b.dataset.d;renderSched()});
+  document.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{const l=schedFor(schedDay);l.splice(+b.dataset.x,1);S.sched[schedDay]=l;save();renderSched()});
+  document.getElementById("add").onclick=()=>{const t=document.getElementById("tm").value,n=document.getElementById("nm").value.trim();if(!t||!n)return;(S.sched[schedDay]=S.sched[schedDay]||[]).push({t,n});save();renderSched()};
+}
+
+/* ---------- 학교 알림 (급식·알림장) ---------- */
+let mealData={},noteData=[];
+try{fetch("meal.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.days)mealData=j.days}).catch(()=>{})}catch(e){}
+try{fetch("notes.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.items)noteData=j.items}).catch(()=>{})}catch(e){}
+function mealOf(day){return mealData[day]||(S.meal[day]?S.meal[day].split("\n").filter(Boolean):null)}
+function notesAll(){return [...noteData.map(n=>({...n,fixed:1})),...S.notes.map((n,i)=>({...n,i}))].sort((a,b)=>a.date<b.date?1:-1)}
+let schoolTab="meal";
+function renderSchool(){
+  const td=today(),m=mealOf(td);
+  let body="";
+  if(schoolTab==="meal"){
+    body=`<div class="card"><h2>🍚 오늘 급식 (${td.slice(5).replace("-","/")})</h2>${m?`<ul class="hist">${m.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<div class="muted">아직 급식 정보가 없어요. 학교가 연결되면 자동으로 보여요. 지금은 아래에 직접 적어 둘 수 있어요.</div>`}</div>
+    <div class="card"><b>직접 적기 (한 줄에 메뉴 하나)</b><textarea id="mt" class="inp" rows="5" placeholder="잡곡밥&#10;미역국&#10;불고기">${esc(S.meal[td]||"")}</textarea><button id="ms">저장</button></div>`;
+  }else{
+    const ns=notesAll();
+    body=`<div class="card"><h2>📒 알림장</h2>${ns.length?`<ul class="hist" style="display:block">${ns.slice(0,15).map(n=>`<li style="display:block"><b>${esc(n.date.slice(5).replace("-","/"))}</b> ${esc(n.text).replace(/\n/g,"<br>")}${n.fixed?"":` <button class="soft" data-d="${n.i}" style="width:auto;margin:0 0 0 8px;padding:2px 10px;font-size:16px">삭제</button>`}</li>`).join("")}</ul>`:`<div class="muted">알림장이 아직 없어요</div>`}</div>
+    <div class="card"><b>알림장 추가</b><input type="date" id="nd" class="inp" value="${td}"><textarea id="nt" class="inp" rows="4" placeholder="준비물, 숙제 등"></textarea><button id="na">추가</button></div>`;
+  }
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="row" style="margin-top:6px"><button class="${schoolTab==="meal"?"":"soft"}" data-t="meal">🍚 급식</button><button class="${schoolTab==="note"?"":"soft"}" data-t="note">📒 알림장</button></div>${body}`;
+  document.getElementById("bk").onclick=()=>go("home");
+  document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{schoolTab=b.dataset.t;renderSchool()});
+  const ms=document.getElementById("ms");if(ms)ms.onclick=()=>{S.meal[td]=document.getElementById("mt").value;save();renderSchool()};
+  const na=document.getElementById("na");if(na)na.onclick=()=>{const t=document.getElementById("nt").value.trim();if(!t)return;S.notes.push({date:document.getElementById("nd").value||td,text:t});save();renderSchool()};
+  document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{S.notes.splice(+b.dataset.d,1);save();renderSchool()});
+}
+/* ---------- 국어 받아쓰기 ---------- */
+function norm(s){return String(s).replace(/\s+/g," ").trim()}
+function diffHTML(ans,mine){
+  const a=[...ans],b=[...mine];
+  return a.map((c,i)=>b[i]===c?esc(c):`<span style="color:var(--no);text-decoration:underline">${esc(c)}</span>`).join("");
+}
+function renderKorean(){
+  $app.innerHTML=`<button class="back" id="bk">← 학교 공부</button><div class="card"><h2>📝 국어</h2>
+  <div class="modes"><button class="mode" id="dict"><span class="ic">✏️</span><span>받아쓰기<small>불러 주는 말을 듣고 써요</small></span></button>
+  <div class="mode" style="opacity:.6"><span class="ic">📘</span><span>진도별 문제 · 단원평가 · 성취도평가<small>교과서 차례를 받으면 열려요</small></span></div></div></div>`;
+  document.getElementById("bk").onclick=()=>go("school");
+  document.getElementById("dict").onclick=()=>go("dict");
+}
+function renderDict(){
+  $app.innerHTML=`<button class="back" id="bk">← 국어</button><div class="card"><h2>✏️ 받아쓰기</h2>
+  ${S.dict.length?S.dict.map((l,i)=>`<div class="mode" data-i="${i}"><span class="ic">📄</span><span>${esc(l.title)}<small>${l.words.length}문제${l.best!=null?` · 첫 도전 최고 ${l.best}점`:""}</small></span></div>`).join(""):`<div class="muted">아직 받아쓰기 목록이 없어요. 아래에서 만들어 보세요.</div>`}</div>
+  <div class="card"><b>새 목록 만들기</b><input id="tt" class="inp" placeholder="제목 (예: 3주 급수표)"><textarea id="tw" class="inp" rows="6" placeholder="한 줄에 하나씩&#10;예) 나뭇잎&#10;꽃이 활짝 피었습니다."></textarea><button id="sv">저장</button></div>`;
+  document.getElementById("bk").onclick=()=>go("korean");
+  document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>startDict(+b.dataset.i));
+  document.getElementById("sv").onclick=()=>{const t=document.getElementById("tt").value.trim()||"받아쓰기",w=document.getElementById("tw").value.split("\n").map(norm).filter(Boolean);if(!w.length)return;S.dict.push({title:t,words:w});save();renderDict()};
+}
+function startDict(li){
+  const l=S.dict[li],items=shuffle(l.words);let i=0;const wrong=[];
+  function show(){
+    if(i>=items.length) return done();
+    const w=items[i];
+    $app.innerHTML=`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">받아쓰기</span><div class="bar"><i style="width:${i/items.length*100}%"></i></div><span class="qn">${i+1}/${items.length}</span></div>
+    <div class="card center"><div class="tag">${i+1}번</div><div class="q">잘 듣고 써 보세요</div><button class="speak" id="sp" style="font-size:28px;padding:14px 30px">🔊 다시 듣기</button>
+    <input id="an" class="inp" style="font-size:28px;text-align:center" autocomplete="off" autocapitalize="off" spellcheck="false"><button id="ck">확인</button></div><div id="sheet"></div>`;
+    document.getElementById("bk").onclick=()=>{if(confirm("그만할까요?"))go("dict")};
+    document.getElementById("sp").onclick=()=>speakKo(w); setTimeout(()=>speakKo(w),300);
+    const an=document.getElementById("an");
+    const chk=()=>{const mine=norm(an.value);if(!mine)return;const ok=mine===w;
+      if(ok){i++;show();return}
+      wrong.push({w,mine});
+      document.getElementById("sheet").innerHTML=`<div class="sheet"><div class="fb no" style="display:block">${buddy("괜찮아, 맞춤법을 같이 보자!","sm")}<div class="ans">정답: <span style="font-family:inherit">${diffHTML(w,mine)}</span><br><span class="muted">내가 쓴 것: ${esc(mine)}</span></div></div><button id="nx">다음 →</button></div>`;
+      document.getElementById("nx").onclick=()=>{i++;show()};
+    };
+    document.getElementById("ck").onclick=chk; an.onkeydown=e=>{if(e.key==="Enter")chk()};
+  }
+  function done(){
+    const ok=items.length-wrong.length,sc=Math.round(ok/items.length*100);
+    if(l.best==null||sc>l.best)l.best=sc;save();
+    $app.innerHTML=`<div class="card center"><h2>받아쓰기 결과</h2><div class="score">${sc}점</div><div class="muted">${ok}/${items.length} · 점수는 첫 도전만 기록돼요</div>
+    ${wrong.length?`<div class="wl" style="text-align:left">${wrong.map(x=>`<b>${esc(x.w)}</b> ← <span class="mine">${esc(x.mine)}</span>`).join("<br>")}</div><button id="st">틀린 것 공부하기 →</button>`:buddy("전부 맞았어! 대단해!","big","jump")}
+    <button class="ghost" id="bk2">목록으로</button></div>`;
+    document.getElementById("bk2").onclick=()=>go("dict");
+    const st=document.getElementById("st");if(st)st.onclick=()=>studyWrong(wrong.map(x=>x.w),0);
+  }
+  function studyWrong(list,k){
+    if(k>=list.length){$app.innerHTML=`<div class="card center"><h2>정리 끝! 💮</h2>${buddy("틀린 것을 3번씩 써 봤어요!","big","jump")}<button id="bk2">목록으로</button></div>`;document.getElementById("bk2").onclick=()=>go("dict");return}
+    const w=list[k];let n=0;
+    $app.innerHTML=`<div class="card center"><div class="tag">틀린 것 공부 ${k+1}/${list.length}</div><div class="word" style="font-size:36px;letter-spacing:0">${esc(w)}</div><button class="speak" id="sp">🔊 듣기</button><div class="muted" id="c">똑같이 3번 써 보세요 (0/3)</div><input id="an" class="inp" style="font-size:26px;text-align:center" autocomplete="off"><button id="ck">확인</button></div>`;
+    document.getElementById("sp").onclick=()=>speakKo(w);speakKo(w);
+    document.getElementById("ck").onclick=()=>{const v=norm(document.getElementById("an").value);if(v!==w){document.getElementById("c").innerHTML=`<span style="color:var(--no)">다시 한 번 정확히 써 보세요</span>`;return}n++;document.getElementById("an").value="";document.getElementById("c").textContent=`똑같이 3번 써 보세요 (${n}/3)`;if(n>=3)studyWrong(list,k+1)};
+  }
+  show();
+}
+
+/* ---------- 수학 (연산 연습, 진도표 받으면 맞춤) ---------- */
+const MUNITS={
+ add:{n:"덧셈과 뺄셈 (세 자리)",ic:"➕"},mul:{n:"곱셈 (두 자리×한 자리)",ic:"✖️"},div:{n:"나눗셈 (몫 구하기)",ic:"➗"},unit:{n:"시간·길이·무게",ic:"📏"}
+};
+function genMath(u){
+  const r=(a,b)=>a+rand(b-a+1);
+  if(u==="add"){ if(Math.random()<.5){const a=r(120,780),b=r(110,999-a);return {q:`${a} + ${b} = ?`,a:a+b,ex:`${a} + ${b} = ${a+b}\n일의 자리부터 차례로 더하고, 10이 넘으면 올려 주세요.`}}
+    const a=r(300,999),b=r(110,a-50);return {q:`${a} − ${b} = ?`,a:a-b,ex:`${a} − ${b} = ${a-b}\n일의 자리부터 빼고, 모자라면 위에서 10을 빌려 와요.`}}
+  if(u==="mul"){const a=r(12,49),b=r(2,9);return {q:`${a} × ${b} = ?`,a:a*b,ex:`${a} × ${b} = ${a*b}\n${Math.floor(a/10)*10} × ${b} = ${Math.floor(a/10)*10*b}, ${a%10} × ${b} = ${a%10*b} → 더하면 ${a*b}`}}
+  if(u==="div"){const b=r(2,9),q=r(3,12);return {q:`${b*q} ÷ ${b} = ?`,a:q,ex:`${b*q} ÷ ${b} = ${q}\n${b} × ${q} = ${b*q} 이니까 몫은 ${q}!`}}
+  const t=rand(5);
+  if(t===0){const h=r(1,4),m=r(5,55);return {q:`${h}시간 ${m}분은 몇 분일까요?`,a:h*60+m,ex:`1시간 = 60분 → ${h}×60 + ${m} = ${h*60+m}`}}
+  if(t===1){const k=r(1,5),m=r(100,900);return {q:`${k} km ${m} m는 몇 m일까요?`,a:k*1000+m,ex:`1 km = 1000 m → ${k*1000} + ${m} = ${k*1000+m}`}}
+  if(t===2){const k=r(1,5),g=r(100,900);return {q:`${k} kg ${g} g은 몇 g일까요?`,a:k*1000+g,ex:`1 kg = 1000 g → ${k*1000} + ${g} = ${k*1000+g}`}}
+  if(t===3){const k=r(1,5),m=r(100,900);return {q:`${k} L ${m} mL는 몇 mL일까요?`,a:k*1000+m,ex:`1 L = 1000 mL → ${k*1000} + ${m} = ${k*1000+m}`}}
+  const c=r(1,9),m=r(1,9);return {q:`${c} cm ${m} mm는 몇 mm일까요?`,a:c*10+m,ex:`1 cm = 10 mm → ${c*10} + ${m} = ${c*10+m}`};
+}
+function renderMath(){
+  $app.innerHTML=`<button class="back" id="bk">← 학교 공부</button><div class="card"><h2>➗ 수학</h2><div class="muted">지금은 3학년 기본 연산 연습이에요. 교과서 차례를 알려 주시면 진도별 문제·단원평가·성취도평가로 바꿔요.</div>
+  <div class="modes">${Object.keys(MUNITS).map(u=>`<button class="mode" data-u="${u}"><span class="ic">${MUNITS[u].ic}</span><span>${MUNITS[u].n}<small>10문제${S.mathBest[u]!=null?` · 첫 도전 최고 ${S.mathBest[u]}%`:""}</small></span></button>`).join("")}</div></div>`;
+  document.getElementById("bk").onclick=()=>go("school");
+  document.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>runMath(b.dataset.u));
+}
+function numPad(onKey){
+  return `<div class="pad">${["1","2","3","4","5","6","7","8","9","⌫","0","확인"].map(k=>`<button class="${k==="확인"?"":"soft"}" data-k="${k}">${k}</button>`).join("")}</div>`;
+}
+function runMath(u){
+  const first=!(S.days[today()]&&S.days[today()]["m_"+u]);
+  const qs=Array.from({length:10},()=>genMath(u));let i=0,ok=0;const wrong=[];
+  function show(){
+    if(i>=qs.length) return fin();
+    const q=qs[i];let val="";
+    $app.innerHTML=`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">${MUNITS[u].n.split(" ")[0]}</span><div class="bar"><i style="width:${i/10*100}%"></i></div><span class="qn">${i+1}/10</span></div>
+    <div class="card center"><div class="q" style="font-size:30px">${esc(q.q)}</div><div class="word" id="v" style="min-height:70px;letter-spacing:2px">&nbsp;</div>${numPad()}</div><div id="sheet"></div>`;
+    document.getElementById("bk").onclick=()=>{if(confirm("그만할까요?"))go("math")};
+    const v=document.getElementById("v");
+    document.querySelectorAll(".pad button").forEach(b=>b.onclick=()=>{
+      const k=b.dataset.k;
+      if(k==="⌫")val=val.slice(0,-1);else if(k==="확인"){if(!val)return;const okk=+val===q.a;if(okk){ok++;i++;show()}else{wrong.push(q);document.getElementById("sheet").innerHTML=`<div class="sheet"><div class="fb no" style="display:block">${buddy("괜찮아, 풀이를 보자!","sm")}<div class="ans" style="white-space:pre-line">${esc(q.ex)}</div></div><button id="nx">다음 →</button></div>`;document.getElementById("nx").onclick=()=>{i++;show()}}return}
+      else if(val.length<6)val+=k;
+      v.textContent=val||" ";
+    });
+  }
+  function fin(){
+    const pct=ok*10;
+    if(first){const d=D();d["m_"+u]=pct;if(S.mathBest[u]==null||pct>S.mathBest[u])S.mathBest[u]=pct;save()}
+    $app.innerHTML=`<div class="card center"><h2>${MUNITS[u].n.split(" ")[0]} 결과</h2><div class="score">${pct}%</div><div class="muted">${first?"오늘 첫 도전 점수가 기록돼요":"오늘 두 번째부터는 연습으로만 기록돼요"}</div>
+    ${wrong.length?`<div class="wl" style="text-align:left;white-space:pre-line">${wrong.map(q=>esc(q.q.replace(" = ?","")+" = "+q.a)).join("\n")}</div><button id="st">틀린 것 공부하기 →</button>`:buddy("전부 맞았어!","big","jump")}<button class="ghost" id="bk2">수학 메뉴</button></div>`;
+    document.getElementById("bk2").onclick=()=>go("math");
+    const st=document.getElementById("st");if(st)st.onclick=()=>studyM(wrong.slice(),0);
+  }
+  function studyM(list,k){
+    if(k>=list.length){go("math");return}
+    const q=list[k],nq=genMath(u);let val="";
+    $app.innerHTML=`<div class="card center"><div class="tag">틀린 것 공부 ${k+1}/${list.length}</div><div class="q" style="font-size:26px">${esc(q.q)}</div><div class="fb ok" style="display:block;color:var(--ink);white-space:pre-line;text-align:left;background:#fff8e6">${esc(q.ex)}</div>
+    <div class="q" style="font-size:26px;margin-top:10px">비슷한 새 문제: ${esc(nq.q)}</div><div class="word" id="v" style="min-height:60px">&nbsp;</div>${numPad()}</div>`;
+    const v=document.getElementById("v");
+    document.querySelectorAll(".pad button").forEach(b=>b.onclick=()=>{const kk=b.dataset.k;if(kk==="⌫")val=val.slice(0,-1);else if(kk==="확인"){if(+val===nq.a)studyM(list,k+1);else{val="";v.innerHTML=`<span style="color:var(--no);font-size:24px">다시 계산해 봐요</span>`}return}else if(val.length<6)val+=kk;v.textContent=val||" "});
+  }
+  show();
+}
+function renderSchoolStudy(){
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card"><h2>🏫 학교 공부</h2><div class="modes">
+  <button class="mode" id="m"><span class="ic">➗</span><span>수학<small>연산 연습 (진도별·단원평가는 준비 중)</small></span></button>
+  <button class="mode" id="k"><span class="ic">📝</span><span>국어<small>받아쓰기 (진도별·단원평가는 준비 중)</small></span></button></div></div>`;
+  document.getElementById("bk").onclick=()=>go("home");
+  document.getElementById("m").onclick=()=>go("math");
+  document.getElementById("k").onclick=()=>go("korean");
+}
+
+/* ---------- 홈 ---------- */
+function renderHome(){
+  const now=new Date(),dow=now.getDay(),hm=pad(now.getHours())+":"+pad(now.getMinutes());
+  const sch=schedFor(dow),nextS=sch.find(e=>e.t>=hm);
+  const meal=mealOf(today()),notes=notesAll().filter(n=>n.date===today());
+  const ph=phaseNow(),L=lvOf(S.xp);
+  const shelf=S.shelf.filter(Boolean);
+  $app.innerHTML=`
+  <div class="hero"><img src="${BUDDY}" alt="수달 친구"><div><h1 class="ht">설훈이의 공부방</h1><div class="hero-say">${now.getMonth()+1}월 ${now.getDate()}일 ${DOW[dow]}요일 · 안녕, 설훈!</div></div></div>
+  ${lvBar()}
+  ${shelf.length?`<div class="shelfmini" id="shelf">${shelf.map(r=>robotSVG(r,10,40,false)).join("")}</div>`:""}
+  <div class="card" style="padding:12px 14px"><b>📌 오늘</b>
+   <div class="today">
+    <div>🎯 <b>${ph==="done"?"30분 코스 완료!":"30분 코스"}</b> ${ph==="done"?"✅":`<span class="muted">(${ph==="start"?"시작 전":"진행 중"})</span>`}</div>
+    <div>🗓️ ${nextS?`다음 일정 <b>${esc(nextS.t)} ${esc(nextS.n)}</b>`:sch.length?"오늘 일정 끝":"<span class='muted'>오늘 일정 없음</span>"}</div>
+    <div>🍚 ${meal?esc(meal.slice(0,4).join(" · "))+(meal.length>4?" …":""):"<span class='muted'>급식 정보 준비 중</span>"}</div>
+    <div>📒 ${notes.length?esc(notes[0].text.split("\n")[0]):"<span class='muted'>오늘 알림장 없음</span>"}</div>
+   </div></div>
+  <div class="tiles4">
+   <button class="big4" id="en"><span>🔤</span>영어<small>파닉스</small></button>
+   <button class="big4" id="sc"><span>🏫</span>학교 공부<small>수학 · 국어</small></button>
+   <button class="big4" id="tt"><span>🗓️</span>시간표<small>방과후 · 학원</small></button>
+   <button class="big4" id="nt"><span>🔔</span>학교 알림<small>급식 · 알림장</small></button>
+  </div>
+  <button class="mode" id="rb" style="margin-top:10px"><span class="ic">🤖</span><span>내 로봇 방<small>완성 ${doneRobots(L)}/8 · 이름 짓기 · 진열장</small></span></button>`;
+  document.getElementById("en").onclick=()=>go("english");
+  document.getElementById("sc").onclick=()=>go("school");
+  document.getElementById("tt").onclick=()=>go("sched");
+  document.getElementById("nt").onclick=()=>go("note");
+  document.getElementById("rb").onclick=()=>go("robots");
+  const sf=document.getElementById("shelf");if(sf)sf.onclick=()=>go("robots");
+}
+
+/* ---------- 이동 ---------- */
+function go(v,a){
+  try{scrollTo(0,0)}catch(e){}
+  ({home:renderHome,english:renderEnglish,course:renderCourse,chart:renderChart,robots:renderRobots,sched:renderSched,note:()=>{schoolTab="meal";renderSchool()},
+    school:renderSchoolStudy,math:renderMath,korean:renderKorean,dict:renderDict})[v]();
+}
+/* 처음 열 때: 완성했는데 이름 안 지은 로봇 알려 주기 */
+go("home");
+
 </script>
 </body>
 </html>
