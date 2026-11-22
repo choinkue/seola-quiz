@@ -530,8 +530,8 @@ function shade(h,p){const n=parseInt(h.slice(1),16);let r=(n>>16)+p,g=(n>>8&255)
 function robotSVG(r,parts,w,ghost){
   const c=RC[r-1][1], d=shade(c,-45), l=shade(c,40), g="#ffd34e";
   const P={
-   5:`<path d="M30 58 L5 46 L7 80 L30 88Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
-   6:`<path d="M70 58 L95 46 L93 80 L70 88Z" fill="${l}" stroke="${d}" stroke-width="2"/>`,
+   5:`<path d="M30 56 L10 20 L18 44 L2 34 L14 58 L0 56 L16 74 L4 80 L22 88 L30 86Z" fill="${l}" fill-opacity=".75" stroke="${d}" stroke-width="1.5" stroke-linejoin="round"/>`,
+   6:`<path d="M70 56 L90 20 L82 44 L98 34 L86 58 L100 56 L84 74 L96 80 L78 88 L70 86Z" fill="${l}" fill-opacity=".75" stroke="${d}" stroke-width="1.5" stroke-linejoin="round"/>`,
    3:`<rect x="12" y="58" width="15" height="26" rx="3" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M12 88 h15 v8 h-6 v-3 h-3 v3 h-6Z" fill="${g}" stroke="${d}" stroke-width="1.5"/>`,
    4:`<rect x="73" y="58" width="15" height="26" rx="3" fill="${c}" stroke="${d}" stroke-width="2"/><path d="M73 88 h15 v8 h-6 v-3 h-3 v3 h-6Z" fill="${g}" stroke="${d}" stroke-width="1.5"/>`,
    1:`<rect x="31" y="98" width="17" height="24" rx="2" fill="${d}" stroke="${d}" stroke-width="2"/><rect x="52" y="98" width="17" height="24" rx="2" fill="${d}" stroke="${d}" stroke-width="2"/><rect x="29" y="118" width="21" height="9" rx="2" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="50" y="118" width="21" height="9" rx="2" fill="${c}" stroke="${d}" stroke-width="2"/>`,
@@ -539,7 +539,7 @@ function robotSVG(r,parts,w,ghost){
    7:`<rect x="14" y="52" width="16" height="10" rx="3" fill="${l}" stroke="${d}" stroke-width="2"/>`,
    8:`<rect x="70" y="52" width="16" height="10" rx="3" fill="${l}" stroke="${d}" stroke-width="2"/>`,
    9:`<rect x="43" y="64" width="14" height="14" rx="2" fill="${g}" stroke="${d}" stroke-width="2"/><circle cx="50" cy="71" r="3" fill="${d}"/>`,
-   10:`<rect x="43" y="6" width="14" height="9" rx="3" fill="${l}" stroke="${d}" stroke-width="2"/><rect x="31" y="14" width="38" height="38" rx="9" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="36" y="27" width="28" height="11" rx="3" fill="#fff"/><circle cx="44" cy="32.5" r="2.6" fill="${d}"/><circle cx="56" cy="32.5" r="2.6" fill="${d}"/><path d="M42 44 q8 5 16 0" fill="none" stroke="${d}" stroke-width="2.4" stroke-linecap="round"/>`
+   10:`<path d="M33 16 L36 3 L43 13 L50 0 L57 13 L64 3 L67 16Z" fill="${g}" stroke="${d}" stroke-width="1.5" stroke-linejoin="round"/><rect x="31" y="14" width="38" height="38" rx="9" fill="${c}" stroke="${d}" stroke-width="2"/><rect x="36" y="27" width="28" height="11" rx="3" fill="#fff"/><circle cx="44" cy="32.5" r="2.6" fill="${d}"/><circle cx="56" cy="32.5" r="2.6" fill="${d}"/><path d="M42 44 q8 5 16 0" fill="none" stroke="${d}" stroke-width="2.4" stroke-linecap="round"/>`
   };
   let out="";
   [5,6,3,4,1,2,7,8,9,10].forEach(i=>{
