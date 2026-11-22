@@ -114,10 +114,13 @@
   .opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.no{background:var(--nobg);border-color:var(--no)}
   .q{font-size:26px;font-weight:700;margin:12px 0}
 </style>
+<style>
+  .back{display:inline-block;margin:0 0 6px;color:#6b4f00;font-weight:bold;text-decoration:none;font-size:19px}
+  [hidden]{display:none!important}
+</style>
 </head>
 <body>
 <div class="wrap">
-
 <div class="upd"><a class="homebtn" href="./">🏠 홈</a><span id="stitle"></span></div>
 <div class="card lvbox" id="lv"></div>
 <div id="app"></div>
@@ -128,19 +131,44 @@
 const $=id=>document.getElementById(id);
 const key=new URLSearchParams(location.search).get("s")||"hist";
 const SUB=STUDY[key]||STUDY.hist;
-$("stitle").textContent=SUB.title; document.title=SUB.title.replace(/^\S+\s/,"");
-let qs=[],idx=0,res=[],answered=false,label="";
+const SHORT=SUB.title.replace(/^\S+\s/,"");
+$("stitle").textContent=SUB.title; document.title=SHORT;
+let qs=[],idx=0,res=[],answered=false,label="",path=[];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const cnt=a=>a.reduce((s,x)=>s+x.length,0);
+const subQs=s=>s.units.flatMap(u=>u.qs||[]);
 renderLv();
+function btn(i,name,n,extra){return `<button class="opt" data-i="${i}" ${extra||""}>${escH(name)} <span class="muted">${n===null?"":n?n+"문제":"준비 중"}</span></button>`}
 function menu(){
-  $("app").innerHTML=`<div class="card"><h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`+
-  SUB.groups.map((g,i)=>{const n=g.all?SUB.groups.reduce((s,x)=>s+(x.qs?x.qs.length:0),0):g.qs.length;
-    return `<button class="opt" data-i="${i}" ${n?"":"disabled"}>${escH(g.name)} <span class="muted">${n?n+"문제":"준비 중"}</span></button>`}).join("")+`</div>`;
+  let h=`<div class="card">`;
+  if(path.length) h+=`<a class="back" href="#" id="bk">← 뒤로</a>`;
+  if(SUB.groups){                       // 한국사: 시대별
+    h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
+    h+=SUB.groups.map((g,i)=>{const n=g.all?SUB.groups.reduce((s,x)=>s+(x.qs?x.qs.length:0),0):g.qs.length;return btn(i,g.name,n,n?"":"disabled")}).join("");
+  } else if(path.length===0){           // 과목 목록 + 종합평가
+    const total=SUB.subjects.reduce((s,x)=>s+subQs(x).length,0);
+    h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
+    h+=SUB.subjects.map((s,i)=>btn(i,s.name,subQs(s).length,"")).join("");
+    h+=`<button class="opt" data-i="all" ${total?"":"disabled"}>📝 종합평가 <span class="muted">${total?total+"문제 · 전 과목":"준비 중"}</span></button>`;
+  } else {                              // 과목 안: 단원평가
+    const s=SUB.subjects[path[0]], total=subQs(s).length;
+    h+=`<h2 class="sec">${escH(s.name)} · 단원평가</h2>`;
+    h+=s.units.length?s.units.map((u,i)=>btn(i,u.name,(u.qs||[]).length,(u.qs||[]).length?"":"disabled")).join("")
+      :`<div class="muted" style="margin:10px 0">단원 문제를 준비하고 있어요. 교재 사진을 보내 주면 단원별로 만들어 넣어요.</div>`;
+    if(total) h+=`<button class="opt" data-i="all" type="button">🔀 ${escH(s.name)} 전체 섞어 풀기 <span class="muted">${total}문제</span></button>`;
+  }
+  $("app").innerHTML=h+`</div>`;
+  const bk=$("bk"); if(bk) bk.onclick=e=>{e.preventDefault();path.pop();menu()};
   $("app").querySelectorAll("button.opt").forEach(b=>b.onclick=()=>{
-    const g=SUB.groups[+b.dataset.i];
-    const pool=g.all?SUB.groups.flatMap(x=>x.qs||[]):g.qs;
-    label=SUB.title.replace(/^\S+\s/,"")+" · "+g.name;
-    start(pool);
+    const v=b.dataset.i;
+    if(SUB.groups){ const g=SUB.groups[+v]; label=SHORT+" · "+g.name; return start(g.all?SUB.groups.flatMap(x=>x.qs||[]):g.qs); }
+    if(path.length===0){
+      if(v==="all"){ label=SHORT+" · 종합평가"; return start(SUB.subjects.flatMap(subQs)); }
+      path=[+v]; return menu();
+    }
+    const s=SUB.subjects[path[0]];
+    if(v==="all"){ label=SHORT+" · "+s.name+" 전체"; return start(subQs(s)); }
+    label=SHORT+" · "+s.name+" · "+s.units[+v].name; start(s.units[+v].qs);
   });
 }
 function start(pool){ qs=shuffle(pool).slice(0,10).map(q=>{const order=shuffle(q.c.map((c,i)=>i));return {q:q.q,c:order.map(i=>q.c[i]),a:order.indexOf(q.a),e:q.e}}); idx=0;res=[];window.__gain=0;renderQ(); }
@@ -167,7 +195,7 @@ function result(){
   $("sms").onclick=async()=>{try{await navigator.clipboard.writeText(text)}catch(e){} location.href="sms:?body="+encodeURIComponent(text); $("cp").textContent="문자 앱에서 받는 사람에 '아빠'를 고르고 보내줘 💬"};
   $("copy").onclick=async()=>{try{await navigator.clipboard.writeText(text);$("cp").textContent="복사됐어! 아빠한테 붙여넣어 보내줘 ✅"}catch(e){$("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"}};
   $("again").onclick=menu;
-  if(window.__levelUp!==undefined){const L=window.__levelUp;delete window.__levelUp;setTimeout(()=>showLevelUp(L),600);}
+  if(window.__levelUp!==undefined){const L=window.__levelUp;delete window.__levelUp;setTimeout(()=>showLevelUp(L,renderLv),600);}
 }
 menu();
 </script>

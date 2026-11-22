@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>조펭솜 공부 마을</title>
+<title>설아의 공부 일과 노트</title>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#fff8ef;--card:#ffffff;--ink:#2b2a33;--sub:#7a7584;--accent:#f07b3f;--accent2:#ffd36e;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#efe6da}
@@ -114,48 +114,85 @@
   .opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.no{background:var(--nobg);border-color:var(--no)}
   .q{font-size:26px;font-weight:700;margin:12px 0}
 </style>
+<style>
+  .list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+  .mi.row{display:flex;align-items:center;gap:14px;text-align:left;padding:16px 16px}
+  .mi.row .em{font-size:32px;flex:none}
+  .mi.row .tx{flex:1;font-size:21px}
+  .mi.row .ar{font-size:30px;color:var(--sub)}
+  .back{display:inline-block;margin:6px 0 4px;color:#6b4f00;font-weight:bold;text-decoration:none;font-size:19px}
+  [hidden]{display:none!important}
+</style>
 </head>
 <body>
 <div class="wrap">
-
-<div class="upd"><span>📅 영어단어 업데이트 11/22 (3회차)</span></div>
-<h1>🐧 조펭솜 공부 마을</h1>
+<h1 id="title">📝 설아의 공부 일과 노트</h1>
 <div class="muted" id="today"></div>
-<div class="pg big" id="pgbox" style="margin-top:6px"></div>
-<div class="card lvbox" id="lv"></div>
 
-<div class="card" id="acadcard"><h2 class="sec">🏫 오늘 학원</h2><div id="acadlist"></div></div>
-
-<div class="menu">
-  <a class="mi wide" href="q3/"><span class="em">🔤</span>영어단어<small>3회차 · 업데이트 11/22</small></a>
-  <a class="mi" href="study.html?s=elem"><span class="em">📚</span>초등과정<small>5학년 2학기</small></a>
-  <a class="mi" href="study.html?s=mid"><span class="em">🚀</span>중등과정<small>선행 학습</small></a>
-  <a class="mi" href="study.html?s=hist"><span class="em">🏯</span>한국사<small>3급 대비</small></a>
-  <a class="mi" href="#dexbox" id="dexbtn"><span class="em">🌍</span>조펭솜 이야기<small>도감 · 여행 수첩</small></a>
+<div id="v-home" class="view">
+  <div class="list">
+    <a class="mi row" href="#eng"><span class="em">🔤</span><span class="tx">영어공부<small id="engsub">영어단어 · 3회차 · 11/22 업데이트</small></span><span class="ar">›</span></a>
+    <a class="mi row" href="study.html?s=elem"><span class="em">📚</span><span class="tx">초등과정<small>5학년 2학기 · 과목별 단원평가 · 종합평가</small></span><span class="ar">›</span></a>
+    <a class="mi row" href="study.html?s=mid"><span class="em">🚀</span><span class="tx">중등과정 선행학습<small>과목별 단원평가 · 종합평가</small></span><span class="ar">›</span></a>
+    <a class="mi row" href="study.html?s=hist"><span class="em">🏯</span><span class="tx">한국사 시험대비<small>3급 대비 문제</small></span><span class="ar">›</span></a>
+    <a class="mi row" href="#school"><span class="em">🏫</span><span class="tx">학교 정보<small>알림장 · 챙길 것 · 급식 메뉴</small></span><span class="ar">›</span></a>
+    <a class="mi row" href="#todo"><span class="em">✅</span><span class="tx">오늘 공부 체크<small id="todosub">숙제 제외</small></span><span class="ar">›</span></a>
+    <a class="mi row" href="#acad"><span class="em">🕐</span><span class="tx">오늘 학원<small id="acadsub">시간표 보기</small></span><span class="ar">›</span></a>
+    <a class="mi row" href="#dex"><span class="em">🌍</span><span class="tx">조펭솜 성장 도감<small id="lvsub"></small></span><span class="ar">›</span></a>
+  </div>
 </div>
 
-<div class="card" id="todo"></div>
-<div class="card" id="bag"></div>
-<div class="card" id="notes"></div>
-<div class="card" id="meal"><h2 class="sec">🍚 급식 메뉴</h2><div id="meallist" class="muted">불러오는 중…</div></div>
+<div id="v-eng" class="view" hidden>
+  <a class="back" href="#home">← 뒤로</a>
+  <h2 class="sec">🔤 영어공부</h2>
+  <div class="list">
+    <a class="mi row" href="q3/"><span class="em">📖</span><span class="tx">영어단어<small>3회차 · 2026.11.22 업데이트</small></span><span class="ar">›</span></a>
+  </div>
+</div>
 
-<div id="dexbox" style="display:none"></div>
+<div id="v-school" class="view" hidden>
+  <a class="back" href="#home">← 뒤로</a>
+  <h2 class="sec">🏫 학교 정보</h2>
+  <div class="list">
+    <a class="mi row" href="#school-notes"><span class="em">📒</span><span class="tx">알림장</span><span class="ar">›</span></a>
+    <a class="mi row" href="#school-bag"><span class="em">🎒</span><span class="tx">챙길 것</span><span class="ar">›</span></a>
+    <a class="mi row" href="#school-meal"><span class="em">🍚</span><span class="tx">급식 메뉴</span><span class="ar">›</span></a>
+  </div>
+</div>
+<div id="v-school-notes" class="view" hidden><a class="back" href="#school">← 뒤로</a><div class="card" id="notes"></div></div>
+<div id="v-school-bag" class="view" hidden><a class="back" href="#school">← 뒤로</a><div class="card" id="bag"></div></div>
+<div id="v-school-meal" class="view" hidden>
+  <a class="back" href="#school">← 뒤로</a>
+  <div class="card"><h2 class="sec">🍚 급식 메뉴</h2><div id="meallist" class="muted">불러오는 중…</div></div>
+  <div class="card">
+    <h2 class="sec">🏫 학교 등록</h2>
+    <div class="muted" id="schoolnow"></div>
+    <div class="addrow"><input type="text" id="schoolin" placeholder="학교 이름 (예: ○○초등학교)"><button id="schoolbtn">찾기</button></div>
+    <div id="schoolres"></div>
+  </div>
+</div>
 
-<details class="set"><summary>⚙ 설정 (학교 · 학원)</summary>
- <div class="card">
-  <h2 class="sec">🏫 학교 (급식용)</h2>
-  <div class="muted" id="schoolnow"></div>
-  <div class="addrow"><input type="text" id="schoolin" placeholder="학교 이름 (예: ○○초등학교)"><button id="schoolbtn">찾기</button></div>
-  <div id="schoolres"></div>
- </div>
- <div class="card">
-  <h2 class="sec">📚 학원 시간표</h2>
-  <div id="acadedit"></div>
-  <div class="days" id="daysel"></div>
-  <div class="addrow"><input type="text" id="an" placeholder="학원 이름"></div>
-  <div class="addrow"><input type="time" id="as" value="16:00"> ~ <input type="time" id="ae" value="17:30"><button id="aadd">추가</button></div>
- </div>
-</details>
+<div id="v-todo" class="view" hidden><a class="back" href="#home">← 뒤로</a><div class="card" id="todo"></div></div>
+
+<div id="v-acad" class="view" hidden>
+  <a class="back" href="#home">← 뒤로</a>
+  <div class="card"><h2 class="sec">🕐 오늘 학원</h2><div id="acadlist"></div></div>
+  <div class="card">
+    <h2 class="sec">📚 학원 시간표 입력</h2>
+    <div id="acadedit"></div>
+    <div class="days" id="daysel"></div>
+    <div class="addrow"><input type="text" id="an" placeholder="학원 이름"></div>
+    <div class="addrow"><input type="time" id="as" value="16:00"> ~ <input type="time" id="ae" value="17:30"><button id="aadd">추가</button></div>
+  </div>
+</div>
+
+<div id="v-dex" class="view" hidden>
+  <a class="back" href="#home">← 뒤로</a>
+  <div class="pg big" id="pgbox"></div>
+  <div class="card lvbox" id="lv"></div>
+  <div id="dexbox"></div>
+</div>
+
 <div class="muted" style="text-align:center;margin-top:20px">별과 기록은 이 폰의 브라우저에 저장돼요</div>
 </div>
 <script src="common.js"></script>
@@ -168,9 +205,20 @@ function ymd(d){return d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+St
 const NOW=new Date(), TODAY=ymd(NOW);
 $("today").textContent=`${NOW.getFullYear()}년 ${NOW.getMonth()+1}월 ${NOW.getDate()}일 ${DAYS[NOW.getDay()]}요일`;
 
-/* 펭귄 + 레벨 */
+/* 화면 전환 (해시) */
+const VIEWS=["home","eng","school","school-notes","school-bag","school-meal","todo","acad","dex"];
+function route(){
+  let h=(location.hash||"#home").slice(1); if(!VIEWS.includes(h)) h="home";
+  VIEWS.forEach(v=>$("v-"+v).hidden=(v!==h));
+  $("title").hidden=(h!=="home"); $("today").hidden=(h!=="home");
+  if(h==="dex"){ paintPg(); renderLv(); $("dexbox").innerHTML=dexHTML(); }
+  if(h==="home") homeSubs();
+  scrollTo(0,0);
+}
+addEventListener("hashchange",route);
+
+/* 펭귄 + 레벨 (도감 화면) */
 function paintPg(){ $("pgbox").innerHTML=penguin("normal"); }
-paintPg(); $("lv").className="card lvbox"; renderLv();
 $("pgbox").onclick=()=>{ $("pgbox").innerHTML=penguin("happy"); setTimeout(paintPg,700); };
 function afterXP(){ if(window.__levelUp!==undefined){const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L,()=>{paintPg();renderLv();}),300);} }
 
@@ -190,11 +238,11 @@ function mkList(box,key,title,emoji,placeholder,onAllDone){
   }
   draw();
 }
-mkList("todo","seola_todo","오늘 공부 체크","✅","오늘 할 일 (예: 수학 문제집 2쪽)",(S,box)=>{
+mkList("todo","seola_todo","오늘 공부 체크 (숙제 제외)","✅","오늘 할 일 (예: 수학 문제집 2쪽)",(S,box)=>{
   const all=S.items.length>=3 && S.items.every(i=>i.d);
   if(all && ld("seola_todo_bonus","")!==TODAY){
     sv("seola_todo_bonus",TODAY); window.__gain=0; addXP(3);
-    $("todomsg").innerHTML='<div class="toast">오늘 할 일을 다 했어! ⭐+3</div>'; paintPg(); afterXP();
+    $("todomsg").innerHTML='<div class="toast">오늘 할 일을 다 했어! ⭐+3</div>'; afterXP();
   }
 });
 mkList("bag","seola_bag","챙길 것","🎒","챙길 것 (예: 체육복, 리코더)");
@@ -203,7 +251,7 @@ mkList("bag","seola_bag","챙길 것","🎒","챙길 것 (예: 체육복, 리코
 (function(){
   let N=ld("seola_notes",[]);
   function draw(){
-    const show=N.slice().reverse().slice(0,8);
+    const show=N.slice().reverse().slice(0,10);
     $("notes").innerHTML=`<h2 class="sec">📒 알림장</h2>`+(show.length?show.map((n,k)=>{const idx=N.length-1-k;return `<div class="note"><div class="d">${escH(n.d)} <button class="del" data-x="${idx}" type="button" style="width:auto;margin:0 0 0 8px;padding:0 8px;font-size:14px;background:#f3ece3;color:var(--sub)">✕</button></div>${escH(n.t)}</div>`}).join(""):`<div class="muted">학교 알림장 내용을 적어 봐!</div>`)+
       `<div class="addrow"><input type="text" id="notein" placeholder="알림장 내용"><button id="noteadd">추가</button></div>`;
     $("notes").querySelectorAll('button.del').forEach(b=>b.onclick=()=>{N.splice(+b.dataset.x,1);sv("seola_notes",N);draw()});
@@ -217,14 +265,26 @@ mkList("bag","seola_bag","챙길 것","🎒","챙길 것 (예: 체육복, 리코
 let ACAD=ld("seola_acad",[]), selDays=new Set([NOW.getDay()]);
 function hm(s){const [h,m]=s.split(":").map(Number);return h*60+m}
 function fmtLeft(m){const h=Math.floor(m/60),mm=m%60;return h?`${h}시간 ${mm}분`:`${mm}분`}
-function paintAcad(){
-  const nowM=new Date().getHours()*60+new Date().getMinutes(), dow=new Date().getDay();
-  const todays=ACAD.filter(a=>a.days.includes(dow)).sort((a,b)=>hm(a.s)-hm(b.s));
-  $("acadlist").innerHTML = todays.length ? todays.map(a=>{
+function acadToday(){
+  const n=new Date(), nowM=n.getHours()*60+n.getMinutes(), dow=n.getDay();
+  return ACAD.filter(a=>a.days.includes(dow)).sort((a,b)=>hm(a.s)-hm(b.s)).map(a=>{
     const s=hm(a.s),e=hm(a.e); let st,cl;
     if(nowM<s){st=`${fmtLeft(s-nowM)} 후 시작`;cl="soon"} else if(nowM<e){st=`수업 중 · ${fmtLeft(e-nowM)} 남음`;cl="now"} else {st="끝났어";cl="end"}
-    return `<div class="acad"><div class="t">${escH(a.n)} <span class="st ${cl}">${st}</span></div><div class="muted">${a.s} ~ ${a.e}</div></div>`}).join("")
-    : `<div class="muted">${ACAD.length?"오늘은 학원이 없어요 🎉":"설정에서 학원 시간표를 넣으면 오늘 시간을 알려 줘요"}</div>`;
+    return {a,st,cl};
+  });
+}
+function paintAcad(){
+  const t=acadToday();
+  $("acadlist").innerHTML = t.length ? t.map(({a,st,cl})=>`<div class="acad"><div class="t">${escH(a.n)} <span class="st ${cl}">${st}</span></div><div class="muted">${a.s} ~ ${a.e}</div></div>`).join("")
+    : `<div class="muted">${ACAD.length?"오늘은 학원이 없어요 🎉":"아래에 학원 시간표를 넣으면 오늘 시간을 알려 줘요"}</div>`;
+  homeSubs();
+}
+function homeSubs(){
+  const t=acadToday(), nx=t.find(x=>x.cl!=="end");
+  $("acadsub").textContent = !ACAD.length ? "시간표를 넣어 보세요" : !t.length ? "오늘은 학원이 없어요 🎉" : nx ? `${nx.a.n} ${nx.a.s} · ${nx.st}` : "오늘 학원은 모두 끝났어";
+  const T=ld("seola_todo",{date:TODAY,items:[]}), n=T.date===TODAY?T.items.filter(i=>i.d).length:0;
+  $("todosub").textContent = T.items.length ? `숙제 제외 · ${n}/${T.items.length} 완료` : "숙제 제외 · 오늘 할 일을 추가해 봐";
+  const I=info(getXP()); $("lvsub").textContent=`Lv.${I.st+1} ${STAGES[I.st][1]} · ⭐${getXP()}`;
 }
 function drawAcadEdit(){
   $("acadedit").innerHTML=ACAD.length?ACAD.map((a,i)=>`<div class="acad"><div class="t">${escH(a.n)} <button class="del" data-x="${i}" type="button" style="width:auto;margin:0 0 0 8px;padding:0 8px;font-size:14px;background:#f3ece3;color:var(--sub)">삭제</button></div><div class="muted">${a.days.map(d=>DAYS[d]).join("·")} ${a.s}~${a.e}</div></div>`).join(""):'<div class="muted">아직 없어요</div>';
@@ -247,7 +307,7 @@ async function neis(path,params){
 async function loadMeal(){
   const sc=ld("seola_school",null);
   $("schoolnow").textContent=sc?`등록된 학교: ${sc.name}`:"아직 학교가 없어요";
-  if(!sc){ $("meallist").textContent="설정에서 학교를 등록하면 오늘 급식이 나와요"; return; }
+  if(!sc){ $("meallist").textContent="아래에서 학교를 등록하면 오늘 급식이 나와요"; return; }
   const cache=ld("seola_meal",null);
   if(cache&&cache.date===TODAY&&cache.code===sc.code){ $("meallist").innerHTML=cache.html; return; }
   try{
@@ -268,8 +328,6 @@ $("schoolbtn").onclick=async()=>{
   }catch(e){ $("schoolres").textContent="학교 정보를 불러오지 못했어요. 인터넷을 확인해 줘"; }
 };
 loadMeal();
-
-/* 도감 */
-$("dexbtn").onclick=e=>{e.preventDefault(); const b=$("dexbox"); if(b.style.display==="none"){b.innerHTML=dexHTML();b.style.display="block";b.scrollIntoView({behavior:"smooth"});} else b.style.display="none";};
+route();
 </script>
 </body></html>
