@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>설아 영어단어 퀴즈 5회차</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff8ef;--card:#ffffff;--ink:#2b2a33;--sub:#7a7584;--accent:#f07b3f;--accent2:#ffd36e;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#efe6da}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Gowun Dodum",system-ui,sans-serif;font-size:20px;line-height:1.55}
+  .homebtn{background:#fff;border:2px solid #f0bf2a;border-radius:12px;padding:3px 10px;color:#6b4f00;text-decoration:none;margin-right:8px;white-space:nowrap}
+  .upd{display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;font-weight:bold;color:#6b4f00;background:#fff3c4;border:2px solid #f0bf2a;border-radius:14px;padding:6px 10px;margin-bottom:8px}
+  .wrap{max-width:600px;margin:0 auto;padding:20px 16px 48px}
+  h1{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:24px;margin:4px 0 2px}
+  .muted{color:var(--sub);font-size:16px}
+  .card{background:var(--card);border-radius:22px;padding:26px 22px;box-shadow:0 6px 24px rgba(120,80,30,.08);margin-top:16px}
+  .bar{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:14px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0;transition:width .3s}
+  .top{display:flex;justify-content:space-between;align-items:center;font-size:17px;color:var(--sub);margin-top:8px}
+  .tag{display:inline-block;font-size:16px;padding:5px 13px;border-radius:99px;background:#fff1e3;color:#b9541f;font-weight:bold}
+  .tag.sp{background:#e9f0ff;color:#3559c7}
+  .prompt{font-family:"Nunito","Gowun Dodum",sans-serif;font-size:44px;font-weight:800;margin:14px 0 4px;word-break:keep-all}
+  .prompt.ko{font-family:"Gowun Dodum",sans-serif;font-size:31px;font-weight:700}
+  .hint{color:var(--sub);font-size:18px;letter-spacing:2px;margin-bottom:12px;font-family:monospace}
+  input[type=text]{width:100%;font-size:25px;padding:18px 18px;border:2px solid var(--line);border-radius:14px;outline:none;font-family:inherit;background:#fffdf9}
+  input[type=text]:focus{border-color:var(--accent)}
+  button{font-family:inherit;font-size:22px;font-weight:bold;border:0;border-radius:16px;padding:18px 20px;cursor:pointer;width:100%;margin-top:12px;background:var(--accent);color:#fff}
+  button.ghost{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  button.soft{background:#f3ece3;color:var(--ink)}
+  button:disabled{opacity:.5}
+  .fb{margin-top:14px;border-radius:14px;padding:14px 16px;display:none}
+  .fb.ok{display:block;background:var(--okbg);color:var(--ok)}
+  .fb.no{display:block;background:var(--nobg);color:var(--no)}
+  .fb b{font-size:23px}
+  .fb .ans{color:var(--ink);margin-top:6px}
+  .score{font-family:"Nunito",sans-serif;font-size:68px;font-weight:800;text-align:center;margin:6px 0 0;color:var(--accent)}
+  .center{text-align:center}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:18px}
+  th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--sub);font-weight:normal;font-size:15px}
+  td.w{font-family:"Nunito",sans-serif;font-weight:800}
+  td.mine{color:var(--no)}
+  .copied{color:var(--ok);font-size:14px;text-align:center;margin-top:6px;min-height:20px}
+  .start li{margin:4px 0}
+  .row{display:flex;gap:10px}.row button{flex:1}
+  .pg{display:flex;align-items:flex-end;gap:10px;margin:10px 0 -6px}
+  .pg svg{width:125px;height:125px;flex:none}
+  .pg.big svg{width:200px;height:200px}
+  .pg.big{justify-content:center}
+  .bubble{background:#fff;border-radius:18px;padding:10px 16px;box-shadow:0 3px 12px rgba(120,80,30,.1);font-size:19px;margin-bottom:22px;position:relative}
+  .bubble:after{content:"";position:absolute;left:-7px;bottom:12px;border:7px solid transparent;border-right-color:#fff;border-left:0}
+  .hop{animation:hop .5s ease}
+  .shake{animation:shake .5s ease}
+  @keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+  @keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+  .quote{margin-top:22px;background:#fff3c9;border-radius:20px;padding:18px 20px;text-align:center}
+  .quote .lab{font-size:15px;color:#b98a12;font-weight:bold}
+  .quote .en{font-family:"Nunito",sans-serif;font-weight:800;font-size:22px;margin-top:6px}
+  .quote .ko{font-size:19px;margin-top:4px}
+  .quote .by{font-size:15px;color:var(--sub);margin-top:4px}
+  .lv{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:16px;margin-bottom:6px}
+  .lv span{white-space:nowrap}
+  .lv span{color:var(--sub);font-size:15px}
+  .lvbar{height:12px;background:#f3e3b0;border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .lvbar>i{display:block;height:100%;background:linear-gradient(90deg,#ffe27a,#ffb800);transition:width .4s}
+  .ov{position:fixed;inset:0;background:rgba(40,30,10,.45);display:flex;align-items:center;justify-content:center;z-index:9;padding:20px}
+  .ovc{background:#fff;border-radius:26px;padding:24px 22px;text-align:center;max-width:380px;width:100%;animation:pop .4s ease}
+  .lvtitle{font-size:26px;font-weight:bold;color:var(--accent)}
+  .lvname{font-size:24px;font-weight:bold;margin-top:4px}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+  .vil{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .vrow{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.vrow div{width:56px}.vrow svg{width:100%;height:auto}
+  .dex{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px;text-align:center;font-size:13px}
+  .dx svg{width:100%;height:auto}
+  .dx.lock{color:var(--sub)}
+  .dx .q{aspect-ratio:120/130;display:flex;align-items:center;justify-content:center;background:#f3ece3;border-radius:14px;font-size:30px;color:#c9bca9}
+  .gain{font-size:20px;font-weight:bold;color:#c98a00;margin-top:8px}
+  .tag.rv{background:#fff3c9;color:#b98a12}
+
+  .logbtn{background:#fff3c4;border:2px solid #f0bf2a;color:#6b4f00;border-radius:14px;padding:4px 12px;font-size:16px;font-weight:bold;width:auto;margin:0;cursor:pointer}
+  .logov{position:fixed;inset:0;background:#fffaf0;z-index:10;overflow:auto;padding:16px 14px 40px}
+  .logov h2{margin:4px 0 10px;font-size:26px}
+  .logov .close{position:sticky;top:0;float:right;width:auto;padding:8px 16px;font-size:18px;margin:0}
+  .logov .ent{background:#fff;border:2px solid #f3e1a8;border-radius:16px;padding:12px;margin:12px 0}
+  .logov .ent h3{margin:0 0 6px;font-size:21px}
+  .logov table{width:100%;border-collapse:collapse;font-size:18px}
+  .logov td,.logov th{padding:6px 4px;border-bottom:1px solid #f3e9c6;text-align:left;vertical-align:top}
+  .logov .chip{display:inline-block;background:#ffe3e3;border:2px solid #ef8f8f;color:#8a1f1f;border-radius:14px;padding:4px 10px;margin:3px;font-weight:bold;font-size:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="upd"><a class="homebtn" href="../">🏠 홈</a><span>📅 영어단어 업데이트 11/25 (5회차)</span></div>
+    <div id="app"></div>
+  <div class="quote" id="quote"></div>
+</div>
+
+<script src="../common.js"></script>
+<script>
+// [단어, 품사, 정답 뜻(표시용), 인정 키워드, 출처]
+const WORDS = [
+ ["travel", "동/명", "여행하다, 이동하다, 여행", "여행,이동", "D18"],
+ ["abroad", "부", "해외로, 외국에", "해외,외국", "D18"],
+ ["fly", "동/명", "비행하다, 날다, 비행", "비행,날다,날아,나는,난다", "D18"],
+ ["flight", "명", "항공편, 비행", "항공,비행", "D18"],
+ ["depart", "동", "출발하다, 떠나다", "출발,떠나,떠난", "D18"],
+ ["arrive", "동", "도착하다, 이르다", "도착,이르", "D18"],
+ ["reach", "동", "도착하다, 도달하다", "도착,도달,닿다", "D18"],
+ ["cancel", "동", "취소하다", "취소", "D18"],
+ ["land", "동/명", "착륙하다, 육지, 땅", "착륙,육지,땅", "D18"],
+ ["site", "명", "위치, 현장, 유적", "위치,현장,유적,장소,사이트", "D18"],
+ ["guide", "명/동", "가이드, 안내서, 안내하다", "가이드,안내", "D18"],
+ ["tourist", "명", "관광객", "관광,여행객", "D18"],
+ ["visitor", "명", "방문객, 손님", "방문,손님", "D18"],
+ ["famous", "형", "유명한", "유명", "D18"],
+ ["foreign", "형", "외국의", "외국,해외", "D18"],
+ ["view", "명/동", "경치, 전망, 관점, 보다", "경치,전망,관점,풍경,보다", "D18"],
+ ["memory", "명", "추억, 회상, 기억, 기억력", "추억,회상,기억", "D18"],
+ ["imagine", "동", "상상하다", "상상", "D18"],
+ ["experience", "명/동", "경험, 경험하다", "경험,체험", "D18"],
+ ["get to", "", "~에 도착하다, 이르다", "도착,이르,다다르", "D18"],
+ ["schedule", "명/동", "일정, 계획, 일정을 잡다", "일정,계획,스케줄,시간표", "D18"],
+ ["journey", "명/동", "여행, 여행하다", "여행", "D18"],
+ ["rush", "동", "서두르다, 급히 움직이다", "서두,서둘,급히", "D18"],
+ ["landmark", "명", "명소, 랜드마크", "명소,랜드마크,상징", "D18"],
+ ["photograph", "명/동", "사진, 사진을 찍다", "사진,촬영", "D18"],
+ ["scenery", "명", "풍경, 경치", "풍경,경치", "D18"],
+ ["impressive", "형", "인상적인, 감명 깊은", "인상,감명", "D18"],
+ ["refresh", "동", "기운 나게 하다, 상쾌하게 하다", "기운,상쾌,새롭게", "D18"],
+ ["insurance", "명", "보험", "보험", "D18"],
+ ["hang out", "", "(~와) 시간을 보내다", "시간을보내,어울,놀다,놀아", "D18"],
+ ["buy", "동", "사다, 구입하다", "사다,사는,사서,구입,구매,샀", "D19"],
+ ["sell", "동", "팔다", "팔다,팔아,파는,판매,팔고", "D19"],
+ ["pay", "동", "(돈을) 내다, 지불하다", "내다,내는,지불,지급,계산", "D19"],
+ ["cash", "명", "현금, 돈", "현금,돈", "D19"],
+ ["coin", "명", "동전", "동전,코인", "D19"],
+ ["dollar", "명", "달러", "달러", "D19"],
+ ["cheap", "형", "싼, 저렴한", "싼,저렴,값싼,싸다,싸고,저가", "D19"],
+ ["expensive", "형", "비싼", "비싼,비싸,고가,값비싼", "D19"],
+ ["shop", "명/동", "가게, 상점, 사다", "가게,상점,사다,쇼핑,사는", "D19"],
+ ["choice", "명", "선택권, 선택", "선택", "D19"],
+ ["customer", "명", "손님, 고객", "손님,고객", "D19"],
+ ["weekend", "명", "주말", "주말", "D19"],
+ ["gift", "명", "선물, (타고난) 재능", "선물,재능", "D19"],
+ ["bookstore", "명", "서점, 책방", "서점,책방", "D19"],
+ ["pair", "명", "한 켤레, 한 쌍, 한 벌", "켤레,한쌍,쌍,한벌,짝", "D19"],
+ ["mall", "명", "쇼핑몰", "쇼핑몰,몰", "D19"],
+ ["tag", "명", "표, 꼬리표", "꼬리표,표,태그,이름표", "D19"],
+ ["spend", "동", "(돈·시간·노력 등을) 쓰다", "쓰다,쓴,쓰는,써,소비,지출,보내", "D19"],
+ ["stop by", "", "잠시 들르다", "들르,들러,들린,방문", "D19"],
+ ["goods", "명", "상품, 물품", "상품,물품,제품,물건", "D19"],
+ ["junk", "명/형", "쓸모없는 물건, 고물, 쓸모없는, 싸구려의", "쓸모없,고물,싸구려,쓰레기", "D19"],
+ ["display", "명/동", "전시, 진열, 전시하다, 진열하다", "전시,진열,보여주,표시", "D19"],
+ ["charge", "명/동", "요금, 비용, 청구하다", "요금,비용,청구,충전", "D19"],
+ ["glance", "명/동", "힐끗 봄, 힐끗 보다", "힐끗,흘끗,쓱,훑어", "D19"],
+ ["complain", "동", "항의하다, 불평하다", "항의,불평,불만", "D19"],
+ ["salesperson", "명", "점원, 판매원", "점원,판매원,판매", "D19"],
+ ["advertisement", "명", "광고", "광고", "D19"],
+ ["consume", "동", "소비하다, 소모하다", "소비,소모", "D19"],
+ ["give away", "", "선물로 주다, 기부하다", "선물,기부,나눠,공짜", "D19"],
+ ["remove", "동", "제거하다, 치우다", "제거,치우,치워,없애,없앤", "U3"],
+ ["toxin", "명", "독소", "독소,독", "U3"],
+ ["frequently", "부", "자주", "자주,빈번,종종", "U3"],
+ ["in short", "", "요컨대", "요컨대,요약,간단히,간단하게,한마디로,짧게", "U3"],
+ ["solution", "명", "해결책", "해결,해법", "U3"],
+ ["damage", "명", "피해, 손상, 손해", "피해,손상,손해", "L6"],
+ ["scent", "명", "냄새, 향기", "냄새,향기", "U3"],
+ ["launch", "동/명", "시작하다, 착수하다, 출시, 개시", "시작,착수,출시,개시", "D23"],
+ ["arrange", "동", "준비하다, 마련하다, 정리하다, 배열하다", "준비,마련,정리,배열", "D23"],
+ ["interest", "명/동", "관심, 흥미, 관심을 끌다", "관심,흥미", "D20"],
+ ["build up", "", "쌓이다, 축적되다", "쌓이,쌓여,쌓인,쌓다,축적", "U3"],
+ ["wear down", "", "마모되다, 닳다", "마모,닳", "L6"],
+ ["what's more", "", "게다가, 더욱이", "게다가,더욱이,더구나,더군다나,뿐만아니라,더욱", "L6"],
+ ["surf", "동/명", "파도를 타다, 서핑하다, 파도", "파도,서핑", "D21"],
+ ["hand", "동", "건네주다, 넘겨주다", "건네,넘겨,건내,손", "U4"],
+ ["soldier", "명", "군인, 병사", "군인,병사", "L5"],
+ ["elsewhere", "부", "다른 곳에서, 다른 곳에", "다른곳,딴곳", "L5"],
+ ["breakout", "명", "탈옥", "탈옥,탈출", "U4"],
+ ["observe", "동", "보다, 목격하다", "보다,목격,관찰", "U4"]
+];
+// 5회차 고정 문제 (새 단어 44개 + 지난 회차 틀린 단어 13개). 순서만 매번 섞임
+const FIXED = [["complain", "meaning"], ["travel", "spell"], ["schedule", "spell"], ["insurance", "spell"], ["dollar", "spell"], ["view", "meaning"], ["fly", "spell"], ["cash", "meaning"], ["scenery", "meaning"], ["tourist", "meaning"], ["gift", "spell"], ["buy", "spell"], ["cancel", "meaning"], ["get to", "meaning"], ["choice", "spell"], ["salesperson", "meaning"], ["flight", "meaning"], ["pair", "spell"], ["customer", "spell"], ["mall", "meaning"], ["charge", "meaning"], ["abroad", "meaning"], ["experience", "spell"], ["goods", "meaning"], ["arrive", "spell"], ["glance", "spell"], ["imagine", "meaning"], ["refresh", "spell"], ["journey", "meaning"], ["guide", "spell"], ["photograph", "meaning"], ["tag", "meaning"], ["give away", "meaning"], ["impressive", "meaning"], ["rush", "spell"], ["land", "meaning"], ["cheap", "spell"], ["hang out", "spell"], ["remove", "spell"], ["toxin", "spell"], ["frequently", "spell"], ["in short", "meaning"], ["solution", "meaning"], ["damage", "meaning"], ["scent", "spell"], ["launch", "spell"], ["arrange", "spell"], ["interest", "spell"], ["build up", "meaning"], ["wear down", "meaning"], ["what's more", "meaning"], ["surf", "spell"], ["hand", "spell"], ["soldier", "spell"], ["elsewhere", "spell"], ["breakout", "meaning"], ["observe", "spell"]];
+const REVIEW = new Set(["scent", "launch", "arrange", "interest", "build up", "wear down", "what's more", "surf", "hand", "soldier", "elsewhere", "breakout", "observe"]);
+const BYWORD = Object.fromEntries(WORDS.map(w=>[w[0],w]));
+const RATIO = 0.8;
+
+
+const CHEER=["화이팅! 🐧","할 수 있어!","천천히 생각해 봐","설아 최고!","거의 다 왔어!"];
+const $app = document.getElementById("app");
+let qs = [], idx = 0, results = [], answered = false, dbRef = null;
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function normKo(s){return s.replace(/[\s~()（）\[\]…\.\-·'"]/g,"")}
+function normEn(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/\s+/g,"").trim()}
+
+function checkMeaning(ans, keys){
+  const parts = ans.split(/[,，\/、]/).map(normKo).filter(Boolean);
+  const ks = keys.split(",").map(normKo);
+  return parts.some(p => ks.some(k => k.length===1 ? (p===k || p===k+"의" || p.startsWith(k+"은") || p.startsWith(k+"게")) : p.includes(k)));
+}
+
+function makeQuiz(pool){
+  if(pool===WORDS) return shuffle(FIXED.map(([w,t])=>({w:BYWORD[w], type:t})));
+  return shuffle(pool.map(p=>({w:BYWORD[p.word], type:p.type})));
+}
+
+function start(pool, label){
+  qs = makeQuiz(pool); idx = 0; results = []; window.__label = label || "전체"; window.__gain = 0;
+  renderQ();
+}
+
+function renderIntro(){
+  $app.innerHTML = `
+  <div class="card start">
+    <p style="margin-top:0">설아야, 오늘 단어 시험이야! ✏️</p>
+    <ul>
+      <li>전체 <b>${WORDS.length}개</b> 단어 중 <b>${Math.round(WORDS.length*RATIO)}문제</b>가 무작위로 나와</li>
+      <li><span class="tag">뜻 쓰기</span> 영어를 보고 한국어 뜻 쓰기</li>
+      <li><span class="tag sp">철자 쓰기</span> 뜻을 보고 영어 철자 쓰기</li>
+      <li>뜻이 여러 개면 <b>하나만</b> 맞게 써도 정답!</li>
+      <li>다 풀면 결과 화면을 <b>캡처해서 아빠한테</b> 보내줘 📸</li>
+    </ul>
+    <button id="go">시작하기</button>
+  </div>`;
+  document.getElementById("go").onclick = ()=>start(WORDS,"5회차");
+}
+
+function renderQ(){
+  answered = false;
+  const q = qs[idx], w = q.w;
+  const isSp = q.type==="spell";
+  const hint = isSp ? w[0].split("").map(c=>c===" "?"  ":/[a-z]/i.test(c)?"_":c).join(" ") + `  (${w[0].replace(/[^a-z]/gi,"").length}글자)` : (w[1]?w[1]:"");
+  $app.innerHTML = `
+  <div class="lvbox">${lvHTML()}</div>
+  <div class="bar"><i style="width:${idx/qs.length*100}%"></i></div>
+  <div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${results.filter(r=>r.ok).length}</span><button type="button" class="logbtn" id="logb">📒 틀린 단어</button></div>
+  <div class="pg" id="pg">${penguin("normal")}<div class="bubble" id="bub">${CHEER[Math.floor(Math.random()*CHEER.length)]}</div></div>
+  <div class="card">
+    <span class="tag ${isSp?"sp":""}">${isSp?"철자 쓰기":"뜻 쓰기"}</span>${REVIEW.has(w[0])?' <span class="tag rv">🔁 복습</span>':""}
+    <div class="prompt ${isSp?"ko":""}">${esc(isSp?w[2]:w[0])}</div>
+    <div class="hint">${esc(hint)}</div>
+    <form id="f" autocomplete="off">
+      <input type="text" id="a" placeholder="${isSp?"영어로 써 보세요":"한국어 뜻을 써 보세요"}" autocapitalize="off" autocorrect="off" spellcheck="false" lang="${isSp?"en":"ko"}">
+      <button id="btn" type="submit">확인</button>
+    </form>
+    <div class="fb" id="fb"></div>
+  </div>`;
+  document.getElementById("logb").onclick = showLog;
+  const inp = document.getElementById("a"); inp.focus();
+  document.getElementById("f").onsubmit = e=>{
+    e.preventDefault();
+    if(answered){ next(); return; }
+    const v = inp.value.trim();
+    if(!v){ inp.focus(); return; }
+    const ok = isSp ? normEn(v)===normEn(w[0]) : checkMeaning(v, w[3]);
+    results.push({word:w[0], meaning:w[2], type:q.type, mine:v, ok});
+    answered = true; inp.readOnly = true;
+    if(ok) addXP(1);
+    document.getElementById("pg").innerHTML = penguin(ok?"happy":"sad") + `<div class="bubble">${ok?"정답! ⭐+1":"괜찮아, 다시 외우자!"}</div>`;
+    if(window.__levelUp!==undefined){ const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L,()=>{document.getElementById("pg").innerHTML=penguin("happy")+`<div class="bubble">나 자랐어! 고마워 🌻</div>`;document.getElementById("btn").focus();}),500); }
+    const fb = document.getElementById("fb");
+    fb.className = "fb " + (ok?"ok":"no");
+    fb.innerHTML = ok
+      ? `<b>정답! 🎉</b><div class="ans">${esc(w[0])} = ${esc(w[2])}</div>`
+      : `<b>아쉬워요 😢</b><div class="ans">정답: <b>${esc(w[0])}</b> = ${esc(w[2])}</div>`;
+    document.getElementById("btn").textContent = idx+1<qs.length ? "다음 문제 →" : "결과 보기";
+    document.getElementById("btn").focus();
+  };
+}
+
+function next(){ idx++; if(idx<qs.length) renderQ(); else renderResult(); }
+
+function today(){const d=new Date();return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`}
+
+function resultText(){
+  const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
+  let t = `[설아 영어단어 퀴즈] ${today()} (${window.__label})\n점수: ${ok} / ${results.length} (${Math.round(ok/results.length*100)}점)\n`;
+  if(wrong.length){ t += `\n틀린 단어 ${wrong.length}개\n` + wrong.map((r,i)=>`${i+1}. ${r.word} = ${r.meaning} (${r.type==="spell"?"철자":"뜻"} / 내 답: ${r.mine})`).join("\n"); }
+  else t += "\n모두 맞았어요! 💯";
+  const I2=info(getXP()); t += `\n\n🐧 조펭솜: Lv.${I2.st+1} ${STAGES[I2.st][1]} (모은 별 ${getXP()}개${I2.trip>0?`, 지금 ${STOPS[I2.trip-1].co.c} ${STOPS[I2.trip-1].ct.n}`:""})`;
+  return t;
+}
+
+
+const HISTORY = [{"label": "1회차 (1번째)", "date": "11/18 20:59", "ok": 54, "n": 60, "wrong": [{"word": "among", "meaning": "~ 중에서, ~에 둘러싸여", "type": "spell", "mine": "(빈칸)"}, {"word": "valuable", "meaning": "값비싼, 고가의, 귀중한", "type": "spell", "mine": "expensive"}, {"word": "inspire", "meaning": "영감을 주다, 고무하다, 격려하다", "type": "meaning", "mine": ""}, {"word": "ordinary", "meaning": "보통의, 평범한", "type": "meaning", "mine": ""}, {"word": "luxurious", "meaning": "호화로운, 사치스러운", "type": "spell", "mine": "(빈칸)"}, {"word": "especially", "meaning": "특히, 유난히", "type": "spell", "mine": "expieacilly"}]}, {"label": "1회차 (2번째)", "date": "11/19 18:13", "ok": 54, "n": 60, "wrong": [{"word": "unbelievable", "meaning": "믿을 수 없는, 믿기 어려운", "type": "spell", "mine": "difficult"}, {"word": "dramatic", "meaning": "극적인", "type": "spell", "mine": "extreme"}, {"word": "worth", "meaning": "~의 가치가 있는", "type": "spell", "mine": "value"}, {"word": "precious", "meaning": "귀중한, 값진", "type": "meaning", "mine": ""}, {"word": "feature", "meaning": "특징, 특색, 특징을 이루다", "type": "spell", "mine": "(모름)"}, {"word": "exactly", "meaning": "정확하게, 틀림없이", "type": "meaning", "mine": "존재하는"}]}, {"label": "2회차", "date": "11/21 18:40", "ok": 64, "n": 72, "wrong": [{"word": "trick", "meaning": "재주, 속임수, 장난, 속이다", "type": "spell", "mine": "cheat"}, {"word": "inspire", "meaning": "영감을 주다, 고무하다, 격려하다", "type": "meaning", "mine": "(빈칸)"}, {"word": "launch", "meaning": "시작하다, 착수하다, 출시, 개시", "type": "spell", "mine": "start"}, {"word": "arrange", "meaning": "준비하다, 마련하다, 정리하다, 배열하다", "type": "spell", "mine": "prepare"}, {"word": "precious", "meaning": "귀중한, 값진", "type": "meaning", "mine": "사치스러운"}, {"word": "crowded", "meaning": "붐비는, 복잡한", "type": "spell", "mine": "crowed"}, {"word": "ordinary", "meaning": "보통의, 평범한", "type": "meaning", "mine": "고유의"}, {"word": "artificial", "meaning": "인공의, 인조의", "type": "meaning", "mine": "예술적인"}]}, {"label": "3회차", "date": "11/22 19:57", "ok": 34, "n": 40, "wrong": [{"word": "launch", "meaning": "시작하다, 착수하다, 출시, 개시", "type": "spell", "mine": "🐧"}, {"word": "hand", "meaning": "건네주다, 넘겨주다", "type": "spell", "mine": "take"}, {"word": "soldier", "meaning": "군인, 병사", "type": "spell", "mine": "soilder"}, {"word": "elsewhere", "meaning": "다른 곳에서, 다른 곳에", "type": "spell", "mine": "🐧"}, {"word": "breakout", "meaning": "탈옥", "type": "meaning", "mine": "벽돌"}, {"word": "observe", "meaning": "보다, 목격하다", "type": "spell", "mine": "witness"}]}, {"label": "4회차", "date": "11/23 20:24", "ok": 66, "n": 73, "wrong": [{"word": "build up", "meaning": "쌓이다, 축적되다", "type": "meaning", "mine": "건설하다"}, {"word": "surf", "meaning": "파도를 타다, 서핑하다, 파도", "type": "spell", "mine": "wave"}, {"word": "scent", "meaning": "냄새, 향기", "type": "spell", "mine": "smell"}, {"word": "what's more", "meaning": "게다가, 더욱이", "type": "meaning", "mine": "한술 더 떠서"}, {"word": "wear down", "meaning": "마모되다, 닳다", "type": "meaning", "mine": "입다"}, {"word": "launch", "meaning": "시작하다, 착수하다, 출시, 개시", "type": "spell", "mine": "laundry"}, {"word": "arrange", "meaning": "준비하다, 마련하다, 정리하다, 배열하다", "type": "spell", "mine": "observe"}]}, {"label": "4회차", "date": "11/24 21:59", "ok": 71, "n": 73, "wrong": [{"word": "interest", "meaning": "관심, 흥미, 관심을 끌다", "type": "spell", "mine": "intrest"}, {"word": "scent", "meaning": "냄새, 향기", "type": "spell", "mine": "smell"}]}];
+const LOGKEY="seola_wrong_log"; let memLog=[];
+function getLog(){try{const v=localStorage.getItem(LOGKEY);return v?JSON.parse(v):memLog}catch(e){return memLog}}
+function addLog(en){const a=getLog().concat([en]).slice(-60);memLog=a;try{localStorage.setItem(LOGKEY,JSON.stringify(a))}catch(e){}}
+function showLog(){
+  const all = HISTORY.concat(getLog().filter(e=>!HISTORY.some(h=>h.label===e.label&&h.date===e.date)));
+  const cnt = {};
+  all.filter(en=>!/다시 풀기/.test(en.label)).forEach(en=>en.wrong.forEach(r=>{cnt[r.word]=(cnt[r.word]||0)+1}));
+  const rep = Object.entries(cnt).filter(([w,c])=>c>=2).sort((a,b)=>b[1]-a[1]);
+  const o=document.createElement("div"); o.className="logov";
+  o.innerHTML = `<button class="close" id="logx">닫기 ✕</button><h2>📒 틀린 단어 모음</h2>
+  ${rep.length?`<div class="ent"><h3>⚠ 자꾸 틀리는 단어</h3>${rep.map(([w,c])=>`<span class="chip">${esc(w)} ×${c}</span>`).join("")}</div>`:""}
+  ${all.slice().reverse().map(en=>`<div class="ent"><h3>${esc(en.label)} <span class="muted" style="font-size:16px">${esc(en.date)} · ${en.ok}/${en.n}</span></h3>
+    ${en.wrong.length?`<table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>${en.wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine||"")}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}</table>`:"<div>모두 맞았어요! 💯</div>"}</div>`).join("")}`;
+  document.body.appendChild(o);
+  document.getElementById("logx").onclick=()=>o.remove();
+}
+
+function renderResult(){
+  const ok = results.filter(r=>r.ok).length, wrong = results.filter(r=>!r.ok);
+  const pct = Math.round(ok/results.length*100);
+  const msg = pct===100?"완벽해! 최고야 💯":pct>=80?"정말 잘했어! 👏":pct>=60?"좋아, 조금만 더! 💪":"틀린 단어만 다시 해 보자! 🔁";
+  const bonus = results.length>=10 ? (5 + (pct===100?10:0)) : 2;
+  addXP(bonus);
+  addLog({label:window.__label,date:today(),ok:ok,n:results.length,wrong:wrong.map(r=>({word:r.word,meaning:r.meaning,type:r.type,mine:r.mine}))});
+  const gain = window.__gain;
+  $app.innerHTML = `
+  <div class="pg big">${penguin(pct>=60?"happy":"sad")}</div>
+  <div class="card center">
+    <div class="muted">${today()} · ${esc(window.__label)}</div>
+    <div class="score">${ok} / ${results.length}</div>
+    <div style="font-size:20px;font-weight:bold">${pct}점 · ${msg}</div>
+    <div class="gain">이번에 모은 별 ⭐+${gain} <span class="muted">(보너스 +${bonus})</span></div>
+  </div>
+  <div class="card lvbox">${lvHTML()}</div>
+  <div class="card">
+    <button id="mail">📧 아빠한테 메일 보내기</button>
+    <button class="ghost" id="sms">💬 아빠한테 문자 보내기</button>
+    <button class="ghost" id="logr">📒 틀린 단어 모아보기 (회차별)</button>
+    <button class="soft" id="copy">📋 결과 복사하기</button>
+    <div class="copied" id="cp"></div>
+    ${wrong.length?`<button class="ghost" id="retry">틀린 단어만 다시 풀기 (${wrong.length}개)</button>`:""}
+    <button class="soft" id="again">처음부터 새로 풀기</button>
+  </div>
+  ${wrong.length?`<div class="card">
+    <b>틀린 단어 ${wrong.length}개</b> <span class="muted">아래 메일 버튼으로 아빠한테 보내줘</span>
+    <table><tr><th>단어</th><th>정답 뜻</th><th>내 답</th></tr>
+    ${wrong.map(r=>`<tr><td class="w">${esc(r.word)}</td><td>${esc(r.meaning)}</td><td class="mine">${esc(r.mine)}<br><span class="muted">${r.type==="spell"?"철자":"뜻"}</span></td></tr>`).join("")}
+    </table></div>`:""}
+  ${dexHTML()}
+`;
+  document.getElementById("logr").onclick = showLog;
+  document.getElementById("mail").onclick = ()=>{
+    const to = atob("Y2hvaW5rdWVAZ21haWwuY29t");
+    const subj = `[설아 단어퀴즈] ${window.__label} ${ok}/${results.length} (${pct}점)`;
+    location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(resultText());
+    document.getElementById("cp").textContent = "메일 앱이 열리면 '보내기'를 눌러줘 📨";
+    setTimeout(()=>{ if(!document.hidden) document.getElementById("cp").textContent = "메일이 안 열리면 아래 '문자 보내기'를 눌러줘 💬"; }, 1800);
+  };
+  document.getElementById("sms").onclick = async ()=>{
+    const t = resultText();
+    try{ await navigator.clipboard.writeText(t); }catch(e){}
+    location.href = "sms:?body=" + encodeURIComponent(t);
+    document.getElementById("cp").textContent = "문자 앱에서 받는 사람에 '아빠'를 고르고 보내줘 💬 (내용이 비어 있으면 꾹 눌러 붙여넣기)";
+  };
+  document.getElementById("copy").onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(resultText()); document.getElementById("cp").textContent="복사됐어! 문자나 메일에 꾹 눌러 붙여넣기 해서 아빠한테 보내줘 ✅"; }
+    catch(e){ document.getElementById("cp").textContent="복사가 안 돼요. 화면을 캡처해서 보내주세요 📸"; }
+  };
+  if(wrong.length) document.getElementById("retry").onclick = ()=>{
+    start(wrong.map(r=>({word:r.word,type:r.type})),"오답 다시 풀기");
+  };
+  document.getElementById("again").onclick = ()=>start(WORDS,"5회차");
+  if(window.__levelUp!==undefined){ const L=window.__levelUp; delete window.__levelUp; setTimeout(()=>showLevelUp(L),600); }
+}
+
+
+const QUOTES=[
+ ["Little by little, one travels far.","조금씩 조금씩 가면 멀리 갈 수 있어.","스페인 속담"],
+ ["Slow and steady wins the race.","천천히 꾸준히 가는 쪽이 이겨.","이솝 우화 〈토끼와 거북이〉"],
+ ["Practice makes perfect.","연습하면 완벽해져.","영어 속담"],
+ ["Rome wasn't built in a day.","로마는 하루아침에 만들어지지 않았어.","영어 속담"],
+ ["A journey of a thousand miles begins with a single step.","천 리 길도 한 걸음부터.","노자"],
+ ["Where there's a will, there's a way.","뜻이 있는 곳에 길이 있어.","영어 속담"],
+ ["Knowledge is power.","아는 것이 힘이야.","프랜시스 베이컨"],
+ ["Many drops make a shower.","작은 물방울이 모여 소나기가 돼.","영어 속담"],
+ ["Every day is a new chance to learn.","매일매일이 새로 배울 기회야.","오늘의 응원"],
+ ["Don't put off till tomorrow what you can do today.","오늘 할 수 있는 일을 내일로 미루지 마.","영어 속담"],
+ ["Constant dripping wears away the stone.","낙숫물이 바위를 뚫어.","영어 속담"],
+ ["Small steps every day add up to big results.","매일의 작은 걸음이 모여 큰 결과가 돼.","오늘의 응원"],
+ ["Learning is a treasure that follows its owner everywhere.","배움은 어디든 주인을 따라다니는 보물이야.","중국 속담"],
+ ["It does not matter how slowly you go as long as you do not stop.","멈추지만 않는다면 얼마나 천천히 가는지는 중요하지 않아.","공자"],
+ ["Today's effort is tomorrow's strength.","오늘의 노력이 내일의 힘이 돼.","오늘의 응원"],
+ ["Mistakes help you learn.","틀려도 괜찮아, 틀리면서 배우는 거야.","오늘의 응원"],
+ ["An hour in the morning is worth two in the evening.","아침 한 시간은 저녁 두 시간만큼 값져.","영어 속담"],
+ ["Many a little makes a mickle.","티끌 모아 태산.","영어 속담"],
+ ["The more you learn, the more you can do.","많이 배울수록 할 수 있는 게 많아져.","오늘의 응원"],
+ ["Keep going. You are doing great!","계속 가자. 정말 잘하고 있어!","해바라기 펭귄"]
+];
+function showQuote(){
+  const d=new Date(); const day=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000);
+  const q=QUOTES[day%QUOTES.length];
+  document.getElementById("quote").innerHTML=`<div class="lab">🌻 오늘의 한마디</div><div class="en">${esc(q[0])}</div><div class="ko">${esc(q[1])}</div><div class="by">— ${esc(q[2])}</div>`;
+}
+
+showQuote();
+start(WORDS,"5회차");
+</script>
+</body>
+</html>
