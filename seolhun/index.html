@@ -373,6 +373,30 @@ button.ghost{background:#fff}
 .panel{border:3px solid #fff;box-shadow:0 5px 0 rgba(255,122,69,.25)}
 .inp{border:3px solid #fff;box-shadow:inset 0 2px 0 rgba(0,0,0,.05),0 3px 0 rgba(47,128,237,.15);font-family:"Jua",sans-serif}
 
+/* ===== 홈: 한 화면에 ===== */
+.hero.hm{padding:8px 12px;gap:10px;margin-top:0}
+.hero.hm img{width:56px;height:56px}
+.hero.hm .ht{font-size:22px;line-height:1.1;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+.hero.hm .hero-say{font-size:16px;margin-top:1px}
+.hero.hm #clk{color:#ffe066;font-size:17px}
+.hero-wx{margin-top:2px;background:rgba(255,255,255,.92);color:var(--ink);border-radius:14px;padding:2px 8px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero-wx *{vertical-align:middle}
+.hm-today{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;padding:8px 12px!important;margin-top:8px;font-size:15px;line-height:1.3}
+.hm-today div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tiles4{gap:8px;margin-top:8px}
+.big4{padding:6px 4px!important;font-size:20px!important;line-height:1.15!important}
+.big4 span{font-size:28px!important}
+.hm-rob{display:flex;align-items:center;gap:10px;width:100%;margin:8px 0 0;padding:8px 12px!important;color:var(--ink);font-size:inherit;font-weight:normal;box-shadow:0 5px 0 rgba(47,128,237,.22)!important}
+.hm-rob .lv-t{font-size:17px}.hm-rob .lv-t b{font-size:20px}
+.hm-shelf{display:flex;flex:none;background:#fff8e6;border-radius:12px;padding:2px 4px}
+@media (min-width:700px){
+ .wrap{max-width:760px}
+ .hero.hm{padding:14px 20px}.hero.hm img{width:84px;height:84px}.hero.hm .ht{font-size:34px}.hero.hm .hero-say{font-size:22px}.hero.hm #clk{font-size:24px}.hero-wx{font-size:20px;padding:4px 12px}
+ .hm-today{font-size:21px;padding:14px 20px!important;gap:8px 16px}
+ .tiles4{gap:14px;margin-top:14px}.big4{padding:22px 8px!important;font-size:30px!important}.big4 span{font-size:56px!important}.big4 small{font-size:20px!important}
+ .hm-rob{padding:16px 20px!important;margin-top:14px}.hm-rob .lv-t{font-size:24px}.hm-rob .lv-x{font-size:18px}
+}
+
 </style>
 </head>
 <body>
@@ -1220,33 +1244,23 @@ function renderHome(){
   const now=new Date(),dow=now.getDay(),hm=pad(now.getHours())+":"+pad(now.getMinutes());
   const sch=schedFor(dow),nextS=sch.find(e=>e.t>=hm);
   const meal=mealOf(today()),notes=notesAll().filter(n=>n.date===today());
-  const ph=phaseNow(),L=lvOf(S.xp);
+  const ph=phaseNow(),L=lvOf(S.xp),{r,part}=robotInfo(L),cur=L>=LMAX?XPL:S.xp%XPL;
   const shelf=S.shelf.filter(Boolean);
   $app.innerHTML=`
-  <div class="hero"><img src="${BUDDY}" alt="수달 친구"><div><h1 class="ht">설훈이의 공부방</h1><div class="hero-say">${now.getMonth()+1}월 ${now.getDate()}일 ${DOW[dow]}요일 · 안녕, 설훈!</div><div id="clk" style="font-family:Nunito,sans-serif;font-weight:900;font-size:30px;line-height:1.1"></div></div></div>
-  <div class="card" style="padding:6px 12px;margin-top:8px"><div id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div>
-  <div class="card" style="padding:12px 14px"><b>📌 오늘</b>
-   <div class="today">
-    <div>🎯 <b>${ph==="done"?"30분 코스 완료!":"30분 코스"}</b> ${ph==="done"?"✅":`<span class="muted">(${ph==="start"?"시작 전":"진행 중"})</span>`}</div>
-    <div>🗓️ ${nextS?`다음 일정 <b>${esc(nextS.t)} ${esc(nextS.n)}</b>`:sch.length?"오늘 일정 끝":"<span class='muted'>오늘 일정 없음</span>"}</div>
-    <div>🍚 ${meal?esc(meal.slice(0,4).join(" · "))+(meal.length>4?" …":""):"<span class='muted'>급식 정보 준비 중</span>"}</div>
-    <div>📒 ${notes.length?esc(notes[0].text.split("\n")[0]):"<span class='muted'>오늘 알림장 없음</span>"}</div>
-   </div></div>
+  <div class="hero hm"><img src="${BUDDY}" alt="수달 친구"><div style="flex:1;min-width:0"><div class="ht">설훈이의 공부방</div><div class="hero-say">${now.getMonth()+1}/${now.getDate()} ${DOW[dow]}요일 · <span id="clk"></span></div><div class="hero-wx" id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div></div>
+  <div class="card hm-today"><div>🎯 ${ph==="done"?"코스 완료 ✅":"30분 코스 "+(ph==="start"?"시작 전":"진행 중")}</div><div>🗓️ ${nextS?`${esc(nextS.t)} ${esc(nextS.n)}`:sch.length?"일정 끝":"일정 없음"}</div><div>🍚 ${meal?esc(meal.slice(0,3).join("·")):"급식 준비 중"}</div><div>📒 ${notes.length?esc(notes[0].text.split("\n")[0]):"알림장 없음"}</div></div>
   <div class="tiles4">
    <button class="big4" id="en"><span>🔤</span>영어<small>파닉스</small></button>
    <button class="big4" id="sc"><span>🏫</span>학교 공부<small>수학 · 국어</small></button>
    <button class="big4" id="tt"><span>🗓️</span>시간표<small>방과후 · 학원</small></button>
    <button class="big4" id="nt"><span>🔔</span>학교 알림<small>급식 · 알림장</small></button>
   </div>
-  <div class="card" style="margin-top:10px;padding:10px 12px"><div class="sec" style="margin:0 0 2px">🤖 내 로봇 방</div>${lvBar()}
-  ${shelf.length?`<div class="shelfmini" id="shelf">${shelf.map(r=>robotSVG(r,10,40,false)).join("")}</div>`:""}
-  <button class="mode" id="rb" style="margin-top:8px;width:100%"><span class="ic">🤖</span><span>로봇 방 가기<small>완성 ${doneRobots(L)}/8 · 이름 짓기 · 진열장</small></span></button></div>`;
+  <button class="card hm-rob" id="rb"><div>${robotSVG(r,part,38,true)}</div><div class="lv-b" style="text-align:left"><div class="lv-t">🤖 레벨 <b>${L}</b> · ${r}호 ${part}/10</div><div class="xpbar"><i style="width:${cur/XPL*100}%"></i></div><div class="lv-x">완성 ${doneRobots(L)}/8 · 로봇 방 가기 ›</div></div>${shelf.length?`<div class="hm-shelf">${shelf.slice(0,3).map(x=>robotSVG(x,10,28,false)).join("")}</div>`:""}</button>`;
   document.getElementById("en").onclick=()=>go("english");
   document.getElementById("sc").onclick=()=>go("school");
   document.getElementById("tt").onclick=()=>go("sched");
   document.getElementById("nt").onclick=()=>go("note");
   document.getElementById("rb").onclick=()=>go("robots");
-  const sf=document.getElementById("shelf");if(sf)sf.onclick=()=>go("robots");
   loadWeather();
   clearInterval(window.__clk);
   const tick=()=>{const e=document.getElementById("clk");if(!e){clearInterval(window.__clk);return}const n=new Date(),h=n.getHours();e.textContent=(h<12?"오전 ":"오후 ")+(h%12||12)+":"+pad(n.getMinutes())};
