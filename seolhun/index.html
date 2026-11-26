@@ -1139,6 +1139,38 @@ function renderSchoolStudy(){
   document.getElementById("k").onclick=()=>go("korean");
 }
 
+/* ---------- 날씨 (달성군 구지면 기준, Open-Meteo) ---------- */
+const WX_URL="https://api.open-meteo.com/v1/forecast?latitude=35.73&longitude=128.43&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FSeoul&forecast_days=1";
+function wxInfo(c){
+  if(c===0)return ["☀️","맑음"];if(c<=2)return ["🌤️","구름 조금"];if(c===3)return ["☁️","흐림"];if(c===45||c===48)return ["🌫️","안개"];
+  if(c>=51&&c<=57)return ["🌦️","이슬비"];if(c>=61&&c<=67)return ["🌧️","비"];if(c>=71&&c<=77)return ["🌨️","눈"];if(c>=80&&c<=82)return ["🌦️","소나기"];
+  if(c===85||c===86)return ["🌨️","눈"];if(c>=95)return ["⛈️","천둥번개"];return ["🌡️","날씨"];
+}
+function wxTip(w){
+  if(w.rain>=50||/비|눈|소나기|이슬/.test(w.txt))return "☂️ 우산 챙기세요!";
+  if(w.min<=0)return "🧤 아주 추워요. 따뜻하게 입어요!";
+  if(w.min<=7)return "🧥 쌀쌀해요. 겉옷 챙겨요!";
+  if(w.max>=28)return "💧 더워요. 물을 자주 마셔요!";
+  return "";
+}
+let wxCache=null;
+try{wxCache=JSON.parse(localStorage.getItem("seolhun_wx")||"null")}catch(e){}
+function wxHTML(w){
+  if(!w)return `<span class="muted">날씨 불러오는 중…</span>`;
+  const tip=wxTip(w);
+  return `<span style="font-size:34px;vertical-align:middle">${w.emo}</span> <b style="font-size:26px">${Math.round(w.now)}°</b> <span>${w.txt}</span> <span class="muted">최저 ${Math.round(w.min)}° / 최고 ${Math.round(w.max)}° · 비 ${w.rain}%</span>${tip?`<div style="color:var(--accent);font-weight:bold;font-size:17px">${tip}</div>`:""}`;
+}
+function loadWeather(){
+  const stale=!wxCache||Date.now()-wxCache.at>30*60000||wxCache.day!==today();
+  if(!stale)return;
+  fetch(WX_URL).then(r=>r.json()).then(j=>{
+    const [emo,txt]=wxInfo(j.current.weather_code);
+    wxCache={at:Date.now(),day:today(),now:j.current.temperature_2m,min:j.daily.temperature_2m_min[0],max:j.daily.temperature_2m_max[0],rain:j.daily.precipitation_probability_max[0]||0,emo,txt};
+    try{localStorage.setItem("seolhun_wx",JSON.stringify(wxCache))}catch(e){}
+    const el=document.getElementById("wx");if(el)el.innerHTML=wxHTML(wxCache);
+  }).catch(()=>{const el=document.getElementById("wx");if(el&&!wxCache)el.innerHTML=`<span class="muted">날씨를 못 불러왔어요 (인터넷 확인)</span>`});
+}
+
 /* ---------- 홈 ---------- */
 function renderHome(){
   const now=new Date(),dow=now.getDay(),hm=pad(now.getHours())+":"+pad(now.getMinutes());
@@ -1147,7 +1179,8 @@ function renderHome(){
   const ph=phaseNow(),L=lvOf(S.xp);
   const shelf=S.shelf.filter(Boolean);
   $app.innerHTML=`
-  <div class="hero"><img src="${BUDDY}" alt="수달 친구"><div><h1 class="ht">설훈이의 공부방</h1><div class="hero-say">${now.getMonth()+1}월 ${now.getDate()}일 ${DOW[dow]}요일 · 안녕, 설훈!</div></div></div>
+  <div class="hero"><img src="${BUDDY}" alt="수달 친구"><div><h1 class="ht">설훈이의 공부방</h1><div class="hero-say">${now.getMonth()+1}월 ${now.getDate()}일 ${DOW[dow]}요일 · 안녕, 설훈!</div><div id="clk" style="font-family:Nunito,sans-serif;font-weight:900;font-size:30px;line-height:1.1"></div></div></div>
+  <div class="card" style="padding:10px 14px;margin-top:8px"><div class="muted" style="font-size:15px">📍 달성군 구지면 날씨</div><div id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div>
   ${lvBar()}
   ${shelf.length?`<div class="shelfmini" id="shelf">${shelf.map(r=>robotSVG(r,10,40,false)).join("")}</div>`:""}
   <div class="card" style="padding:12px 14px"><b>📌 오늘</b>
@@ -1170,6 +1203,10 @@ function renderHome(){
   document.getElementById("nt").onclick=()=>go("note");
   document.getElementById("rb").onclick=()=>go("robots");
   const sf=document.getElementById("shelf");if(sf)sf.onclick=()=>go("robots");
+  loadWeather();
+  clearInterval(window.__clk);
+  const tick=()=>{const e=document.getElementById("clk");if(!e){clearInterval(window.__clk);return}const n=new Date(),h=n.getHours();e.textContent=(h<12?"오전 ":"오후 ")+(h%12||12)+":"+pad(n.getMinutes())+":"+pad(n.getSeconds())};
+  tick();window.__clk=setInterval(tick,1000);
 }
 
 /* ---------- 이동 ---------- */
