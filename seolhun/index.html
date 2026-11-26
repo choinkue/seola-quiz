@@ -1224,7 +1224,7 @@ function renderHome(){
   const shelf=S.shelf.filter(Boolean);
   $app.innerHTML=`
   <div class="hero"><img src="${BUDDY}" alt="수달 친구"><div><h1 class="ht">설훈이의 공부방</h1><div class="hero-say">${now.getMonth()+1}월 ${now.getDate()}일 ${DOW[dow]}요일 · 안녕, 설훈!</div><div id="clk" style="font-family:Nunito,sans-serif;font-weight:900;font-size:30px;line-height:1.1"></div></div></div>
-  <div class="card" style="padding:10px 14px;margin-top:8px"><div class="muted" style="font-size:15px">📍 달성군 구지면 날씨</div><div id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div>
+  <div class="card" style="padding:10px 14px;margin-top:8px"><div id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div>
   ${lvBar()}
   ${shelf.length?`<div class="shelfmini" id="shelf">${shelf.map(r=>robotSVG(r,10,40,false)).join("")}</div>`:""}
   <div class="card" style="padding:12px 14px"><b>📌 오늘</b>
