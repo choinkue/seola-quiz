@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>설훈이의 공부방</title>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 
   :root{--bg:#eef7ff;--card:#fff;--ink:#23303d;--sub:#6f7d8a;--accent:#2f80ed;--accent2:#7cd3ff;--ok:#2e9e6a;--okbg:#e6f6ee;--no:#d64545;--nobg:#fdeaea;--line:#dde8f3;--hl:#ff7a45;--star:#ffb400}
@@ -328,6 +328,50 @@ textarea.inp{resize:vertical}
 .sheet .fb .buddy{margin-top:0}
 .big4{padding:8px 6px!important;font-size:21px!important}.big4 span{font-size:30px!important}
 .today{font-size:17px!important}
+
+/* ===== 귀요미 남자아이 테마 ===== */
+body{font-family:"Jua","Gowun Dodum",system-ui,sans-serif!important;background:#aee0ff url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22220%22%20height%3D%22220%22%3E%3Cg%20font-size%3D%2234%22%20opacity%3D%22.22%22%3E%3Ctext%20x%3D%2214%22%20y%3D%2250%22%3E%F0%9F%9A%80%3C/text%3E%3Ctext%20x%3D%22130%22%20y%3D%2236%22%3E%E2%AD%90%3C/text%3E%3Ctext%20x%3D%2280%22%20y%3D%22120%22%3E%F0%9F%AA%90%3C/text%3E%3Ctext%20x%3D%22168%22%20y%3D%22130%22%3E%F0%9F%A4%96%3C/text%3E%3Ctext%20x%3D%2212%22%20y%3D%22190%22%3E%E2%9A%A1%3C/text%3E%3Ctext%20x%3D%22120%22%20y%3D%22200%22%3E%E2%98%84%EF%B8%8F%3C/text%3E%3C/g%3E%3Cg%20fill%3D%22%23fff%22%20opacity%3D%22.7%22%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2220%22%20r%3D%223%22/%3E%3Ccircle%20cx%3D%22190%22%20cy%3D%2280%22%20r%3D%222.5%22/%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%22150%22%20r%3D%222.5%22/%3E%3Ccircle%20cx%3D%22105%22%20cy%3D%22170%22%20r%3D%223%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22190%22%20r%3D%222%22/%3E%3C/g%3E%3C/svg%3E") !important;background-attachment:fixed;background-size:220px 220px}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(99,179,255,.55),rgba(190,235,255,.35) 45%,rgba(255,255,255,0) 80%)}
+h1,h2,.q,.st-title,.lv-t,.today b,.big4,.mode,button,.tag,.hero-say,.sec,.chip{font-family:"Jua","Gowun Dodum",sans-serif}
+.card,.lv,.shelfmini,.stat{border:3px solid #fff;border-radius:28px;box-shadow:0 6px 0 rgba(47,128,237,.22),0 10px 24px rgba(30,80,130,.10)}
+h2{font-size:26px;color:#1f5fb8;text-shadow:0 2px 0 #fff}
+button{border-radius:22px;box-shadow:0 5px 0 #1f5fb8;transition:transform .08s,box-shadow .08s;letter-spacing:.3px}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 #1f5fb8}
+button.soft,button.ghost{box-shadow:0 5px 0 #c3d1df}
+button.ghost{background:#fff}
+.start-btn{box-shadow:0 5px 0 #c4491a!important}
+.mode{border:3px solid #fff;border-radius:22px;background:linear-gradient(180deg,#fff,#eef7ff);box-shadow:0 5px 0 rgba(47,128,237,.2)}
+.mode .ic,.mtile .ic{filter:drop-shadow(0 2px 0 rgba(0,0,0,.12))}
+.hero{background:linear-gradient(135deg,#2f80ed,#56ccf2);border-radius:30px;padding:10px 14px;box-shadow:0 6px 0 #1f5fb8;color:#fff;margin-top:2px}
+.hero h1,.hero .ht{color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.18);font-size:26px!important}
+.hero .hero-say{color:#fff;font-size:17px}
+.hero #clk{color:#ffe066;text-shadow:0 2px 0 rgba(0,0,0,.2)}
+.hero img{border:4px solid #fff;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.tiles4 .big4{border:3px solid #fff;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.18);border-radius:26px}
+.big4 small{color:#fff!important;opacity:.95}
+.big4:nth-child(1){background:linear-gradient(160deg,#4facfe,#2f80ed);box-shadow:0 6px 0 #1f5fb8}
+.big4:nth-child(2){background:linear-gradient(160deg,#ffb347,#ff7a45);box-shadow:0 6px 0 #c4491a}
+.big4:nth-child(3){background:linear-gradient(160deg,#5ee07a,#2e9e6a);box-shadow:0 6px 0 #1d7a4d}
+.big4:nth-child(4){background:linear-gradient(160deg,#c084fc,#8a5be0);box-shadow:0 6px 0 #5f3bb0}
+.big4:active{transform:translateY(4px)}
+.big4 span{filter:drop-shadow(0 3px 0 rgba(0,0,0,.18))}
+.xpbar{height:16px;border:2px solid #fff;background:#d6e6f5}
+.xpbar i{background:repeating-linear-gradient(45deg,#ffd36e,#ffd36e 8px,#ffb347 8px,#ffb347 16px)}
+.opt,.tile,.sbtn,.cell,.slotb,.inv{border-radius:20px;box-shadow:0 4px 0 rgba(47,128,237,.18)}
+.opt{border:3px solid #fff;background:linear-gradient(180deg,#fff,#eaf4ff)}
+.opt.right{background:var(--okbg)!important}.opt.wrong{background:var(--nobg)!important}
+.tile{background:linear-gradient(180deg,#fff7e6,#ffe9b8)}
+.sheet{border-radius:30px 30px 0 0;border:3px solid #fff;border-bottom:0}
+.bubble{border:3px solid #fff;border-radius:22px;box-shadow:0 4px 0 rgba(47,128,237,.18)}
+.buddy img{border:4px solid #fff;box-shadow:0 4px 0 rgba(47,128,237,.25)}
+.tag{background:#ffe9a8;color:#a15c00;border:2px solid #fff;box-shadow:0 3px 0 #f4c95d}
+.bar{height:14px;border:2px solid #fff;background:#d6e6f5}.bar>i{background:linear-gradient(90deg,#ffb347,#ff7a45)}
+.back{font-family:"Jua",sans-serif;color:#1f5fb8;background:#fff!important;border-radius:99px;padding:6px 16px!important;box-shadow:0 4px 0 rgba(47,128,237,.2)!important}
+.toast-in{border:4px solid #fff;border-radius:32px;box-shadow:0 8px 0 rgba(47,128,237,.3),0 20px 50px rgba(0,0,0,.25)}
+.hl{text-shadow:0 2px 0 rgba(0,0,0,.08)}
+.score{text-shadow:0 3px 0 #fff}
+.panel{border:3px solid #fff;box-shadow:0 5px 0 rgba(255,122,69,.25)}
+.inp{border:3px solid #fff;box-shadow:inset 0 2px 0 rgba(0,0,0,.05),0 3px 0 rgba(47,128,237,.15);font-family:"Jua",sans-serif}
 
 </style>
 </head>
@@ -1205,8 +1249,8 @@ function renderHome(){
   const sf=document.getElementById("shelf");if(sf)sf.onclick=()=>go("robots");
   loadWeather();
   clearInterval(window.__clk);
-  const tick=()=>{const e=document.getElementById("clk");if(!e){clearInterval(window.__clk);return}const n=new Date(),h=n.getHours();e.textContent=(h<12?"오전 ":"오후 ")+(h%12||12)+":"+pad(n.getMinutes())+":"+pad(n.getSeconds())};
-  tick();window.__clk=setInterval(tick,1000);
+  const tick=()=>{const e=document.getElementById("clk");if(!e){clearInterval(window.__clk);return}const n=new Date(),h=n.getHours();e.textContent=(h<12?"오전 ":"오후 ")+(h%12||12)+":"+pad(n.getMinutes())};
+  tick();window.__clk=setInterval(tick,15000);
 }
 
 /* ---------- 이동 ---------- */
