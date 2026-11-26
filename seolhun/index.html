@@ -1200,9 +1200,9 @@ function wxTip(w){
 let wxCache=null;
 try{wxCache=JSON.parse(localStorage.getItem("seolhun_wx")||"null")}catch(e){}
 function wxHTML(w){
-  if(!w)return `<span class="muted">날씨 불러오는 중…</span>`;
+  if(!w)return `<span class="muted" style="font-size:16px">날씨 불러오는 중…</span>`;
   const tip=wxTip(w);
-  return `<span style="font-size:34px;vertical-align:middle">${w.emo}</span> <b style="font-size:26px">${Math.round(w.now)}°</b> <span>${w.txt}</span> <span class="muted">최저 ${Math.round(w.min)}° / 최고 ${Math.round(w.max)}° · 비 ${w.rain}%</span>${tip?`<div style="color:var(--accent);font-weight:bold;font-size:17px">${tip}</div>`:""}`;
+  return `<span style="font-size:26px;vertical-align:middle">${w.emo}</span> <b style="font-size:22px">${Math.round(w.now)}°</b> <span style="font-size:17px">${w.txt}</span> <span class="muted" style="font-size:15px">${Math.round(w.min)}°/${Math.round(w.max)}°</span>${tip?` <span style="color:var(--accent);font-weight:bold;font-size:15px">${tip}</span>`:""}`;
 }
 function loadWeather(){
   const stale=!wxCache||Date.now()-wxCache.at>30*60000||wxCache.day!==today();
@@ -1224,9 +1224,7 @@ function renderHome(){
   const shelf=S.shelf.filter(Boolean);
   $app.innerHTML=`
   <div class="hero"><img src="${BUDDY}" alt="수달 친구"><div><h1 class="ht">설훈이의 공부방</h1><div class="hero-say">${now.getMonth()+1}월 ${now.getDate()}일 ${DOW[dow]}요일 · 안녕, 설훈!</div><div id="clk" style="font-family:Nunito,sans-serif;font-weight:900;font-size:30px;line-height:1.1"></div></div></div>
-  <div class="card" style="padding:10px 14px;margin-top:8px"><div id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div>
-  ${lvBar()}
-  ${shelf.length?`<div class="shelfmini" id="shelf">${shelf.map(r=>robotSVG(r,10,40,false)).join("")}</div>`:""}
+  <div class="card" style="padding:6px 12px;margin-top:8px"><div id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div>
   <div class="card" style="padding:12px 14px"><b>📌 오늘</b>
    <div class="today">
     <div>🎯 <b>${ph==="done"?"30분 코스 완료!":"30분 코스"}</b> ${ph==="done"?"✅":`<span class="muted">(${ph==="start"?"시작 전":"진행 중"})</span>`}</div>
@@ -1240,7 +1238,9 @@ function renderHome(){
    <button class="big4" id="tt"><span>🗓️</span>시간표<small>방과후 · 학원</small></button>
    <button class="big4" id="nt"><span>🔔</span>학교 알림<small>급식 · 알림장</small></button>
   </div>
-  <button class="mode" id="rb" style="margin-top:10px"><span class="ic">🤖</span><span>내 로봇 방<small>완성 ${doneRobots(L)}/8 · 이름 짓기 · 진열장</small></span></button>`;
+  <div class="card" style="margin-top:10px;padding:10px 12px"><div class="sec" style="margin:0 0 2px">🤖 내 로봇 방</div>${lvBar()}
+  ${shelf.length?`<div class="shelfmini" id="shelf">${shelf.map(r=>robotSVG(r,10,40,false)).join("")}</div>`:""}
+  <button class="mode" id="rb" style="margin-top:8px;width:100%"><span class="ic">🤖</span><span>로봇 방 가기<small>완성 ${doneRobots(L)}/8 · 이름 짓기 · 진열장</small></span></button></div>`;
   document.getElementById("en").onclick=()=>go("english");
   document.getElementById("sc").onclick=()=>go("school");
   document.getElementById("tt").onclick=()=>go("sched");
