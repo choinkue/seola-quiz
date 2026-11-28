@@ -1595,6 +1595,52 @@ function setupSchoolReg(){
   };
   loadMealN();
 }
+/* ---------- 아빠 관리자 모드 (PIN) ---------- */
+const ADMIN_PIN="1955";
+function renderAdminPin(){
+  let v="";
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card center"><h2>🔒 아빠 확인</h2><div class="muted">비밀번호 4자리를 눌러 주세요</div><div class="word" id="v" style="min-height:64px;letter-spacing:10px">&nbsp;</div>${numPad()}</div>`;
+  document.getElementById("bk").onclick=()=>go("home");
+  const e=document.getElementById("v");
+  document.querySelectorAll(".pad button").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.k;
+    if(k==="⌫")v=v.slice(0,-1);
+    else if(k==="확인"){ if(v===ADMIN_PIN){window.__adm=1;renderAdmin()}else{v="";e.innerHTML=`<span style="color:var(--no);font-size:22px;letter-spacing:0">번호가 달라요</span>`}return}
+    else if(v.length<4)v+=k;
+    e.textContent=v?"●".repeat(v.length):" ";
+  });
+}
+function adminReport(){
+  const days=Object.keys(S.days).sort().reverse().slice(0,14),L=[];
+  L.push(`[설훈이 학습 기록]`);L.push(`로봇 레벨 ${lvOf(S.xp)} · 연속 ${streakDays()}일`);
+  days.forEach(dt=>{const d=S.days[dt],a=[];
+    if(d.start)a.push(`파닉스 ${d.start.pct}%${d.end?"→"+d.end.pct+"%":""}`);
+    Object.keys(d).forEach(k=>{if(k.indexOf("b_")===0&&d[k]!=null)a.push(`${(d["bl_"+k.slice(2)]||k.slice(2)).replace(" 결과","")} ${d[k]}%`);if(k.indexOf("m_")===0)a.push(`계산 ${k.slice(2)} ${d[k]}%`)});
+    L.push(`${dt.slice(5).replace("-","/")}: ${a.length?a.join(", "):"공부 기록 없음"}`)});
+  return L.join("\n");
+}
+function renderAdmin(){
+  if(!window.__adm)return renderAdminPin();
+  const days=Object.keys(S.days).sort().reverse().slice(0,14);
+  const labels={};Object.keys(S.days).forEach(dt=>{const d=S.days[dt];Object.keys(d).forEach(k=>{if(k.indexOf("bl_")===0)labels[k.slice(3)]=d[k]})});
+  const bank=Object.keys(S.bank||{}).map(k=>({n:(labels[k]||k).replace(" 결과",""),v:S.bank[k]})).sort((a,b)=>a.v-b.v);
+  const weak=[];try{(typeof SKEYS!=="undefined"?SKEYS:[]).forEach(k=>{const m=mval(k);if(m!=null)weak.push({k,m})});weak.sort((a,b)=>a.m-b.m)}catch(e){}
+  const lv=lvOf(S.xp),hjn=S.hmast?Object.keys(S.hmast).filter(c=>S.hmast[c]>=.7).length:0;
+  const dq=(S.dict||[]).filter(x=>x.best!=null);
+  const dayLine=dt=>{const d=S.days[dt],a=[];if(d.start)a.push(`파닉스 ${d.start.pct}%${d.end?"→"+d.end.pct+"%":""}`);Object.keys(d).forEach(k=>{if(k.indexOf("b_")===0&&d[k]!=null)a.push(`${(d["bl_"+k.slice(2)]||k.slice(2)).replace(" 결과","")} ${d[k]}%`)});return a.length?a.join(" · "):"기록 없음"};
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button>
+  <div class="card"><h2>👨‍👦 아빠 관리자</h2><div class="muted">로봇 레벨 ${lv} · 연속 ${streakDays()}일 · 익힌 한자 ${hjn}자</div></div>
+  <div class="card"><b>📅 최근 공부 기록</b>${days.length?days.map(dt=>`<div style="margin:8px 0;text-align:left"><b>${dt.slice(5).replace("-","/")}</b> <span class="muted">${esc(dayLine(dt))}</span></div>`).join(""):`<div class="muted">아직 기록이 없어요</div>`}</div>
+  <div class="card"><b>🎯 영역별 첫 도전 최고점 (낮은 순)</b>${bank.length?bank.map(x=>`<div style="margin:6px 0;text-align:left">${esc(x.n)} <b style="float:right;color:${x.v>=80?"var(--ok,#2a9d5c)":x.v>=60?"#c98a00":"var(--no)"}">${x.v}%</b></div>`).join(""):`<div class="muted">아직 문제 기록이 없어요</div>`}</div>
+  ${weak.length?`<div class="card"><b>🔤 약한 파닉스 소리 TOP5</b><div class="muted" style="text-align:left;margin-top:6px">${weak.slice(0,5).map(x=>esc(x.k)+" "+Math.round(x.m*100)+"%").join(" · ")}</div></div>`:""}
+  ${dq.length?`<div class="card"><b>✏️ 받아쓰기 최고점</b>${dq.map(x=>`<div style="margin:6px 0;text-align:left">${esc(x.title)} <b style="float:right">${x.best}점</b></div>`).join("")}</div>`:""}
+  <div class="card"><b>🛠 관리</b><div class="modes"><button class="mode" id="a1"><span class="ic">🍚</span><span>급식·알림장<small>학교 등록, 알림장 쓰기</small></span></button><button class="mode" id="a2"><span class="ic">✏️</span><span>받아쓰기 목록<small>학교 급수표 넣기</small></span></button><button class="mode" id="a3"><span class="ic">📋</span><span>기록 복사<small>문자·메일에 붙여 넣기</small></span></button></div><div class="muted" id="am"></div><button class="ghost" id="al">🔒 잠그기</button></div>`;
+  const q=id=>document.getElementById(id);
+  q("bk").onclick=()=>go("home");
+  q("a1").onclick=()=>go("note");q("a2").onclick=()=>go("dict");
+  q("a3").onclick=async()=>{try{await navigator.clipboard.writeText(adminReport());q("am").textContent="복사했어요!"}catch(e){q("am").textContent="복사가 안 되면 화면을 길게 눌러 선택해 주세요"}};
+  q("al").onclick=()=>{window.__adm=0;go("home")};
+}
 /* ===================== 한자 · 한국사 · 새 홈 ===================== */
 const DAD_PHONE=""; // 아빠 휴대폰 번호 (예: "01012345678") 넣으면 문자에 번호가 자동으로 들어가요
 /* ---------- 한자 (대표 한자 · 한국어문회 5·6급 범위 기준) ---------- */
@@ -1744,7 +1790,7 @@ function renderHome(){
   const L=lvOf(S.xp),{r,part}=robotInfo(L),cur=L>=LMAX?XPL:S.xp%XPL,shelf=S.shelf.filter(Boolean);
   const sum=todaySummary();
   $app.innerHTML=`
-  <div class="hero hm"><img src="${BUDDY}" alt="수달 친구"><div style="flex:1;min-width:0"><div class="ht">설훈이의 공부방</div><div class="hero-say">${now.getMonth()+1}/${now.getDate()} ${DOW[dow]}요일 · <span id="clk"></span></div><div class="hero-wx" id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div></div>
+  <div class="hero hm" style="position:relative"><button id="adm" type="button" aria-label="아빠 관리자" style="position:absolute;top:4px;right:4px;width:auto;margin:0;padding:2px 8px;font-size:14px;background:transparent;border:0;box-shadow:none;opacity:.5">🔒</button><img src="${BUDDY}" alt="수달 친구"><div style="flex:1;min-width:0"><div class="ht">설훈이의 공부방</div><div class="hero-say">${now.getMonth()+1}/${now.getDate()} ${DOW[dow]}요일 · <span id="clk"></span></div><div class="hero-wx" id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div></div>
   <span class="lab2">📚 공부하기</span>
   <div class="tl5">
    <button class="big4 s1" id="en"><span>🔤</span>영어<small>파닉스</small></button>
@@ -1762,7 +1808,7 @@ function renderHome(){
   <div class="rep"><div class="repsum">${sum.length?"오늘: "+esc(sum.join(" · ")):"오늘 공부 결과가 여기 모여요"}</div><div class="repbtn"><button id="repsms" type="button">💬 아빠 문자</button><button id="repmail" class="m" type="button">📧 아빠 메일</button></div><div class="repmsg" id="repmsg"></div></div>`;
   const q=id=>document.getElementById(id);
   q("en").onclick=()=>go("english");q("ma").onclick=()=>go("math");q("ko").onclick=()=>go("korean");q("hs").onclick=()=>go("hist");q("hj").onclick=()=>go("hanja");
-  q("tt").onclick=()=>go("sched");q("nt").onclick=()=>go("note");q("rb").onclick=()=>go("robots");
+  q("adm").onclick=()=>go("admin");q("tt").onclick=()=>go("sched");q("nt").onclick=()=>go("note");q("rb").onclick=()=>go("robots");
   q("repmail").onclick=()=>{location.href=`mailto:${DAD_EMAIL}?subject=${encodeURIComponent("설훈이 오늘 공부")}&body=${encodeURIComponent(dadText())}`};
   q("repsms").onclick=async()=>{const t=dadText();try{await navigator.clipboard.writeText(t);q("repmsg").textContent="복사했어요! 문자 앱이 열려요"}catch(e){}location.href=`sms:${DAD_PHONE}?body=${encodeURIComponent(t)}`};
   loadWeather();
@@ -1773,7 +1819,7 @@ function renderHome(){
 function go(v,a){
   try{scrollTo(0,0)}catch(e){}
   ({home:renderHome,english:renderEnglish,course:renderCourse,chart:renderChart,robots:renderRobots,sched:renderSched,note:()=>{schoolTab="meal";renderSchool()},
-    school:renderSchoolStudy,math:renderMath,korean:renderKorean,dict:renderDict,hist:renderHist,hanja:renderHanja})[v]();
+    school:renderSchoolStudy,math:renderMath,korean:renderKorean,dict:renderDict,hist:renderHist,hanja:renderHanja,admin:renderAdmin})[v]();
 }
 go("home");
 
