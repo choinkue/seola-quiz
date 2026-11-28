@@ -428,6 +428,7 @@ button.ghost{background:#fff}
  .hm-rob{margin-top:6px;padding:6px 10px!important}.rep{margin-top:6px;padding:6px 8px}.repsum{margin-bottom:4px;-webkit-line-clamp:1}.repbtn button{padding:6px}
  .hm-today{display:none}
 }
+.opts.c2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.opts.c2 .opt{min-width:0}
 
 </style>
 </head>
@@ -1311,10 +1312,11 @@ const DAD_PHONE=""; // 아빠 휴대폰 번호 (예: "01012345678") 넣으면 �
 /* ---------- 한자 (대표 한자 · 한국어문회 5·6급 범위 기준) ---------- */
 const HJ6=`各 각각 각|角 뿔 각|感 느낄 감|強 강할 강|開 열 개|京 서울 경|計 셀 계|界 지경 계|高 높을 고|苦 쓸 고|古 예 고|功 공 공|公 공평할 공|共 한가지 공|科 과목 과|果 실과 과|光 빛 광|交 사귈 교|球 공 구|區 구분할 구|郡 고을 군|近 가까울 근|根 뿌리 근|今 이제 금|急 급할 급|級 등급 급|多 많을 다|短 짧을 단|堂 집 당|代 대신할 대|對 대할 대|待 기다릴 대|圖 그림 도|度 법도 도|讀 읽을 독|童 아이 동|頭 머리 두|等 무리 등|樂 즐길 락|例 법식 례|禮 예도 례|路 길 로|綠 푸를 록|理 다스릴 리|利 이할 리|明 밝을 명|目 눈 목|聞 들을 문|米 쌀 미|美 아름다울 미|反 돌이킬 반|半 반 반|班 나눌 반|發 필 발|放 놓을 방|番 차례 번|別 다를 별|病 병 병|服 옷 복|本 근본 본|部 떼 부|分 나눌 분|死 죽을 사|使 하여금 사|社 모일 사|書 글 서|石 돌 석|席 자리 석|線 줄 선|雪 눈 설|成 이룰 성|省 살필 성|消 사라질 소|速 빠를 속|孫 손자 손|樹 나무 수|術 재주 술|習 익힐 습|勝 이길 승|始 비로소 시|式 법 식|神 귀신 신|身 몸 신|信 믿을 신|新 새 신|失 잃을 실|愛 사랑 애|野 들 야|夜 밤 야|藥 약 약|弱 약할 약|洋 큰바다 양|陽 볕 양|言 말씀 언|業 업 업|永 길 영|英 꽃부리 영|溫 따뜻할 온|勇 날랠 용|用 쓸 용|運 옮길 운|園 동산 원|遠 멀 원|由 말미암을 유|油 기름 유|銀 은 은|音 소리 음|飮 마실 음|衣 옷 의|意 뜻 의|醫 의원 의|者 놈 자|昨 어제 작|作 지을 작|章 글 장|才 재주 재|在 있을 재|戰 싸울 전|庭 뜰 정|定 정할 정|朝 아침 조|族 겨레 족|注 부을 주|晝 낮 주|集 모을 집|窓 창 창|清 맑을 청|體 몸 체|村 마을 촌|秋 가을 추|太 클 태|通 통할 통|特 특별할 특|表 겉 표|風 바람 풍|合 합할 합|行 다닐 행|幸 다행 행|向 향할 향|現 나타날 현|形 모양 형|號 이름 호|和 화할 화|畫 그림 화|黃 누를 황|會 모일 회|訓 가르칠 훈`;
 const HJ5=`價 값 가|客 손 객|見 볼 견|決 결단할 결|結 맺을 결|敬 공경 경|告 고할 고|課 공부할 과|過 지날 과|觀 볼 관|關 관계할 관|廣 넓을 광|具 갖출 구|舊 예 구|局 판 국|基 터 기|己 몸 기|念 생각 념|能 능할 능|團 둥글 단|當 마땅 당|德 큰 덕|到 이를 도|獨 홀로 독|朗 밝을 랑|良 어질 량|旅 나그네 려|歷 지날 력|練 익힐 련|勞 일할 로|流 흐를 류|類 무리 류|陸 뭍 륙|望 바랄 망|法 법 법|變 변할 변|兵 병사 병|福 복 복|奉 받들 봉|史 사기 사|士 선비 사|仕 섬길 사|產 낳을 산|相 서로 상|商 장사 상|鮮 고울 선|仙 신선 선|船 배 선|善 착할 선|選 가릴 선|說 말씀 설|性 성품 성|洗 씻을 세|歲 해 세|束 묶을 속|首 머리 수|宿 잘 숙|順 순할 순|識 알 식|臣 신하 신|實 열매 실|兒 아이 아|惡 악할 악|約 맺을 약|養 기를 양|魚 물고기 어|漁 고기잡을 어|億 억 억|熱 더울 열|葉 잎 엽|屋 집 옥|完 완전할 완|曜 빛날 요|要 요긴할 요|浴 목욕할 욕|院 집 원|願 원할 원|位 자리 위|偉 클 위|以 써 이|任 맡길 임|材 재목 재|財 재물 재|的 과녁 적|典 법 전|傳 전할 전|展 펼 전|切 끊을 절|節 마디 절|店 가게 점|情 뜻 정|調 고를 조|操 잡을 조|卒 마칠 졸|種 씨 종|州 고을 주|週 주일 주|知 알 지|質 바탕 질|着 붙을 착|參 참여할 참|責 꾸짖을 책|充 채울 충|宅 집 택|品 물건 품|必 반드시 필|筆 붓 필|害 해할 해|化 될 화|效 본받을 효|凶 흉할 흉|黑 검을 흑`;
+const HJ7=`家 집 가|間 사이 간|江 강 강|車 수레 거|工 장인 공|空 빌 공|氣 기운 기|記 기록할 기|男 사내 남|內 안 내|農 농사 농|答 대답 답|道 길 도|動 움직일 동|力 힘 력|立 설 립|每 매양 매|名 이름 명|物 물건 물|方 모 방|不 아닐 불|事 일 사|算 셈 산|上 윗 상|色 빛 색|夕 저녁 석|姓 성 성|世 인간 세|少 적을 소|所 바 소|數 셈 수|市 저자 시|時 때 시|食 밥 식|植 심을 식|心 마음 심|語 말씀 어|然 그럴 연|午 낮 오|右 오른 우|有 있을 유|育 기를 육|邑 고을 읍|入 들 입|子 아들 자|字 글자 자|自 스스로 자|場 마당 장|電 번개 전|前 앞 전|全 온전 전|正 바를 정|祖 할아버지 조|足 발 족|左 왼 좌|住 살 주|主 임금 주|重 무거울 중|地 땅 지|紙 종이 지|直 곧을 직|千 일천 천|天 하늘 천|川 내 천|草 풀 초|靑 푸를 청|寸 마디 촌|春 봄 춘|出 날 출|便 편할 편|平 평평할 평|下 아래 하|夏 여름 하|漢 한수 한|海 바다 해|花 꽃 화|話 말씀 화|活 살 활|孝 효도 효|後 뒤 후|休 쉴 휴|敎 가르칠 교|校 학교 교|九 아홉 구|國 나라 국|軍 군사 군|金 쇠 금|南 남녘 남|女 계집 녀|年 해 년|大 큰 대|東 동녘 동|六 여섯 륙|萬 일만 만|母 어미 모|木 나무 목|門 문 문|民 백성 민|白 흰 백|父 아비 부|北 북녘 북|四 넉 사|山 메 산|三 석 삼|生 날 생|西 서녘 서|先 먼저 선|小 작을 소|水 물 수|室 집 실|十 열 십|五 다섯 오|王 임금 왕|外 바깥 외|月 달 월|二 두 이|人 사람 인|日 날 일|一 한 일|長 긴 장|弟 아우 제|中 가운데 중|學 배울 학|韓 한국 한|兄 형 형|火 불 화`;
 function parseHJ(str,lv){return str.split("|").map(t=>{const a=t.trim().split(" ");return {c:a[0],e:a[a.length-1],h:a.slice(1,-1).join(" "),lv}})}
-const HJ={ "6":parseHJ(HJ6,"6"), "5":parseHJ(HJ5,"5") };
-const HJLV={"6":"6급","5":"5급","all":"5·6급 섞기"};
-function hjPool(lv){return lv==="all"?[...HJ["6"],...HJ["5"]]:HJ[lv]}
+const HJ={ "7":parseHJ(HJ7,"7"), "6":parseHJ(HJ6,"6"), "5":parseHJ(HJ5,"5") };
+const HJLV={"7":"7급","6":"6급","5":"5급","all":"5·6·7급 섞기"};
+function hjPool(lv){return lv==="all"?[...HJ["7"],...HJ["6"],...HJ["5"]]:HJ[lv]}
 function hmv(c){const m=S.hmast&&S.hmast[c];return m==null?null:m}
 function hupd(c,ok){S.hmast=S.hmast||{};const o=S.hmast[c];S.hmast[c]=o==null?(ok?.7:.25):.6*o+.4*(ok?1:0);}
 function hjPick(pool,n){
@@ -1344,7 +1346,7 @@ function runMCQ(o){
     const q=items[i];
     $app.innerHTML=`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">${esc(o.tag||"")}</span><div class="bar"><i style="width:${i/items.length*100}%"></i></div><span class="qn">${i+1}/${items.length}</span></div>
     <div class="card center">${q.tag?`<div class="tag">${esc(q.tag)}</div>`:""}<div class="q">${esc(q.q)}</div>${q.big?`<div class="word hj">${esc(q.big)}</div>`:""}${q.bigText?`<div class="word" style="font-size:36px;letter-spacing:0">${esc(q.bigText)}</div>`:""}
-    <div class="opts ${q.hanjaOpts?"c3":"c1"}">${q.c.map((t,k)=>`<button class="opt ${q.hanjaOpts?"hj":""}" data-k="${k}">${esc(t)}</button>`).join("")}</div></div><div id="sheet"></div>`;
+    <div class="opts ${q.hanjaOpts?"c2":"c1"}">${q.c.map((t,k)=>`<button class="opt ${q.hanjaOpts?"hj":""}" data-k="${k}">${esc(t)}</button>`).join("")}</div></div><div id="sheet"></div>`;
     document.getElementById("bk").onclick=()=>{if(confirm("그만할까요?"))o.onBack()};
     let done=false;
     document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
@@ -1379,7 +1381,7 @@ function runMCQ(o){
       document.getElementById("nx").onclick=()=>nq?confirmQ():studyWrong(list,k+1);
     }
     function confirmQ(){
-      $app.innerHTML=`<div class="card center"><div class="tag">확인 문제</div><div class="q">${esc(nq.q)}</div>${nq.big?`<div class="word hj">${esc(nq.big)}</div>`:""}${nq.bigText?`<div class="word" style="font-size:34px;letter-spacing:0">${esc(nq.bigText)}</div>`:""}<div class="opts ${nq.hanjaOpts?"c3":"c1"}">${nq.c.map((t,j)=>`<button class="opt ${nq.hanjaOpts?"hj":""}" data-k="${j}">${esc(t)}</button>`).join("")}</div></div>`;
+      $app.innerHTML=`<div class="card center"><div class="tag">확인 문제</div><div class="q">${esc(nq.q)}</div>${nq.big?`<div class="word hj">${esc(nq.big)}</div>`:""}${nq.bigText?`<div class="word" style="font-size:34px;letter-spacing:0">${esc(nq.bigText)}</div>`:""}<div class="opts ${nq.hanjaOpts?"c2":"c1"}">${nq.c.map((t,j)=>`<button class="opt ${nq.hanjaOpts?"hj":""}" data-k="${j}">${esc(t)}</button>`).join("")}</div></div>`;
       document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const good=+b.dataset.k===nq.a;b.classList.add(good?"right":"wrong");if(o.onAnswer)o.onAnswer(nq,good);setTimeout(()=>{if(good)studyWrong(list,k+1);else{document.querySelectorAll(".opt")[nq.a].classList.add("right");setTimeout(()=>studyWrong(list,k+1),900)}},600)});
     }
     card();
@@ -1391,15 +1393,15 @@ function runMCQ(o){
 function hjProgress(lv){const p=hjPool(lv);return {n:p.filter(x=>(hmv(x.c)||0)>=.7).length,t:p.length}}
 function renderHanja(){
   $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card"><h2>🈶 한자 공부</h2><div class="muted">한자를 보고 훈과 음을 맞혀요. 급수를 골라 보세요.</div>
-  <div class="modes">${["6","5","all"].map(lv=>{const p=hjProgress(lv);return `<button class="mode" data-lv="${lv}"><span class="ic">${lv==="6"?"🥉":lv==="5"?"🥈":"🎲"}</span><span>${HJLV[lv]} 문제<small>익힌 한자 ${p.n}/${p.t}${S.bank&&S.bank["hj"+lv]!=null?` · 첫 도전 최고 ${S.bank["hj"+lv]}%`:""}</small></span></button>`}).join("")}
+  <div class="modes">${["7","6","5","all"].map(lv=>{const p=hjProgress(lv);return `<button class="mode" data-lv="${lv}"><span class="ic">${lv==="7"?"🥉":lv==="6"?"🥈":lv==="5"?"🥇":"🎲"}</span><span>${HJLV[lv]} 문제<small>익힌 한자 ${p.n}/${p.t}${S.bank&&S.bank["hj"+lv]!=null?` · 첫 도전 최고 ${S.bank["hj"+lv]}%`:""}</small></span></button>`}).join("")}
   <button class="mode" id="tb"><span class="ic">📋</span><span>한자 급수표<small>눌러서 훈·음 듣기</small></span></button></div></div>`;
   document.getElementById("bk").onclick=()=>go("home");
   document.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>startHanja(b.dataset.lv));
-  document.getElementById("tb").onclick=()=>renderHJTable("6");
+  document.getElementById("tb").onclick=()=>renderHJTable("7");
 }
 function renderHJTable(lv){
   const p=hjPool(lv);
-  $app.innerHTML=`<button class="back" id="bk">← 한자 공부</button><div class="card"><h2>📋 ${HJLV[lv]} 한자</h2><div class="row"><button class="${lv==="6"?"":"soft"}" data-l="6">6급</button><button class="${lv==="5"?"":"soft"}" data-l="5">5급</button></div><div class="legend"><span style="background:#bfe8d1">잘함</span><span style="background:#ffe9a8">보통</span><span style="background:#ffc6c6">약함</span><span style="background:#eef2f6">아직</span></div>
+  $app.innerHTML=`<button class="back" id="bk">← 한자 공부</button><div class="card"><h2>📋 ${HJLV[lv]} 한자</h2><div class="row"><button class="${lv==="7"?"":"soft"}" data-l="7">7급</button><button class="${lv==="6"?"":"soft"}" data-l="6">6급</button><button class="${lv==="5"?"":"soft"}" data-l="5">5급</button></div><div class="legend"><span style="background:#bfe8d1">잘함</span><span style="background:#ffe9a8">보통</span><span style="background:#ffc6c6">약함</span><span style="background:#eef2f6">아직</span></div>
   <div class="cells" style="grid-template-columns:repeat(4,1fr)">${p.map(x=>{const v=hmv(x.c);const bg=v==null?"#eef2f6":v>=.8?"#bfe8d1":v>=.5?"#ffe9a8":"#ffc6c6";return `<button class="cell" data-c="${x.c}" style="background:${bg}"><b class="hj" style="font-size:30px">${x.c}</b><small style="font-size:12px">${esc(x.h)} ${esc(x.e)}</small></button>`}).join("")}</div></div>`;
   document.getElementById("bk").onclick=renderHanja;
   document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>renderHJTable(b.dataset.l));
@@ -1461,7 +1463,7 @@ function renderHome(){
    <button class="big4 s2" id="ma"><span>➗</span>수학</button>
    <button class="big4 s3" id="ko"><span>📝</span>국어</button>
    <button class="big4 s4" id="hs"><span>🏯</span>한국사</button>
-   <button class="big4 s5" id="hj"><span>🈶</span>한자<small>5급 · 6급</small></button>
+   <button class="big4 s5" id="hj"><span>🈶</span>한자<small>5·6·7급</small></button>
   </div>
   <span class="lab2">🌈 내 하루</span>
   <div class="tl2">
