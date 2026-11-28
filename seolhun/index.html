@@ -1098,7 +1098,9 @@ function renderSchool(){
   const td=today(),m=mealOf(td);
   let body="";
   if(schoolTab==="meal"){
-    body=`<div class="card"><h2>🍚 오늘 급식 (${td.slice(5).replace("-","/")})</h2>${m?`<ul class="hist">${m.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<div class="muted">아직 급식 정보가 없어요. 학교가 연결되면 자동으로 보여요. 지금은 아래에 직접 적어 둘 수 있어요.</div>`}</div>
+    body=`<div class="card"><h2>🍚 급식 메뉴</h2><div id="meallist" class="muted">불러오는 중…</div></div>
+    <div class="card"><b>🏫 학교 등록</b><div class="muted" id="schoolnow"></div><div class="row"><input type="text" id="schoolin" class="inp" placeholder="학교 이름 (예: ○○초등학교)"><button id="schoolbtn" style="width:auto;flex:none;white-space:nowrap;padding:10px 18px">찾기</button></div><div id="schoolres"></div></div>
+    <div class="card"><h2>🍚 직접 적은 급식 (${td.slice(5).replace("-","/")})</h2>${m?`<ul class="hist">${m.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<div class="muted">아직 급식 정보가 없어요. 학교가 연결되면 자동으로 보여요. 지금은 아래에 직접 적어 둘 수 있어요.</div>`}</div>
     <div class="card"><b>직접 적기 (한 줄에 메뉴 하나)</b><textarea id="mt" class="inp" rows="5" placeholder="잡곡밥&#10;미역국&#10;불고기">${esc(S.meal[td]||"")}</textarea><button id="ms">저장</button></div>`;
   }else{
     const ns=notesAll();
@@ -1111,6 +1113,7 @@ function renderSchool(){
   const ms=document.getElementById("ms");if(ms)ms.onclick=()=>{S.meal[td]=document.getElementById("mt").value;save();renderSchool()};
   const na=document.getElementById("na");if(na)na.onclick=()=>{const t=document.getElementById("nt").value.trim();if(!t)return;S.notes.push({date:document.getElementById("nd").value||td,text:t});save();renderSchool()};
   document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{S.notes.splice(+b.dataset.d,1);save();renderSchool()});
+  if(schoolTab==="meal")setupSchoolReg();
 }
 /* ---------- 국어 받아쓰기 ---------- */
 function norm(s){return String(s).replace(/\s+/g," ").trim()}
@@ -1188,10 +1191,10 @@ function genMath(u){
   if(t===3){const k=r(1,5),m=r(100,900);return {q:`${k} L ${m} mL는 몇 mL일까요?`,a:k*1000+m,ex:`1 L = 1000 mL → ${k*1000} + ${m} = ${k*1000+m}`}}
   const c=r(1,9),m=r(1,9);return {q:`${c} cm ${m} mm는 몇 mm일까요?`,a:c*10+m,ex:`1 cm = 10 mm → ${c*10} + ${m} = ${c*10+m}`};
 }
-function renderMath(){
-  $app.innerHTML=`<button class="back" id="bk">← 학교 공부</button><div class="card"><h2>➗ 수학</h2><div class="muted">지금은 3학년 기본 연산 연습이에요. 교과서 차례를 알려 주시면 진도별 문제·단원평가·성취도평가로 바꿔요.</div>
+function renderMathPractice(){
+  $app.innerHTML=`<button class="back" id="bk">← 수학</button><div class="card"><h2>🧮 계산 연습</h2><div class="muted">덧셈·뺄셈·곱셈·나눗셈·시간 단위 연습이에요.</div>
   <div class="modes">${Object.keys(MUNITS).map(u=>`<button class="mode" data-u="${u}"><span class="ic">${MUNITS[u].ic}</span><span>${MUNITS[u].n}<small>10문제${S.mathBest[u]!=null?` · 첫 도전 최고 ${S.mathBest[u]}%`:""}</small></span></button>`).join("")}</div></div>`;
-  document.getElementById("bk").onclick=()=>go("school");
+  document.getElementById("bk").onclick=()=>go("math");
   document.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>runMath(b.dataset.u));
 }
 function numPad(onKey){
@@ -1234,8 +1237,8 @@ function runMath(u){
 }
 function renderSchoolStudy(){
   $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card"><h2>🏫 학교 공부</h2><div class="modes">
-  <button class="mode" id="m"><span class="ic">➗</span><span>수학<small>연산 연습 (진도별·단원평가는 준비 중)</small></span></button>
-  <button class="mode" id="k"><span class="ic">📝</span><span>국어<small>받아쓰기 (진도별·단원평가는 준비 중)</small></span></button></div></div>`;
+  <button class="mode" id="m"><span class="ic">➗</span><span>수학<small>2학년 2학기 단원별 핵심정리·문제</small></span></button>
+  <button class="mode" id="k"><span class="ic">📝</span><span>국어<small>2학년 2학기 단원별 핵심정리·문제·받아쓰기</small></span></button></div></div>`;
   document.getElementById("bk").onclick=()=>go("home");
   document.getElementById("m").onclick=()=>go("math");
   document.getElementById("k").onclick=()=>go("korean");
@@ -1306,6 +1309,291 @@ function go(v,a){
   try{scrollTo(0,0)}catch(e){}
   ({home:renderHome,english:renderEnglish,course:renderCourse,chart:renderChart,robots:renderRobots,sched:renderSched,note:()=>{schoolTab="meal";renderSchool()},
     school:renderSchoolStudy,math:renderMath,korean:renderKorean,dict:renderDict})[v]();
+}
+/* ---------- 학교 공부 2학년 2학기: 수학·국어 단원별 ---------- */
+function Q(q,right,wrongs,e){return {q,right,wrongs,e:e||""}}
+const R=(a,b)=>a+rand(b-a+1);
+function mkItem(x){if(x.c)return x;const w=[...new Set(x.wrongs.map(String))].filter(y=>y!==String(x.right));const c=shuffle([String(x.right),...w]);return {q:x.q,c,a:c.indexOf(String(x.right)),e:x.e,big:x.big}}
+const MATH2=[
+{id:"m1",n:"1. 네 자리 수",ic:"🔢",
+ key:["100이 10개이면 1000(천)이에요. 999보다 1 큰 수가 1000이에요.","네 자리 수는 천·백·십·일의 자리가 있어요. 3527 = 3000 + 500 + 20 + 7","같은 숫자라도 자리에 따라 값이 달라요. 3527에서 5는 500을 나타내요.","뛰어 세기: 1000씩 뛰면 천의 자리가, 100씩 뛰면 백의 자리가 1씩 커져요.","수의 크기는 높은 자리(천)부터 차례로 비교해요."],
+ qs:[Q("100이 10개인 수는?","1000",["100","10000","10"],"100이 10개이면 1000이에요."),
+  Q("999보다 1 큰 수는?","1000",["990","1010","9991"],"999 + 1 = 1000"),
+  Q("4000을 바르게 읽은 것은?","사천",["사백","사십","사만"],"4000은 천이 4개라서 사천이에요."),
+  Q("‘육천이백삼십오’를 수로 쓰면?","6235",["6025","623","60235"],"육천=6000, 이백=200, 삼십=30, 오=5"),
+  Q("5817에서 8이 나타내는 값은?","800",["80","8","8000"],"8은 백의 자리 숫자라서 800이에요."),
+  Q("천 모형 3개, 백 모형 4개, 십 모형 2개, 일 모형 5개가 나타내는 수는?","3425",["3245","4325","3452"],"3000 + 400 + 20 + 5 = 3425"),
+  Q("2000 − 3000 − 4000 − ( ) 에 알맞은 수는?","5000",["4100","6000","4001"],"1000씩 뛰어 세었어요."),
+  Q("3475와 3457 중 더 큰 수는?","3475",["3457","같아요","알 수 없어요"],"천·백이 같으니 십의 자리를 비교해요. 7 > 5"),
+  Q("1000이 7개, 10이 6개, 1이 2개인 수는?","7062",["7620","762","7602"],"7000 + 0 + 60 + 2 = 7062")],
+ gen(){const t=rand(3),n=R(1100,9899);const d=String(n);
+  if(t===0){let p=R(0,3);while(d[p]==="0")p=R(0,3);const nm=["천","백","십","일"][p],val=+d[p]*[1000,100,10,1][p];return Q(`${n}에서 ${d[p]}은(는) ${nm}의 자리 숫자예요. 나타내는 값은?`,String(val),[String(val*10),String(+d[p]),String(Math.max(1,val/10))].filter(x=>x!==String(val)),`${d[p]}이(가) ${nm}의 자리에 있으니 ${val}이에요.`)}
+  if(t===1){const m=n+[100,10,1][rand(3)]*R(1,9);const big=Math.max(n,m);return Q(`${n}과(와) ${m} 중 더 큰 수는?`,String(big),[String(Math.min(n,m)),"같아요"],"높은 자리부터 비교해요.")}
+  const st=[1000,100,10][rand(3)];return Q(`${n}에서 ${st}씩 뛰어 세면 다음 수는?`,String(n+st),[String(n+st*10),String(n+st*2),String(n-st)],`${n} + ${st} = ${n+st}`)}},
+{id:"m2",n:"2. 곱셈구구",ic:"✖️",
+ key:["곱셈구구는 2단~9단이에요. 곱하는 수가 1 늘면 곱은 단 수만큼 커져요.","2단: 2, 4, 6, 8… / 5단: 일의 자리가 5, 0, 5, 0 으로 반복돼요.","9단: 9, 18, 27, 36… 십의 자리는 1씩 커지고 일의 자리는 1씩 작아져요.","1×어떤 수 = 그 수, 0×어떤 수 = 0 이에요.","곱하는 순서를 바꿔도 곱은 같아요. 3×7 = 7×3 = 21"],
+ qs:[Q("6 × 7 은?","42",["36","48","49"],"6단: 6, 12, 18, 24, 30, 36, 42"),
+  Q("7 × 8 은?","56",["54","63","48"],"7단: …49, 56"),
+  Q("0 × 9 는?","0",["9","90","1"],"0에 어떤 수를 곱해도 0이에요."),
+  Q("3 × 8 과 곱이 같은 것은?","8 × 3",["3 × 9","8 × 4","3 × 7"],"곱하는 순서를 바꿔도 곱은 같아요."),
+  Q("연필이 한 상자에 6자루씩 들어 있어요. 7상자에는 모두 몇 자루?","42자루",["36자루","13자루","48자루"],"6 × 7 = 42"),
+  Q("8 × ( ) = 56 에서 ( )에 알맞은 수는?","7",["6","8","9"],"8 × 7 = 56"),
+  Q("9단에서 9 × 6 은?","54",["45","63","56"],"9×5 = 45에서 9 더하면 54"),
+  Q("5 × 5 는?","25",["20","30","10"],"5단: 5, 10, 15, 20, 25")],
+ gen(){const a=R(2,9),b=R(2,9),t=rand(3);
+  if(t===0)return Q(`${a} × ${b} 은(는)?`,String(a*b),[String(a*b+a),String(a*b-b),String((a+1)*b)],`${a}단에서 ${a} × ${b} = ${a*b}`);
+  if(t===1)return Q(`${a} × ( ) = ${a*b} 에서 ( )에 알맞은 수는?`,String(b),[String(b+1),String(b-1<1?b+2:b-1),String(a)].filter(x=>x!==String(b)),`${a} × ${b} = ${a*b}`);
+  return Q(`한 봉지에 ${a}개씩 ${b}봉지에 들어 있는 사탕은 모두 몇 개?`,a*b+"개",[(a+b)+"개",(a*b+a)+"개",(a*b-b)+"개"],`${a} × ${b} = ${a*b}`)}},
+{id:"m3",n:"3. 길이 재기",ic:"📏",
+ key:["1 m = 100 cm 예요. 1 m 20 cm = 120 cm","길이를 잴 때는 단위가 같아야 해요. 짧은 길이는 cm, 긴 길이는 m.","몇 m 몇 cm끼리 더하고 뺄 때는 m는 m끼리, cm는 cm끼리 계산해요.","어림하기: 내 몸(한 뼘, 걸음)으로 길이를 약 얼마인지 말할 수 있어요. 약 ○○ 라고 말해요."],
+ qs:[Q("1 m는 몇 cm?","100 cm",["10 cm","1000 cm","60 cm"],"1 m = 100 cm"),
+  Q("2 m 30 cm는 몇 cm?","230 cm",["23 cm","203 cm","2300 cm"],"200 + 30 = 230"),
+  Q("345 cm는 몇 m 몇 cm?","3 m 45 cm",["34 m 5 cm","3 m 4 cm","30 m 45 cm"],"300 cm = 3 m, 남은 45 cm"),
+  Q("1 m 20 cm + 2 m 30 cm 는?","3 m 50 cm",["3 m 5 cm","4 m 50 cm","3 m 60 cm"],"m끼리 1+2=3, cm끼리 20+30=50"),
+  Q("3 m 80 cm − 1 m 50 cm 는?","2 m 30 cm",["2 m 40 cm","1 m 30 cm","2 m 130 cm"],"3−1=2 m, 80−50=30 cm"),
+  Q("연필의 길이를 나타내기에 알맞은 단위는?","cm",["m","km","kg"],"짧은 길이는 cm로 나타내요."),
+  Q("교실 긴 벽의 길이를 나타내기에 알맞은 단위는?","m",["cm","mm","g"],"긴 길이는 m가 편해요."),
+  Q("1 m 20 cm와 150 cm 중 더 긴 것은?","150 cm",["1 m 20 cm","같아요","알 수 없어요"],"1 m 20 cm = 120 cm 이므로 150 cm가 더 길어요."),
+  Q("한 뼘이 약 10 cm예요. 책상 가로가 5뼘이면 약 몇 cm?","약 50 cm",["약 5 cm","약 15 cm","약 500 cm"],"10 × 5 = 50")],
+ gen(){const a=R(1,4),b=R(1,4),c=R(10,40),d=R(10,40);if(rand(2))return Q(`${a} m ${c} cm + ${b} m ${d} cm 는?`,`${a+b} m ${c+d} cm`,[`${a+b} m ${Math.abs(c-d)} cm`,`${a+b+1} m ${c+d} cm`,`${a} m ${c+d} cm`].filter((x,i,z)=>x!==`${a+b} m ${c+d} cm`&&z.indexOf(x)===i),`m끼리 ${a}+${b}, cm끼리 ${c}+${d}`);
+  const m=R(1,6),cm=R(10,99);return Q(`${m} m ${cm} cm는 몇 cm?`,String(m*100+cm)+" cm",[String(m*10+cm)+" cm",String(m*1000+cm)+" cm",String(m+cm)+" cm"],`${m*100} + ${cm} = ${m*100+cm}`)}},
+{id:"m4",n:"4. 시각과 시간",ic:"⏰",
+ key:["1시간 = 60분, 하루 = 24시간 (오전 12시간 + 오후 12시간)","1주일 = 7일, 1년 = 12개월","시계의 짧은바늘은 ‘시’, 긴바늘은 ‘분’을 가리켜요. 긴바늘이 한 칸 가면 1분, 숫자 하나는 5분.","‘몇 시 몇 분 전’: 4시 10분 전 = 3시 50분","시간 계산: 7시 30분에서 1시간 20분 뒤는 8시 50분 (시는 시끼리, 분은 분끼리)"],
+ qs:[Q("1시간은 몇 분?","60분",["10분","100분","30분"],"1시간 = 60분"),
+  Q("하루는 몇 시간?","24시간",["12시간","20시간","60시간"],"오전 12시간 + 오후 12시간"),
+  Q("1주일은 며칠?","7일",["5일","10일","30일"],"월화수목금토일"),
+  Q("1년은 몇 개월?","12개월",["10개월","11개월","24개월"],"1월부터 12월까지"),
+  Q("2시 50분에서 10분이 지나면?","3시",["2시 60분","2시 40분","3시 10분"],"50분 + 10분 = 60분 = 1시간"),
+  Q("4시 10분 전은 몇 시 몇 분?","3시 50분",["4시 10분","4시 50분","3시 10분"],"4시가 되기 10분 전이에요."),
+  Q("1시간 30분은 몇 분?","90분",["130분","60분","100분"],"60 + 30 = 90"),
+  Q("7시 30분에서 1시간 20분 뒤는?","8시 50분",["8시 20분","9시 50분","8시 10분"],"시 7+1=8, 분 30+20=50"),
+  Q("긴바늘이 6, 짧은바늘이 5와 6 사이를 가리키면?","5시 30분",["6시 5분","5시 6분","6시 30분"],"긴바늘 6은 30분이에요.")],
+ gen(){const h=R(1,10),m=[0,10,20,30,40][rand(5)],add=[10,20,30][rand(3)];let nm=m+add,nh=h;if(nm>=60){nm-=60;nh++}
+  const f=(x,y)=>y===0?`${x}시`:`${x}시 ${y}분`;return Q(`${f(h,m)}에서 ${add}분이 지나면 몇 시 몇 분?`,f(nh,nm),[f(h,m+add>=60?m+add-60:m+add),f(nh+1,nm),f(nh,(nm+10)%60)].filter((x,i,z)=>x!==f(nh,nm)&&z.indexOf(x)===i),`${m}분 + ${add}분 = ${m+add}분`)}},
+{id:"m5",n:"5. 표와 그래프",ic:"📊",
+ key:["자료를 정해진 기준으로 나누어 세면 표로 나타낼 수 있어요.","표의 ‘합계’는 모든 항목의 수를 더한 값이에요.","그래프는 ○ 또는 막대로 나타내서 많고 적음을 한눈에 볼 수 있어요.","가장 많은 것은 칸이 가장 길고, 가장 적은 것은 가장 짧아요."],
+ qs:[Q("좋아하는 과일: 사과 5명, 바나나 3명, 딸기 7명, 귤 4명. 가장 많은 학생이 좋아하는 과일은?","딸기",["사과","바나나","귤"],"7명으로 딸기가 가장 많아요."),
+  Q("위 자료에서 조사한 학생은 모두 몇 명?","19명",["18명","20명","7명"],"5 + 3 + 7 + 4 = 19"),
+  Q("위 자료에서 가장 적은 학생이 좋아하는 과일은?","바나나",["귤","사과","딸기"],"3명으로 가장 적어요."),
+  Q("위 자료에서 사과를 좋아하는 학생은 귤을 좋아하는 학생보다 몇 명 더 많을까요?","1명",["2명","3명","9명"],"5 − 4 = 1"),
+  Q("표에서 ‘합계’는 무엇을 뜻할까요?","모두 더한 값",["가장 큰 수","가장 작은 수","빼서 구한 값"],"합계는 전체를 더한 거예요."),
+  Q("그래프에서 ○가 4개이면 몇 명을 나타낼까요? (○ 1개 = 1명)","4명",["1명","5명","40명"],"○ 하나가 1명이에요."),
+  Q("반 친구들이 좋아하는 놀이: 술래잡기 8명, 공기 5명, 줄넘기 6명. 가장 많은 놀이는?","술래잡기",["공기","줄넘기","모두 같아요"],"8명이 가장 많아요."),
+  Q("위 놀이 자료의 합계는?","19명",["18명","20명","13명"],"8 + 5 + 6 = 19")]},
+{id:"m6",n:"6. 규칙 찾기",ic:"🧩",
+ key:["규칙은 같은 모양이나 수가 반복되거나, 일정하게 커지거나 작아지는 약속이에요.","수가 일정하게 커지는 규칙: 2, 4, 6, 8 (2씩 커져요)","덧셈표·곱셈표에서도 규칙을 찾을 수 있어요. 오른쪽으로 갈수록 일정한 수만큼 커져요.","쌓기나무도 층이나 개수가 늘어나는 규칙이 있어요."],
+ qs:[Q("○ △ □ ○ △ □ ○ △ □ 다음에 올 모양은?","○",["△","□","◇"],"○ △ □ 세 개가 반복돼요."),
+  Q("2, 4, 6, 8, ( ) 에 알맞은 수는?","10",["9","12","7"],"2씩 커져요."),
+  Q("5, 10, 15, 20, ( ) 에 알맞은 수는?","25",["30","22","24"],"5씩 커져요."),
+  Q("1, 3, 5, 7, ( ) 에 알맞은 수는?","9",["8","10","11"],"2씩 커져요."),
+  Q("100, 200, 300, ( ) 에 알맞은 수는?","400",["310","500","301"],"100씩 커져요."),
+  Q("3, 6, 9, ( ), 15 에서 ( )에 알맞은 수는?","12",["10","11","13"],"3씩 커져요."),
+  Q("20, 18, 16, 14, ( ) 에 알맞은 수는?","12",["13","10","15"],"2씩 작아져요."),
+  Q("쌓기나무가 1개, 3개, 5개, 7개로 늘어나요. 다음은 몇 개?","9개",["8개","10개","11개"],"2개씩 늘어나요."),
+  Q("곱셈표에서 3단은 오른쪽으로 갈수록 얼마씩 커질까요?","3씩",["1씩","2씩","10씩"],"3단은 3, 6, 9, 12… 3씩 커져요.")],
+ gen(){const s=R(2,9),st=R(2,9),k=R(3,5);const arr=Array.from({length:k},(_,i)=>s+st*i);const nx=s+st*k;return Q(`${arr.join(", ")}, ( ) 에 알맞은 수는?`,String(nx),[String(nx+1),String(nx-1),String(nx+st)],`${st}씩 커져요.`)}}
+];
+const KO2=[
+{id:"k1",n:"1. 장면을 떠올리며",ic:"🎞️",
+ key:["시나 이야기를 읽으면 머릿속에 장면을 그려 볼 수 있어요.","시에 나온 낱말, 인물의 말과 행동을 바탕으로 장면을 떠올려요.","내가 겪은 일과 비슷한 점을 찾으면 생각이나 느낌을 쉽게 말할 수 있어요.","생각이나 느낌은 ‘~해서 ~했어요’처럼 까닭과 함께 말해요."],
+ qs:[Q("시를 읽고 장면을 떠올리는 가장 좋은 방법은?","시에 나온 말을 바탕으로 그림 그리듯 상상한다",["제목만 보고 짐작한다","빨리 읽고 넘어간다","다른 이야기를 떠올린다"]),
+  Q("‘참새가 포르르 날아갔어요’에서 떠오르는 장면은?","작은 새가 가볍게 날아가는 모습",["큰 소가 풀을 먹는 모습","눈이 펑펑 오는 모습","물고기가 헤엄치는 모습"]),
+  Q("이야기를 읽고 생각이나 느낌을 말할 때 알맞은 것은?","내 경험과 연결하여 까닭과 함께 말한다",["느낌 없이 줄거리만 말한다","큰 소리로 소리만 지른다","다른 사람 생각만 따라 말한다"]),
+  Q("‘친구가 넘어져서 걱정됐어요.’에서 마음을 나타내는 말은?","걱정됐어요",["친구가","넘어져서","친구"]),
+  Q("이야기 속 인물의 마음을 알려면 무엇을 살펴보면 좋을까요?","인물의 말과 행동",["책의 쪽수","글자 크기","표지 색깔"]),
+  Q("비 오는 장면에 어울리는 흉내 내는 말은?","후드득",["엉금엉금","반짝반짝","데굴데굴"])],
+ words:["장면","시를 읽어요","상상해 보아요","생각이나 느낌","참새가 날아가요","마음을 말해요","이야기를 읽었어요","비가 후드득 내려요","인물의 행동","경험을 떠올려요"]},
+{id:"k2",n:"2. 인상 깊었던 일을 써요",ic:"✍️",
+ key:["인상 깊은 일은 오래 기억에 남는 일이에요.","언제, 어디에서, 누구와, 무엇을 했는지, 그때 어떤 생각과 느낌이 들었는지 써요.","글은 처음 - 가운데 - 끝이 있도록 차례대로 써요.","문장 끝에는 마침표(.), 묻는 문장에는 물음표(?)를 써요."],
+ qs:[Q("인상 깊었던 일을 쓸 때 꼭 들어가면 좋은 것은?","언제, 어디서, 누구와, 무엇을, 느낌",["친구 이름만","날짜만","제목만"]),
+  Q("‘인상 깊은 일’은 어떤 일일까요?","오래 기억에 남는 일",["어제 먹은 반찬만","아무 일도 없던 일","잊어버린 일"]),
+  Q("글에서 그때의 마음을 나타낸 문장은?","정말 신나고 재미있었어요.",["우리는 공원에 갔어요.","토요일이었어요.","아빠와 함께 갔어요."]),
+  Q("문장이 끝나면 쓰는 문장 부호는?","마침표(.)",["쉼표(,)","따옴표(“ ”)","물결표(~)"]),
+  Q("글을 쓸 때 알맞은 차례는?","처음 - 가운데 - 끝",["끝 - 처음 - 가운데","가운데 - 끝 - 처음","끝 - 가운데 - 처음"]),
+  Q("글을 다 쓰고 나서 해야 할 일은?","잘못 쓴 곳이 없는지 읽어 보고 고친다",["그냥 덮어 둔다","지워서 버린다","바로 잊는다"])],
+ words:["인상 깊은 일","가족과 바다에 갔어요.","오래 기억에 남아요.","처음 자전거를 탔어요.","정말 즐거웠어요.","언제 어디서 누구와","친구와 함께 놀았어요.","마침표를 찍어요.","생각과 느낌","글을 고쳐 써요."]},
+{id:"k3",n:"3. 말의 재미를 찾아서",ic:"🎤",
+ key:["말놀이에는 끝말잇기, 수수께끼, 흉내 내는 말, 반대말 놀이가 있어요.","소리를 흉내 내는 말(멍멍, 쨍그랑)과 모양을 흉내 내는 말(아장아장, 깡충깡충)이 있어요.","끝말잇기는 앞말의 끝 글자로 시작하는 말을 이어요. (나무 → 무지개 → 개미)","반대말은 뜻이 서로 반대인 말이에요. (크다 ↔ 작다)"],
+ qs:[Q("끝말잇기: 나무 → 무지개 → ( )","개미",["나비","무당벌레","바나나"],"‘무지개’의 끝 글자 ‘개’로 시작해요."),
+  Q("‘멍멍’은 어떤 말일까요?","소리를 흉내 내는 말",["모양을 흉내 내는 말","반대말","높임말"]),
+  Q("‘아장아장’은 어떤 말일까요?","모양을 흉내 내는 말",["소리를 흉내 내는 말","높임말","끝말잇기"]),
+  Q("‘크다’의 반대말은?","작다",["많다","길다","높다"]),
+  Q("‘덥다’의 반대말은?","춥다",["뜨겁다","따뜻하다","시원하다"],"더운 것의 반대는 추운 것이에요."),
+  Q("‘깡충깡충’ 어울리는 동물은?","토끼",["거북이","뱀","고래"])],
+ words:["끝말잇기","수수께끼","멍멍 짖어요.","깡충깡충 뛰어요.","반대말을 찾아요.","말놀이가 재미있어요.","아장아장 걸어요.","개구리가 폴짝 뛰었어요.","쨍그랑 소리가 났어요.","낱말을 이어요."]},
+{id:"k4",n:"4. 인물의 마음을 짐작해요",ic:"💭",
+ key:["인물의 말, 행동, 표정을 보면 마음을 짐작할 수 있어요.","마음을 나타내는 말: 기쁘다, 슬프다, 속상하다, 부끄럽다, 설레다, 걱정되다.","일이 일어난 차례에 따라 인물의 마음도 변해요.","내가 그 인물이라면 어떤 마음일지 생각해 보면 더 잘 알 수 있어요."],
+ qs:[Q("친구에게 줄 선물을 고르며 웃고 있는 인물의 마음은?","기쁘고 설레요",["화가 나요","무서워요","지루해요"]),
+  Q("인물이 눈물을 흘리며 고개를 숙였어요. 마음은?","슬프거나 속상해요",["신이 나요","자랑스러워요","편안해요"]),
+  Q("마음을 나타내는 말이 아닌 것은?","책상",["기쁘다","속상하다","걱정되다"]),
+  Q("인물의 마음을 짐작하는 방법으로 알맞은 것은?","말과 행동, 표정을 살펴본다",["쪽수를 센다","그림 색깔만 본다","글을 읽지 않는다"]),
+  Q("시험을 잘 봐서 칭찬받은 인물의 마음은?","뿌듯하고 기뻐요",["미안해요","두려워요","외로워요"]),
+  Q("‘얼굴이 빨개져서 고개를 숙였어요’ 인물의 마음은?","부끄러워요",["즐거워요","화가 나요","졸려요"])],
+ words:["마음을 짐작해요.","기쁘고 설레요.","속상해서 울었어요.","부끄러워서 얼굴이 빨개졌어요.","걱정이 되었어요.","인물의 표정","친구와 화해했어요.","뿌듯한 마음이 들어요.","슬픈 마음","말과 행동을 살펴요."]},
+{id:"k5",n:"5. 간직하고 싶은 노래",ic:"🎵",
+ key:["노랫말(가사)을 읽으면 어떤 마음과 장면이 담겼는지 알 수 있어요.","노랫말에 반복되는 말은 리듬을 만들어 주고 기억하기 쉬워요.","노래를 부를 때는 노랫말의 분위기에 맞게 목소리와 빠르기를 정해요.","노랫말의 일부를 바꾸어 나만의 노래를 만들 수 있어요."],
+ qs:[Q("노래를 읽거나 부르면 알 수 있는 것은?","담긴 마음과 장면",["쪽수","글쓴이 나이","종이 두께"]),
+  Q("노랫말에 같은 말이 반복되면 어떤 점이 좋을까요?","리듬이 생기고 기억하기 쉬워요",["지루해져요","뜻을 알 수 없어요","노래가 길어져요"]),
+  Q("슬픈 노래를 부를 때 어울리는 목소리는?","차분하고 조용한 목소리",["아주 크고 빠른 목소리","소리 지르기","웃으며 장난치기"]),
+  Q("노랫말을 바꾸어 쓸 때 알맞은 것은?","원래 노랫말의 리듬에 맞게 바꾼다",["마음대로 아주 길게 쓴다","제목을 없앤다","글자를 모두 지운다"]),
+  Q("간직하고 싶은 노래를 고를 때 까닭으로 알맞은 것은?","들으면 기분이 좋아지기 때문이에요",["남이 시켜서","그냥 아무 노래라서","노래가 짧아서만"]),
+  Q("노랫말에서 소리나 모양을 흉내 내는 말을 찾아 쓰면 좋은 점은?","장면이 생생하게 떠올라요",["문장이 틀려요","뜻이 사라져요","읽기가 어려워요"])],
+ words:["노랫말","노래를 불러요.","리듬에 맞추어 불러요.","반복되는 말","간직하고 싶은 노래","동요를 좋아해요.","목소리를 맞추어요.","즐겁게 노래해요.","노랫말을 바꾸어 써요.","마음에 남는 노래"]},
+{id:"k6",n:"6. 자세하게 소개해요",ic:"🔍",
+ key:["소개할 때는 이름, 생김새, 쓰임, 특징을 자세히 말해요.","꾸며 주는 말(동그란, 빨간, 부드러운)을 쓰면 더 자세히 알려 줄 수 있어요.","듣는 사람이 알기 쉽게 차례대로 말해요.","소개한 뒤 질문을 받고 대답하면 더 잘 전달돼요."],
+ qs:[Q("물건을 자세히 소개할 때 말하면 좋은 것은?","이름, 생김새, 쓰임",["내가 싫어하는 것만","그냥 ‘좋아요’","제목만"]),
+  Q("‘빨갛고 동그란 사과’에서 꾸며 주는 말은?","빨갛고 동그란",["사과","먹어요","있어요"]),
+  Q("가위를 소개하는 말로 알맞은 것은?","종이나 천을 자르는 데 써요",["밥을 먹을 때 써요","글씨를 지우는 데 써요","잠을 잘 때 써요"]),
+  Q("소개하는 글에서 ‘크기’를 나타내는 말은?","손바닥만 해요",["빨개요","맛있어요","시끄러워요"]),
+  Q("소개를 들을 때 좋은 태도는?","끝까지 집중하여 듣는다",["딴짓을 한다","자리를 떠난다","끼어들어 소리친다"]),
+  Q("‘부드러운 털을 가진 강아지’에서 꾸며 주는 말은?","부드러운",["털을","가진","강아지"])],
+ words:["소개해요","이름과 생김새","동그란 모양이에요.","부드러운 털이 있어요.","쓰임을 알려 줘요.","크기와 색깔","특징을 말해요.","자세하게 설명해요.","내가 좋아하는 물건","질문에 대답해요."]},
+{id:"k7",n:"7. 일이 일어난 차례를 살펴요",ic:"🔢",
+ key:["일이 일어난 차례를 나타내는 말: 먼저, 다음에, 그다음에, 마지막으로.","시간이 흐르는 차례대로 말하면 듣는 사람이 이해하기 쉬워요.","이야기를 읽고 사건을 차례대로 정리할 수 있어요.","일이 일어난 차례를 바꾸면 이야기가 이해하기 어려워져요."],
+ qs:[Q("차례를 나타내는 말이 아닌 것은?","어제도",["먼저","다음에","마지막으로"],"‘어제도’는 차례를 나타내지 않아요."),
+  Q("‘ ( ) 손을 씻고, 다음에 밥을 먹어요.’ ( )에 알맞은 말은?","먼저",["마지막으로","그리고도","그러나"]),
+  Q("아침에 일어난 차례로 알맞은 것은?","일어나기 → 세수하기 → 아침 먹기",["아침 먹기 → 일어나기 → 세수하기","세수하기 → 아침 먹기 → 일어나기","잠자기 → 일어나기 → 학교 가기 → 씻기"]),
+  Q("라면 끓이는 순서에서 가장 먼저 할 일은?","물을 끓여요",["그릇에 담아요","먹어요","설거지를 해요"]),
+  Q("이야기를 차례대로 말하면 좋은 점은?","듣는 사람이 이해하기 쉬워요",["더 짧아져요","틀려도 괜찮아요","재미가 없어져요"]),
+  Q("‘마지막으로’ 뒤에 올 내용으로 알맞은 것은?","가장 끝에 한 일",["가장 먼저 한 일","중간에 한 일","하지 않은 일"])],
+ words:["차례대로 말해요.","먼저 손을 씻어요.","다음에 밥을 먹어요.","마지막으로 이를 닦아요.","일이 일어난 차례","그다음에 학교에 갔어요.","시간의 순서","차례를 생각해요.","이야기의 처음과 끝","순서대로 정리해요."]},
+{id:"k8",n:"8. 바르게 말해요",ic:"🗣️",
+ key:["윗사람께는 높임말을 써요. ‘-께서’, ‘드시다’, ‘주무시다’, ‘계시다’.","친구에게도 나쁜 말이나 줄임말 대신 바른 말을 써요.","알맞은 목소리 크기와 속도로 또박또박 말해요.","상대방의 마음을 생각하며 말해요."],
+ qs:[Q("‘할머니께서 진지를 ( ).’ ( )에 알맞은 말은?","드십니다",["먹는다","먹어","먹니"]),
+  Q("‘아빠가 잔다’를 높임말로 바르게 바꾸면?","아버지께서 주무세요",["아빠가 자요","아빠가 잠자요","아버지가 잔다"]),
+  Q("‘선생님, 지금 교실에 ( ).’ ( )에 알맞은 말은?","계세요",["있어","있니","있다"]),
+  Q("바른 말 사용으로 알맞은 것은?","고맙습니다",["야, 고마워 짜증나","고맙네 뭐","그딴 건 몰라"]),
+  Q("친구에게 말할 때 좋은 태도는?","상대 마음을 생각하며 또박또박 말한다",["아주 작게 웅얼거린다","소리를 지른다","대답하지 않는다"]),
+  Q("‘생일’의 높임말은?","생신",["생일날","생명","생활"])],
+ words:["높임말","할머니께서 주무세요.","선생님께서 말씀하셨어요.","아버지께서 진지를 드세요.","바르게 말해요.","고맙습니다.","안녕히 계세요.","죄송합니다.","상대방을 생각해요.","또박또박 말해요."]},
+{id:"k9",n:"9. 겪은 일을 글로 써요",ic:"📝",
+ key:["겪은 일을 글로 쓸 때는 일이 일어난 차례대로 써요.","있었던 일과 함께 그때의 생각이나 느낌도 써요.","문장 부호(. , ? !)를 알맞게 쓰고 띄어쓰기에 주의해요.","쓴 글을 다시 읽으며 고쳐 쓰면 더 좋은 글이 돼요."],
+ qs:[Q("겪은 일을 쓸 때 가장 먼저 해야 할 일은?","쓸 일을 정하고 떠올려 본다",["무조건 빨리 쓴다","제목만 쓴다","그림만 그린다"]),
+  Q("글에 꼭 넣으면 좋은 것은?","있었던 일과 그때의 느낌",["다른 사람의 일","내가 모르는 일","없었던 일"]),
+  Q("물어보는 문장 끝에 쓰는 부호는?","물음표(?)",["마침표(.)","쉼표(,)","느낌표(!)"]),
+  Q("놀라거나 기쁜 마음을 나타낼 때 쓰면 좋은 부호는?","느낌표(!)",["물음표(?)","쉼표(,)","없음"]),
+  Q("글을 다 쓴 뒤 하면 좋은 것은?","다시 읽으며 고쳐 쓴다",["버린다","그대로 둔다","잊는다"]),
+  Q("띄어쓰기가 바른 문장은?","나는 학교에 갔어요.",["나는학교에갔어요.","나 는 학교 에 갔어요.","나는 학 교에 갔어요."])],
+ words:["겪은 일","나는 놀이공원에 갔어요.","정말 신이 났어요!","무엇을 했나요?","문장 부호","띄어쓰기에 주의해요.","글을 고쳐 써요.","처음에는 무서웠어요.","그때 기분이 좋았어요.","일기를 써요."]},
+{id:"k10",n:"10. 칭찬하는 말을 주고받아요",ic:"👏",
+ key:["칭찬은 상대방의 좋은 점이나 잘한 일을 구체적으로 말하는 거예요.","칭찬을 들으면 ‘고마워.’라고 인사해요.","진심을 담아 따뜻한 표정과 목소리로 말해요.","칭찬을 주고받으면 서로 기분이 좋아져요."],
+ qs:[Q("칭찬하는 말로 알맞은 것은?","네가 정리를 잘해서 교실이 깨끗해졌어",["별로네","그건 틀렸어","못한다"]),
+  Q("칭찬을 들었을 때 알맞은 대답은?","고마워. 기분이 좋아",["아니야 그만해","몰라","대답하지 않는다"]),
+  Q("칭찬할 때 좋은 방법은?","잘한 점을 구체적으로 말한다",["놀리듯 말한다","거짓으로 말한다","작게 속삭인다"]),
+  Q("칭찬을 주고받으면 어떤 점이 좋을까요?","서로 기분이 좋아져요",["싸우게 돼요","슬퍼져요","잊어요"]),
+  Q("친구가 발표를 잘했어요. 어떤 칭찬이 좋을까요?","또박또박 말해서 잘 들렸어",["넌 별로야","나는 몰라","웃기네"]),
+  Q("칭찬하는 목소리와 표정은?","따뜻하고 환한 표정",["찡그린 표정","화난 표정","무표정"])],
+ words:["칭찬해요","잘했어요.","정말 멋져요.","고마워요.","친구를 칭찬해요.","따뜻한 말","마음을 전해요.","기분이 좋아져요.","열심히 했구나.","박수를 쳐 주었어요."]},
+{id:"k11",n:"11. 실감나게 표현해요",ic:"🎭",
+ key:["흉내 내는 말을 넣으면 장면이 생생해져요.","표정, 몸짓, 목소리 크기를 알맞게 하면 실감 나게 표현할 수 있어요.","글의 분위기에 맞게 빠르기와 높낮이를 조절해요.","겪은 일이나 이야기를 실감 나게 말하면 듣는 사람이 더 재미있어해요."],
+ qs:[Q("실감 나게 말하는 방법이 아닌 것은?","표정 없이 작게 말한다",["몸짓을 함께 쓴다","흉내 내는 말을 넣는다","목소리를 알맞게 한다"]),
+  Q("‘코끼리가 ( ) 걸어와요.’에 어울리는 말은?","쿵쿵",["살금살금","반짝반짝","졸졸"]),
+  Q("무서운 장면을 말할 때 알맞은 목소리는?","낮고 조용하게",["아주 즐겁게","큰 웃음소리로","노래하듯"]),
+  Q("흉내 내는 말을 넣으면 좋은 점은?","장면이 생생해져요",["글이 어려워져요","짧아져요","의미가 없어져요"]),
+  Q("‘토끼가 ( ) 뛰어요.’에 어울리는 말은?","깡충깡충",["어슬렁어슬렁","주르륵","쿵쾅"]),
+  Q("이야기를 읽어 줄 때 신나는 장면에서는?","빠르고 밝게 읽어요",["아주 느리고 슬프게 읽어요","읽지 않아요","작게 읽어요"])],
+ words:["실감 나게 표현해요.","표정과 몸짓","쿵쿵 걸어와요.","깡충깡충 뛰어요.","목소리를 바꾸어요.","재미있게 말해요.","생생하게 전해요.","빠르기를 조절해요.","이야기를 들려줘요.","큰 소리로 읽어요."]},
+{id:"k12",n:"맞춤법·띄어쓰기",ic:"🔤",
+ key:["받침이 있는 낱말은 소리 나는 대로가 아니라 바르게 써야 해요. (꽃이 [꼬치])","‘며칠’, ‘설거지’, ‘깨끗이’처럼 헷갈리는 낱말은 바른 모양을 외워요.","‘안’은 ‘아니’의 줄임말, ‘않’은 ‘아니하’의 줄임말이에요. (비가 안 와요 / 먹지 않아요)","띄어쓰기: 낱말과 낱말 사이는 띄어 써요. 조사(이/가/은/는)는 붙여 써요."],
+ qs:[Q("‘꽃이’를 소리 나는 대로 읽으면?","[꼬치]",["[꼬시]","[꼬이]","[꽃이]"]),
+  Q("바르게 쓴 낱말은?","며칠",["몇일","며칠이","몇칠"]),
+  Q("바르게 쓴 낱말은?","설거지",["설겆이","설거치","설걷이"]),
+  Q("‘비가 ( ) 와요.’에 알맞은 말은?","안",["않","앙","안은"]),
+  Q("‘숙제를 하지 ( ) 았어요.’에 알맞은 말은?","않",["안","앙","안은"]),
+  Q("띄어쓰기가 바른 문장은?","오늘은 날씨가 맑아요.",["오늘은날씨가 맑아요.","오늘 은 날씨 가 맑아요.","오 늘은 날씨가 맑아요."]),
+  Q("바르게 쓴 낱말은?","깨끗이",["깨끄시","깨끗히","깨끗시"]),
+  Q("‘닭이’를 소리 나는 대로 읽으면?","[달기]",["[닥이]","[다기]","[닭이]"])],
+ words:["꽃이 피었어요.","며칠 동안 비가 왔어요.","설거지를 해요.","깨끗이 청소해요.","비가 안 와요.","먹지 않았어요.","닭이 알을 낳았어요.","같이 놀아요.","나뭇잎이 떨어져요.","학교에 다녀왔습니다."]}
+];
+/* 단원 데이터 접근 */
+function unitList(sub){return sub==="math"?MATH2:KO2}
+function unitOf(sub,id){return unitList(sub).find(u=>u.id===id)}
+function buildItems(u){
+  const out=u.qs.map(mkItem);let items=shuffle(out);
+  if(u.gen){items=items.slice(0,6);while(items.length<10)items.push(mkItem(u.gen()))}
+  else items=items.slice(0,10);
+  return items;
+}
+function mkSimilar(u){return u.gen?(q=>mkItem(u.gen())):null}
+/* 단원 목록 */
+function subjMenu(sub){
+  const isM=sub==="math",L=unitList(sub),B=S.bank||{};
+  $app.innerHTML=`<button class="back" id="bk">← 학교 공부</button><div class="card"><h2>${isM?"➗ 수학 · 2학년 2학기":"📝 국어 · 2학년 2학기"}</h2><div class="muted">단원을 누르면 핵심정리와 문제가 나와요.</div>
+  <div class="modes">${L.map(u=>`<button class="mode" data-u="${u.id}"><span class="ic">${u.ic}</span><span>${esc(u.n)}<small>핵심정리 + 문제${B[sub+"_"+u.id]!=null?` · 첫 도전 최고 ${B[sub+"_"+u.id]}%`:""}</small></span></button>`).join("")}
+  <button class="mode" id="mix"><span class="ic">🎲</span><span>전체 섞어 풀기<small>모든 단원에서 10문제</small></span></button>
+  ${isM?`<button class="mode" id="pr"><span class="ic">🧮</span><span>계산 연습<small>덧셈·뺄셈·곱셈·나눗셈·시간 단위</small></span></button>`
+        :`<button class="mode" id="dk"><span class="ic">✏️</span><span>받아쓰기 항목<small>단원별 낱말·문장 보고 듣고 쓰기</small></span></button><button class="mode" id="dm"><span class="ic">📄</span><span>내가 만든 받아쓰기<small>학교 급수표를 직접 넣어요</small></span></button>`}</div></div>`;
+  document.getElementById("bk").onclick=()=>go("school");
+  document.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>renderUnit(sub,b.dataset.u));
+  document.getElementById("mix").onclick=()=>{
+    const items=shuffle(L.flatMap(u=>shuffle(u.qs.map(mkItem)).slice(0,3).concat(u.gen?[mkItem(u.gen())]:[]))).slice(0,10);
+    runMCQ({items,tag:"섞어 풀기",label:(isM?"수학":"국어")+" 섞어 풀기 결과",bankKey:sub+"_mix",onBack:()=>subjMenu(sub)});
+  };
+  const pr=document.getElementById("pr");if(pr)pr.onclick=renderMathPractice;
+  const dk=document.getElementById("dk");if(dk)dk.onclick=renderDictBank;
+  const dm=document.getElementById("dm");if(dm)dm.onclick=()=>go("dict");
+}
+function renderUnit(sub,id){
+  const u=unitOf(sub,id);
+  $app.innerHTML=`<button class="back" id="bk">← ${sub==="math"?"수학":"국어"}</button><div class="card"><h2>${u.ic} ${esc(u.n)}</h2>
+  <div class="fb ok" style="display:block;text-align:left;color:var(--ink);background:#fff8e6"><b>📖 핵심정리</b><ul style="margin:8px 0 0 18px;padding:0;line-height:1.6">${u.key.map(k=>`<li>${esc(k)}</li>`).join("")}</ul></div>
+  <button id="go">🎯 문제 풀기 (10문제)</button>${sub==="ko"&&u.words?`<button class="soft" id="dc">✏️ 이 단원 받아쓰기</button>`:""}</div>`;
+  document.getElementById("bk").onclick=()=>subjMenu(sub);
+  document.getElementById("go").onclick=()=>runMCQ({items:buildItems(u),tag:u.n.replace(/^\d+\.\s*/,""),label:u.n.replace(/^\d+\.\s*/,"")+" 결과",bankKey:sub+"_"+u.id,onBack:()=>renderUnit(sub,id),similar:mkSimilar(u)});
+  const dc=document.getElementById("dc");if(dc)dc.onclick=()=>renderDictUnit(id);
+}
+function renderMath(){subjMenu("math")}
+function renderKorean(){subjMenu("ko")}
+/* ---------- 받아쓰기 항목 (단원별) ---------- */
+function renderDictBank(){
+  $app.innerHTML=`<button class="back" id="bk">← 국어</button><div class="card"><h2>✏️ 받아쓰기 항목</h2><div class="muted">단원마다 10개씩! 먼저 읽어 보고, 듣고 써 봐요. 학교 급수표는 ‘내가 만든 받아쓰기’에 직접 넣어요.</div>
+  <div class="modes">${KO2.map(u=>{const d=(S.dict||[]).find(x=>x.title==="받아쓰기 · "+u.n);return `<button class="mode" data-u="${u.id}"><span class="ic">${u.ic}</span><span>${esc(u.n)}<small>${u.words.length}개${d&&d.best!=null?` · 첫 도전 최고 ${d.best}점`:""}</small></span></button>`}).join("")}</div></div>`;
+  document.getElementById("bk").onclick=()=>subjMenu("ko");
+  document.querySelectorAll("[data-u]").forEach(b=>b.onclick=()=>renderDictUnit(b.dataset.u));
+}
+function renderDictUnit(id){
+  const u=unitOf("ko",id);
+  $app.innerHTML=`<button class="back" id="bk">← 받아쓰기 항목</button><div class="card"><h2>${u.ic} ${esc(u.n)}</h2><div class="muted">눌러서 소리를 들어 보세요.</div>
+  <div class="modes">${u.words.map((w,i)=>`<button class="mode" data-w="${i}"><span class="ic">${i+1}</span><span>${esc(w)}</span></button>`).join("")}</div>
+  <button id="st">✏️ 듣고 쓰기 시작</button></div>`;
+  document.getElementById("bk").onclick=renderDictBank;
+  document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>speakKo(u.words[+b.dataset.w]));
+  document.getElementById("st").onclick=()=>{
+    const t="받아쓰기 · "+u.n;let i=S.dict.findIndex(x=>x.title===t);
+    if(i<0){S.dict.push({title:t,words:u.words.slice(),preset:1});i=S.dict.length-1;save()}
+    startDict(i);
+  };
+}
+/* ---------- 학교 등록 · 급식 (나이스) ---------- */
+const NEIS_URL="https://open.neis.go.kr/hub/";
+function cleanDish(s){return String(s).split(/<br\s*\/?>/i).map(x=>x.replace(/\s*\([\d.\s]+\)/g,"").trim()).filter(Boolean)}
+async function neis(path,params){const r=await fetch(NEIS_URL+path+"?Type=json&"+new URLSearchParams(params));const j=await r.json();return j[path]?j[path][1].row:[]}
+const ymd8=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());
+async function loadMealN(){
+  const el=document.getElementById("meallist");if(!el)return;
+  const sc=S.school;const nm=document.getElementById("schoolnow");if(nm)nm.textContent=sc?`등록된 학교: ${sc.name}`:"아직 학교가 없어요";
+  if(!sc){el.textContent="아래에서 학교를 등록하면 오늘 급식이 나와요";return}
+  const T=ymd8(new Date()),c=S.mealc;
+  if(c&&c.date===T&&c.code===sc.code){el.innerHTML=c.html;return}
+  try{
+    const rows=await neis("mealServiceDietInfo",{ATPT_OFCDC_SC_CODE:sc.atpt,SD_SCHUL_CODE:sc.code,MLSV_FROM_YMD:T,MLSV_TO_YMD:ymd8(new Date(Date.now()+86400000))});
+    if(!rows.length){el.textContent="오늘·내일 급식 정보가 없어요 (방학이나 휴일일 수 있어요)";return}
+    const html=rows.map(r=>`<div class="meal" style="margin:6px 0"><b>${r.MLSV_YMD===T?"오늘":"내일"} ${esc(r.MMEAL_SC_NM)}</b><br>${cleanDish(r.DDISH_NM).map(esc).join(" · ")}</div>`).join("");
+    if(document.getElementById("meallist"))document.getElementById("meallist").innerHTML=html;S.mealc={date:T,code:sc.code,html};save();
+  }catch(e){if(document.getElementById("meallist"))document.getElementById("meallist").textContent="급식 정보를 불러오지 못했어요. 학교 앱에서 확인해 줘 🍚"}
+}
+function setupSchoolReg(){
+  const btn=document.getElementById("schoolbtn");if(!btn)return;
+  btn.onclick=async()=>{
+    const n=document.getElementById("schoolin").value.trim();if(!n)return;const res=document.getElementById("schoolres");res.textContent="찾는 중…";
+    try{
+      const rows=await neis("schoolInfo",{SCHUL_NM:n,pSize:"10"});
+      if(!rows.length){res.textContent="학교를 못 찾았어요. 이름을 다시 확인해 줘";return}
+      res.innerHTML=rows.map((r,i)=>`<button class="opt" data-i="${i}" type="button">${esc(r.SCHUL_NM)}<br><span class="muted">${esc(r.ORG_RDNMA||"")}</span></button>`).join("");
+      res.querySelectorAll("button").forEach(b=>b.onclick=()=>{const r=rows[+b.dataset.i];S.school={name:r.SCHUL_NM,atpt:r.ATPT_OFCDC_SC_CODE,code:r.SD_SCHUL_CODE};S.mealc=null;save();res.textContent="등록했어요 ✅";loadMealN()});
+    }catch(e){res.textContent="학교 정보를 불러오지 못했어요. 인터넷을 확인해 줘"}
+  };
+  loadMealN();
 }
 /* ===================== 한자 · 한국사 · 새 홈 ===================== */
 const DAD_PHONE=""; // 아빠 휴대폰 번호 (예: "01012345678") 넣으면 문자에 번호가 자동으로 들어가요
