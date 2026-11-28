@@ -397,10 +397,43 @@ button.ghost{background:#fff}
  .hm-rob{padding:16px 20px!important;margin-top:14px}.hm-rob .lv-t{font-size:24px}.hm-rob .lv-x{font-size:18px}
 }
 
+/* ===== 새 홈: 공부하기 / 내 하루 ===== */
+.lab2{display:block;font-size:17px;color:#1f5fb8;margin:8px 4px 4px;text-shadow:0 2px 0 #fff}
+.tl5{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.tl5 .big4{grid-column:span 2}.tl5 .big4:nth-child(4),.tl5 .big4:nth-child(5){grid-column:span 3}
+.tl2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tl5 .big4,.tl2 .big4{padding:6px 2px!important;font-size:19px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:68px;line-height:1.1!important}
+.tl5 .big4 span,.tl2 .big4 span{font-size:26px!important}
+.tl5 .big4 small,.tl2 .big4 small{font-size:12px!important;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.big4.s1{background:linear-gradient(160deg,#4facfe,#2f80ed)!important;box-shadow:0 5px 0 #1f5fb8!important}
+.big4.s2{background:linear-gradient(160deg,#ffb347,#ff7a45)!important;box-shadow:0 5px 0 #c4491a!important}
+.big4.s3{background:linear-gradient(160deg,#ff8fb3,#f0568a)!important;box-shadow:0 5px 0 #b02e61!important}
+.big4.s4{background:linear-gradient(160deg,#c9a46b,#a8763e)!important;box-shadow:0 5px 0 #7a5026!important}
+.big4.s5{background:linear-gradient(160deg,#c084fc,#8a5be0)!important;box-shadow:0 5px 0 #5f3bb0!important}
+.big4.d1{background:linear-gradient(160deg,#5ee07a,#2e9e6a)!important;box-shadow:0 5px 0 #1d7a4d!important}
+.big4.d2{background:linear-gradient(160deg,#ffd35e,#f0a82a)!important;box-shadow:0 5px 0 #b97a10!important}
+.rep{margin-top:8px;padding:8px 10px;border-radius:20px;background:#fff;border:3px dashed #ffd9a0}
+.repsum{font-size:14px;color:var(--sub);line-height:1.3;margin-bottom:6px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.repbtn{display:flex;gap:8px}.repbtn button{flex:1;margin:0;padding:8px 6px;font-size:17px;border-radius:16px}
+.repbtn button.m{background:#fff;color:var(--accent);border:2px solid var(--accent);box-shadow:0 4px 0 #c3d1df}
+.repmsg{font-size:13px;color:var(--sub);min-height:0}
+.hj{font-family:"Noto Serif KR","Batang","AppleMyungjo","Songti SC","serif"!important;font-weight:700}
+.word.hj{font-size:84px!important;line-height:1.1;letter-spacing:0}
+.opt.hj{font-size:40px!important}
+@media (min-width:700px){.tl5 .big4,.tl2 .big4{min-height:110px;font-size:28px!important}.tl5 .big4 span,.tl2 .big4 span{font-size:46px!important}.tl5 .big4 small,.tl2 .big4 small{font-size:17px!important}.lab2{font-size:24px}.rep{padding:14px}.repbtn button{font-size:22px;padding:14px}.repsum{font-size:18px}}
+@media (max-width:699px){
+ .tl5 .big4,.tl2 .big4{min-height:56px!important;font-size:18px!important}.tl5 .big4 span,.tl2 .big4 span{font-size:22px!important}
+ .tl5,.tl2{gap:6px}.lab2{margin:5px 4px 2px;font-size:16px}
+ .hero.hm{padding:6px 10px}.hero.hm img{width:50px;height:50px}.hero.hm .ht{font-size:20px}
+ .hm-rob{margin-top:6px;padding:6px 10px!important}.rep{margin-top:6px;padding:6px 8px}.repsum{margin-bottom:4px;-webkit-line-clamp:1}.repbtn button{padding:6px}
+ .hm-today{display:none}
+}
+
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
+<script src="../study-data.js"></script>
 <script>
 /* ===== 단계별 단어 데이터: [단어, 그림, 핵심 소리] ===== */
 const STAGES = [
@@ -1273,7 +1306,185 @@ function go(v,a){
   ({home:renderHome,english:renderEnglish,course:renderCourse,chart:renderChart,robots:renderRobots,sched:renderSched,note:()=>{schoolTab="meal";renderSchool()},
     school:renderSchoolStudy,math:renderMath,korean:renderKorean,dict:renderDict})[v]();
 }
-/* 처음 열 때: 완성했는데 이름 안 지은 로봇 알려 주기 */
+/* ===================== 한자 · 한국사 · 새 홈 ===================== */
+const DAD_PHONE=""; // 아빠 휴대폰 번호 (예: "01012345678") 넣으면 문자에 번호가 자동으로 들어가요
+/* ---------- 한자 (대표 한자 · 한국어문회 5·6급 범위 기준) ---------- */
+const HJ6=`各 각각 각|角 뿔 각|感 느낄 감|強 강할 강|開 열 개|京 서울 경|計 셀 계|界 지경 계|高 높을 고|苦 쓸 고|古 예 고|功 공 공|公 공평할 공|共 한가지 공|科 과목 과|果 실과 과|光 빛 광|交 사귈 교|球 공 구|區 구분할 구|郡 고을 군|近 가까울 근|根 뿌리 근|今 이제 금|急 급할 급|級 등급 급|多 많을 다|短 짧을 단|堂 집 당|代 대신할 대|對 대할 대|待 기다릴 대|圖 그림 도|度 법도 도|讀 읽을 독|童 아이 동|頭 머리 두|等 무리 등|樂 즐길 락|例 법식 례|禮 예도 례|路 길 로|綠 푸를 록|理 다스릴 리|利 이할 리|明 밝을 명|目 눈 목|聞 들을 문|米 쌀 미|美 아름다울 미|反 돌이킬 반|半 반 반|班 나눌 반|發 필 발|放 놓을 방|番 차례 번|別 다를 별|病 병 병|服 옷 복|本 근본 본|部 떼 부|分 나눌 분|死 죽을 사|使 하여금 사|社 모일 사|書 글 서|石 돌 석|席 자리 석|線 줄 선|雪 눈 설|成 이룰 성|省 살필 성|消 사라질 소|速 빠를 속|孫 손자 손|樹 나무 수|術 재주 술|習 익힐 습|勝 이길 승|始 비로소 시|式 법 식|神 귀신 신|身 몸 신|信 믿을 신|新 새 신|失 잃을 실|愛 사랑 애|野 들 야|夜 밤 야|藥 약 약|弱 약할 약|洋 큰바다 양|陽 볕 양|言 말씀 언|業 업 업|永 길 영|英 꽃부리 영|溫 따뜻할 온|勇 날랠 용|用 쓸 용|運 옮길 운|園 동산 원|遠 멀 원|由 말미암을 유|油 기름 유|銀 은 은|音 소리 음|飮 마실 음|衣 옷 의|意 뜻 의|醫 의원 의|者 놈 자|昨 어제 작|作 지을 작|章 글 장|才 재주 재|在 있을 재|戰 싸울 전|庭 뜰 정|定 정할 정|朝 아침 조|族 겨레 족|注 부을 주|晝 낮 주|集 모을 집|窓 창 창|清 맑을 청|體 몸 체|村 마을 촌|秋 가을 추|太 클 태|通 통할 통|特 특별할 특|表 겉 표|風 바람 풍|合 합할 합|行 다닐 행|幸 다행 행|向 향할 향|現 나타날 현|形 모양 형|號 이름 호|和 화할 화|畫 그림 화|黃 누를 황|會 모일 회|訓 가르칠 훈`;
+const HJ5=`價 값 가|客 손 객|見 볼 견|決 결단할 결|結 맺을 결|敬 공경 경|告 고할 고|課 공부할 과|過 지날 과|觀 볼 관|關 관계할 관|廣 넓을 광|具 갖출 구|舊 예 구|局 판 국|基 터 기|己 몸 기|念 생각 념|能 능할 능|團 둥글 단|當 마땅 당|德 큰 덕|到 이를 도|獨 홀로 독|朗 밝을 랑|良 어질 량|旅 나그네 려|歷 지날 력|練 익힐 련|勞 일할 로|流 흐를 류|類 무리 류|陸 뭍 륙|望 바랄 망|法 법 법|變 변할 변|兵 병사 병|福 복 복|奉 받들 봉|史 사기 사|士 선비 사|仕 섬길 사|產 낳을 산|相 서로 상|商 장사 상|鮮 고울 선|仙 신선 선|船 배 선|善 착할 선|選 가릴 선|說 말씀 설|性 성품 성|洗 씻을 세|歲 해 세|束 묶을 속|首 머리 수|宿 잘 숙|順 순할 순|識 알 식|臣 신하 신|實 열매 실|兒 아이 아|惡 악할 악|約 맺을 약|養 기를 양|魚 물고기 어|漁 고기잡을 어|億 억 억|熱 더울 열|葉 잎 엽|屋 집 옥|完 완전할 완|曜 빛날 요|要 요긴할 요|浴 목욕할 욕|院 집 원|願 원할 원|位 자리 위|偉 클 위|以 써 이|任 맡길 임|材 재목 재|財 재물 재|的 과녁 적|典 법 전|傳 전할 전|展 펼 전|切 끊을 절|節 마디 절|店 가게 점|情 뜻 정|調 고를 조|操 잡을 조|卒 마칠 졸|種 씨 종|州 고을 주|週 주일 주|知 알 지|質 바탕 질|着 붙을 착|參 참여할 참|責 꾸짖을 책|充 채울 충|宅 집 택|品 물건 품|必 반드시 필|筆 붓 필|害 해할 해|化 될 화|效 본받을 효|凶 흉할 흉|黑 검을 흑`;
+function parseHJ(str,lv){return str.split("|").map(t=>{const a=t.trim().split(" ");return {c:a[0],e:a[a.length-1],h:a.slice(1,-1).join(" "),lv}})}
+const HJ={ "6":parseHJ(HJ6,"6"), "5":parseHJ(HJ5,"5") };
+const HJLV={"6":"6급","5":"5급","all":"5·6급 섞기"};
+function hjPool(lv){return lv==="all"?[...HJ["6"],...HJ["5"]]:HJ[lv]}
+function hmv(c){const m=S.hmast&&S.hmast[c];return m==null?null:m}
+function hupd(c,ok){S.hmast=S.hmast||{};const o=S.hmast[c];S.hmast[c]=o==null?(ok?.7:.25):.6*o+.4*(ok?1:0);}
+function hjPick(pool,n){
+  const seen=pool.filter(x=>hmv(x.c)!=null),unseen=pool.filter(x=>hmv(x.c)==null);
+  const out=[];const add=a=>a.forEach(x=>{if(out.length<n&&!out.includes(x))out.push(x)});
+  add(seen.slice().sort((a,b)=>hmv(a.c)-hmv(b.c)).filter(x=>hmv(x.c)<.8).slice(0,5));
+  add(shuffle(unseen).slice(0,Math.max(3,n-out.length-2)));
+  add(shuffle(pool));
+  return shuffle(out);
+}
+function hjQ(x,pool,type){
+  const others=shuffle(pool.filter(y=>y.c!==x.c));
+  type=type||(Math.random()<.5?"A":"B");
+  const exp=`${x.c} = ${x.h} ${x.e}`;
+  if(type==="A"){
+    const c=shuffle([x,...others.slice(0,3)]);
+    return {id:x.c,tag:"훈음 고르기",big:x.c,q:"이 한자의 훈(뜻)과 음(소리)은?",c:c.map(y=>y.h+" "+y.e),a:c.indexOf(x),e:exp,speak:`${x.h} ${x.e}`,ch:x.c};
+  }
+  const c=shuffle([x,...others.slice(0,3)]);
+  return {id:x.c,tag:"한자 찾기",bigText:x.h+" "+x.e,q:"뜻과 소리에 맞는 한자는?",c:c.map(y=>y.c),a:c.indexOf(x),e:exp,speak:`${x.h} ${x.e}`,ch:x.c,hanjaOpts:true};
+}
+/* ---------- 객관식 공용 엔진 ---------- */
+function runMCQ(o){
+  const items=o.items;let i=0,ok=0;const wrong=[];
+  function show(){
+    if(i>=items.length)return fin();
+    const q=items[i];
+    $app.innerHTML=`<div class="qhead"><button class="back" id="bk">✕</button><span class="qn">${esc(o.tag||"")}</span><div class="bar"><i style="width:${i/items.length*100}%"></i></div><span class="qn">${i+1}/${items.length}</span></div>
+    <div class="card center">${q.tag?`<div class="tag">${esc(q.tag)}</div>`:""}<div class="q">${esc(q.q)}</div>${q.big?`<div class="word hj">${esc(q.big)}</div>`:""}${q.bigText?`<div class="word" style="font-size:36px;letter-spacing:0">${esc(q.bigText)}</div>`:""}
+    <div class="opts ${q.hanjaOpts?"c3":"c1"}">${q.c.map((t,k)=>`<button class="opt ${q.hanjaOpts?"hj":""}" data-k="${k}">${esc(t)}</button>`).join("")}</div></div><div id="sheet"></div>`;
+    document.getElementById("bk").onclick=()=>{if(confirm("그만할까요?"))o.onBack()};
+    let done=false;
+    document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+      if(done)return;done=true;const k=+b.dataset.k,good=k===q.a;
+      b.classList.add(good?"right":"wrong");
+      if(o.onAnswer)o.onAnswer(q,good);
+      if(good){ok++;setTimeout(()=>{i++;show()},650);return}
+      wrong.push(q);document.querySelectorAll(".opt")[q.a].classList.add("right");
+      if(q.speak)speakKo(q.speak);
+      document.getElementById("sheet").innerHTML=`<div class="sheet"><div class="fb no" style="display:block">${buddy("괜찮아, 같이 알아보자!","sm","shake")}<div class="ans" style="font-size:20px">정답: <span>${esc(q.c[q.a])}</span><br><span class="muted" style="font-size:16px">${esc(q.e||"")}</span></div></div><button id="nx">다음 →</button></div>`;
+      document.getElementById("nx").onclick=()=>{i++;show()};
+    });
+  }
+  function fin(){
+    const pct=Math.round(ok/items.length*100),dk="b_"+o.bankKey,d=D(),first=d[dk]==null;
+    if(first){d[dk]=pct;d["bl_"+o.bankKey]=o.label||o.bankKey}
+    S.bank=S.bank||{};if(first&&(S.bank[o.bankKey]==null||pct>S.bank[o.bankKey]))S.bank[o.bankKey]=pct;
+    save();
+    const st=pct>=90?3:pct>=70?2:pct>=50?1:0;
+    $app.innerHTML=`<div class="card center"><h2>${esc(o.label||"결과")}</h2><div class="score">${pct}%</div>${first?`<div class="big-stars">${"★".repeat(st)}<span class="off">${"★".repeat(3-st)}</span></div><div class="muted">${ok}/${items.length} · 오늘 첫 도전 점수예요</div>`:`<div class="muted">${ok}/${items.length} · 오늘 두 번째부터는 연습으로만 기록돼요</div>`}
+    ${wrong.length?`<div class="wl" style="text-align:left">${wrong.map(q=>esc((q.big||q.bigText||q.q)+" → "+q.c[q.a])).join("<br>")}</div><button id="st">틀린 것 공부하기 →</button>`:buddy("전부 맞았어! 대단해!","big","jump")}
+    <button class="ghost" id="bk2">돌아가기</button></div>`;
+    document.getElementById("bk2").onclick=o.onBack;
+    const sb=document.getElementById("st");if(sb)sb.onclick=()=>studyWrong(wrong.slice(),0);
+  }
+  function studyWrong(list,k){
+    if(k>=list.length){$app.innerHTML=`<div class="card center"><h2>정리 끝! 💮</h2>${buddy("틀린 것을 공부했어요!","big","jump")}<button id="bk2">돌아가기</button></div>`;document.getElementById("bk2").onclick=o.onBack;return}
+    const q=list[k],nq=o.similar?o.similar(q):null;
+    function card(){
+      $app.innerHTML=`<div class="card center"><div class="tag">틀린 것 공부 ${k+1}/${list.length}</div>${q.big?`<div class="word hj">${esc(q.big)}</div>`:""}<div class="q" style="font-size:24px">${esc(q.bigText?q.bigText+" → ":"")}<b style="color:var(--hl)">${esc(q.c[q.a])}</b></div><div class="muted" style="white-space:pre-line">${esc(q.e||"")}</div>${q.speak?`<button class="speak" id="sp">🔊 듣기</button>`:""}<button id="nx">${nq?"새 문제로 확인 →":"다음 →"}</button></div>`;
+      const sp=document.getElementById("sp");if(sp){sp.onclick=()=>speakKo(q.speak);speakKo(q.speak)}
+      document.getElementById("nx").onclick=()=>nq?confirmQ():studyWrong(list,k+1);
+    }
+    function confirmQ(){
+      $app.innerHTML=`<div class="card center"><div class="tag">확인 문제</div><div class="q">${esc(nq.q)}</div>${nq.big?`<div class="word hj">${esc(nq.big)}</div>`:""}${nq.bigText?`<div class="word" style="font-size:34px;letter-spacing:0">${esc(nq.bigText)}</div>`:""}<div class="opts ${nq.hanjaOpts?"c3":"c1"}">${nq.c.map((t,j)=>`<button class="opt ${nq.hanjaOpts?"hj":""}" data-k="${j}">${esc(t)}</button>`).join("")}</div></div>`;
+      document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const good=+b.dataset.k===nq.a;b.classList.add(good?"right":"wrong");if(o.onAnswer)o.onAnswer(nq,good);setTimeout(()=>{if(good)studyWrong(list,k+1);else{document.querySelectorAll(".opt")[nq.a].classList.add("right");setTimeout(()=>studyWrong(list,k+1),900)}},600)});
+    }
+    card();
+  }
+  show();
+}
+
+/* ---------- 한자 화면 ---------- */
+function hjProgress(lv){const p=hjPool(lv);return {n:p.filter(x=>(hmv(x.c)||0)>=.7).length,t:p.length}}
+function renderHanja(){
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card"><h2>🈶 한자 공부</h2><div class="muted">한자를 보고 훈과 음을 맞혀요. 급수를 골라 보세요.</div>
+  <div class="modes">${["6","5","all"].map(lv=>{const p=hjProgress(lv);return `<button class="mode" data-lv="${lv}"><span class="ic">${lv==="6"?"🥉":lv==="5"?"🥈":"🎲"}</span><span>${HJLV[lv]} 문제<small>익힌 한자 ${p.n}/${p.t}${S.bank&&S.bank["hj"+lv]!=null?` · 첫 도전 최고 ${S.bank["hj"+lv]}%`:""}</small></span></button>`}).join("")}
+  <button class="mode" id="tb"><span class="ic">📋</span><span>한자 급수표<small>눌러서 훈·음 듣기</small></span></button></div></div>`;
+  document.getElementById("bk").onclick=()=>go("home");
+  document.querySelectorAll("[data-lv]").forEach(b=>b.onclick=()=>startHanja(b.dataset.lv));
+  document.getElementById("tb").onclick=()=>renderHJTable("6");
+}
+function renderHJTable(lv){
+  const p=hjPool(lv);
+  $app.innerHTML=`<button class="back" id="bk">← 한자 공부</button><div class="card"><h2>📋 ${HJLV[lv]} 한자</h2><div class="row"><button class="${lv==="6"?"":"soft"}" data-l="6">6급</button><button class="${lv==="5"?"":"soft"}" data-l="5">5급</button></div><div class="legend"><span style="background:#bfe8d1">잘함</span><span style="background:#ffe9a8">보통</span><span style="background:#ffc6c6">약함</span><span style="background:#eef2f6">아직</span></div>
+  <div class="cells" style="grid-template-columns:repeat(4,1fr)">${p.map(x=>{const v=hmv(x.c);const bg=v==null?"#eef2f6":v>=.8?"#bfe8d1":v>=.5?"#ffe9a8":"#ffc6c6";return `<button class="cell" data-c="${x.c}" style="background:${bg}"><b class="hj" style="font-size:30px">${x.c}</b><small style="font-size:12px">${esc(x.h)} ${esc(x.e)}</small></button>`}).join("")}</div></div>`;
+  document.getElementById("bk").onclick=renderHanja;
+  document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>renderHJTable(b.dataset.l));
+  document.querySelectorAll(".cell").forEach(b=>b.onclick=()=>{const x=p.find(y=>y.c===b.dataset.c);speakKo(x.h+" "+x.e)});
+}
+function startHanja(lv){
+  const pool=hjPool(lv),xs=hjPick(pool,10),items=xs.map(x=>hjQ(x,pool));
+  runMCQ({items,tag:HJLV[lv],label:"한자 "+HJLV[lv]+" 결과",bankKey:"hj"+lv,onBack:renderHanja,
+    onAnswer:(q,good)=>{hupd(q.ch,good);save()},
+    similar:q=>{const x=pool.find(y=>y.c===q.ch);return hjQ(x,pool,q.hanjaOpts?"A":"B")}});
+}
+
+/* ---------- 한국사 (설아 기본 문제 재사용) ---------- */
+function histGroups(){
+  try{return STUDY.hist.groups.filter(g=>g.all||/^기본/.test(g.name))}catch(e){return []}
+}
+function histAllQs(){return histGroups().filter(g=>!g.all).flatMap(g=>g.qs.map(q=>({...q,g:g.id})))}
+function renderHist(){
+  const gs=histGroups();
+  $app.innerHTML=`<button class="back" id="bk">← 홈</button><div class="card"><h2>🏯 한국사 문제</h2><div class="muted">시대별로 풀거나 섞어서 풀어요. 한 번에 10문제!</div>
+  ${gs.length?`<div class="modes">${gs.map(g=>`<button class="mode" data-g="${esc(g.id)}"><span class="ic">${g.all?"🎲":"📜"}</span><span>${esc(g.name.replace("기본 · ",""))}<small>${g.all?"모든 시대 섞어서":g.qs.length+"문제"}${S.bank&&S.bank["hs_"+g.id]!=null?` · 첫 도전 최고 ${S.bank["hs_"+g.id]}%`:""}</small></span></button>`).join("")}</div>`:`<div class="muted">한국사 문제를 불러오지 못했어요. 인터넷에 연결해서 다시 열어 주세요.</div>`}</div>`;
+  document.getElementById("bk").onclick=()=>go("home");
+  document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>startHist(b.dataset.g));
+}
+function startHist(id){
+  const gs=histGroups(),g=gs.find(x=>x.id===id),all=histAllQs();
+  const pool=g.all?all:g.qs.map(q=>({...q,g:g.id}));
+  const pick=shuffle(pool).slice(0,10);
+  const items=pick.map(q=>{const c=q.c.slice(),ans=c[q.a],sh=shuffle(c);return {id:q.q,q:q.q,c:sh,a:sh.indexOf(ans),e:q.e,g:q.g}});
+  runMCQ({items,tag:"한국사",label:"한국사 "+g.name.replace("기본 · ","")+" 결과",bankKey:"hs_"+g.id,onBack:renderHist,
+    similar:q=>{const same=all.filter(x=>x.g===q.g&&x.q!==q.id);if(!same.length)return null;const n=same[rand(same.length)],ans=n.c[n.a],sh=shuffle(n.c);return {q:n.q,c:sh,a:sh.indexOf(ans),e:n.e}}});
+}
+
+/* ---------- 아빠에게 보내기 · 오늘 요약 ---------- */
+function todaySummary(){
+  const d=D(),L=[];
+  if(d.start)L.push(`파닉스 ${d.start.pct}%${d.end?"→"+d.end.pct+"%":""}`);
+  Object.keys(d).forEach(k=>{if(k.indexOf("b_")===0&&d[k]!=null)L.push(`${d["bl_"+k.slice(2)]||k.slice(2)} ${d[k]}%`)});
+  Object.keys(d).forEach(k=>{if(k.indexOf("m_")===0)L.push(`수학 ${MUNITS[k.slice(2)]?MUNITS[k.slice(2)].n.split(" ")[0]:""} ${d[k]}%`)});
+  return L;
+}
+function dadText(){
+  const L=todaySummary(),n=new Date(),lv=lvOf(S.xp),{r,part}=robotInfo(lv);
+  return `[설훈이 ${n.getMonth()+1}/${n.getDate()} 공부]\n`+(L.length?L.map(x=>"· "+x.replace(" 결과","")).join("\n"):"· 오늘은 아직 공부 전이에요")+`\n로봇 레벨 ${lv} (${r}호 ${part}/10) · 연속 ${streakDays()}일`;
+}
+
+/* ---------- 홈 (공부하기 / 내 하루) ---------- */
+function renderHome(){
+  const now=new Date(),dow=now.getDay(),hm=pad(now.getHours())+":"+pad(now.getMinutes());
+  const sch=schedFor(dow),nextS=sch.find(e=>e.t>=hm);
+  const meal=mealOf(today());
+  const L=lvOf(S.xp),{r,part}=robotInfo(L),cur=L>=LMAX?XPL:S.xp%XPL,shelf=S.shelf.filter(Boolean);
+  const sum=todaySummary();
+  $app.innerHTML=`
+  <div class="hero hm"><img src="${BUDDY}" alt="수달 친구"><div style="flex:1;min-width:0"><div class="ht">설훈이의 공부방</div><div class="hero-say">${now.getMonth()+1}/${now.getDate()} ${DOW[dow]}요일 · <span id="clk"></span></div><div class="hero-wx" id="wx">${wxHTML(wxCache&&wxCache.day===today()?wxCache:null)}</div></div></div>
+  <span class="lab2">📚 공부하기</span>
+  <div class="tl5">
+   <button class="big4 s1" id="en"><span>🔤</span>영어<small>파닉스</small></button>
+   <button class="big4 s2" id="ma"><span>➗</span>수학</button>
+   <button class="big4 s3" id="ko"><span>📝</span>국어</button>
+   <button class="big4 s4" id="hs"><span>🏯</span>한국사</button>
+   <button class="big4 s5" id="hj"><span>🈶</span>한자<small>5급 · 6급</small></button>
+  </div>
+  <span class="lab2">🌈 내 하루</span>
+  <div class="tl2">
+   <button class="big4 d1" id="tt"><span>🗓️</span>시간표<small>${nextS?esc(nextS.t)+" "+esc(nextS.n):sch.length?"오늘 일정 끝":"방과후 · 학원"}</small></button>
+   <button class="big4 d2" id="nt"><span>🔔</span>학교 알림<small>${meal?"급식 "+esc(meal[0]):"급식 · 알림장"}</small></button>
+  </div>
+  <button class="card hm-rob" id="rb"><div>${robotSVG(r,part,36,true)}</div><div class="lv-b" style="text-align:left"><div class="lv-t">🤖 레벨 <b>${L}</b> · ${r}호 ${part}/10</div><div class="xpbar"><i style="width:${cur/XPL*100}%"></i></div><div class="lv-x">완성 ${doneRobots(L)}/8 · 로봇 방 가기 ›</div></div>${shelf.length?`<div class="hm-shelf">${shelf.slice(0,3).map(x=>robotSVG(x,10,26,false)).join("")}</div>`:""}</button>
+  <div class="rep"><div class="repsum">${sum.length?"오늘: "+esc(sum.join(" · ")):"오늘 공부 결과가 여기 모여요"}</div><div class="repbtn"><button id="repsms" type="button">💬 아빠 문자</button><button id="repmail" class="m" type="button">📧 아빠 메일</button></div><div class="repmsg" id="repmsg"></div></div>`;
+  const q=id=>document.getElementById(id);
+  q("en").onclick=()=>go("english");q("ma").onclick=()=>go("math");q("ko").onclick=()=>go("korean");q("hs").onclick=()=>go("hist");q("hj").onclick=()=>go("hanja");
+  q("tt").onclick=()=>go("sched");q("nt").onclick=()=>go("note");q("rb").onclick=()=>go("robots");
+  q("repmail").onclick=()=>{location.href=`mailto:${DAD_EMAIL}?subject=${encodeURIComponent("설훈이 오늘 공부")}&body=${encodeURIComponent(dadText())}`};
+  q("repsms").onclick=async()=>{const t=dadText();try{await navigator.clipboard.writeText(t);q("repmsg").textContent="복사했어요! 문자 앱이 열려요"}catch(e){}location.href=`sms:${DAD_PHONE}?body=${encodeURIComponent(t)}`};
+  loadWeather();
+  clearInterval(window.__clk);
+  const tick=()=>{const e=document.getElementById("clk");if(!e){clearInterval(window.__clk);return}const n=new Date(),h=n.getHours();e.textContent=(h<12?"오전 ":"오후 ")+(h%12||12)+":"+pad(n.getMinutes())};
+  tick();window.__clk=setInterval(tick,15000);
+}
+function go(v,a){
+  try{scrollTo(0,0)}catch(e){}
+  ({home:renderHome,english:renderEnglish,course:renderCourse,chart:renderChart,robots:renderRobots,sched:renderSched,note:()=>{schoolTab="meal";renderSchool()},
+    school:renderSchoolStudy,math:renderMath,korean:renderKorean,dict:renderDict,hist:renderHist,hanja:renderHanja})[v]();
+}
 go("home");
 
 </script>
