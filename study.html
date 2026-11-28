@@ -162,10 +162,10 @@ function menu(){
     const total=SUB.subjects.reduce((s,x)=>s+subQs(x).length,0);
     h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
     h+=SUB.subjects.map((s,i)=>btn(i,s.name,subQs(s).length,"")).join("");
-    h+=`<button class="opt" data-i="all" ${total?"":"disabled"}>📝 종합평가 <span class="muted">${total?total+"문제 · 전 과목":"준비 중"}</span></button>`;
+    h+=`<button class="opt" data-i="all" ${total?"":"disabled"}>📝 ${SUB.allLabel||"종합평가"} <span class="muted">${total?total+"문제"+(SUB.allLabel?"":" · 전 과목"):"준비 중"}</span></button>`;
   } else {                              // 과목 안: 단원평가
     const s=SUB.subjects[path[0]], total=subQs(s).length;
-    h+=`<h2 class="sec">${escH(s.name)} · 단원평가</h2>`;
+    h+=`<h2 class="sec">${escH(s.name)} · ${SUB.unitLabel||"단원평가"}</h2>`;
     h+=s.units.length?s.units.map((u,i)=>btn(i,u.name,(u.qs||[]).length,(u.qs||[]).length?"":"disabled")).join("")
       :`<div class="muted" style="margin:10px 0">단원 문제를 준비하고 있어요. 교재 사진을 보내 주면 단원별로 만들어 넣어요.</div>`;
     if(total) h+=`<button class="opt" data-i="all" type="button">🔀 ${escH(s.name)} 전체 섞어 풀기 <span class="muted">${total}문제</span></button>`;
@@ -182,7 +182,7 @@ function menu(){
       if(g.mock){ label=SHORT+" · 심화 모의고사"; return start(advQs(),{n:50,ordered:true,exam:true}); }
       label=SHORT+" · "+g.name; return start(g.qs); }
     if(path.length===0){
-      if(v==="all"){ label=SHORT+" · 종합평가"; return start(SUB.subjects.flatMap(subQs)); }
+      if(v==="all"){ label=SHORT+" · "+(SUB.allLabel||"종합평가"); return start(SUB.subjects.flatMap(subQs)); }
       path=[+v]; return menu();
     }
     const s=SUB.subjects[path[0]];
@@ -195,7 +195,7 @@ function start(pool,o){ o=o||{}; EXAM=!!o.exam; qs=(o.ordered?pool.slice():shuff
 function renderQ(){
   answered=false; const q=qs[idx];
   $("app").innerHTML=`<div class="bar"><i style="width:${idx/qs.length*100}%"></i></div><div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${res.filter(r=>r.ok).length}</span></div>
-  <div class="card"><div class="q">${escH(q.q)}</div>${q.c.map((c,i)=>`<button class="opt" data-i="${i}">${"①②③④⑤"[i]} ${escH(c)}</button>`).join("")}<div class="fb" id="fb"></div><button id="nx" style="display:none"></button></div>`;
+  <div class="card"><div class="q">${key==="hanja"?escH(q.q).replace(/\n\n([^\n]+)$/,"\n<span class=\"hz\">$1</span>"):escH(q.q)}</div>${q.c.map((c,i)=>`<button class="opt" data-i="${i}">${"①②③④⑤"[i]} ${escH(c)}</button>`).join("")}<div class="fb" id="fb"></div><button id="nx" style="display:none"></button></div>`;
   $("app").querySelectorAll("button.opt").forEach(b=>b.onclick=()=>{
     if(answered) return; answered=true; const i=+b.dataset.i, ok=i===q.a;
     res.push({q:q.q,mine:q.c[i],ans:q.c[q.a],ok}); if(ok) addXP(1);
