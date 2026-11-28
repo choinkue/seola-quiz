@@ -221,3 +221,9 @@ function penguin(mood, st, gen){
   s.textContent=`.stopc{text-align:left;font-size:18px;line-height:1.5}.stoph{font-size:22px;margin:4px 0 6px}.stopc .sl{font-weight:bold;color:#b9541f;margin-top:8px;font-size:16px}.stopc ul{margin:2px 0 0;padding-left:20px}.stamp{margin-top:10px;background:#e6f6ee;color:#2e9e6a;border-radius:12px;padding:8px 12px;font-weight:bold;text-align:center}.ovc.big{max-height:88vh;overflow:auto}details.trd{border-top:1px solid #efe6da;padding:8px 0}details.trd summary{cursor:pointer;font-weight:bold}.vil{margin-top:10px}`;
   document.head.appendChild(s);
 })();
+
+
+/* 오늘 푼 결과 기록 (홈 화면 '아빠에게 보내기'용). entry: {label, ok, n, wrong:[문자열]} */
+function dayKey(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function getDayLog(){try{const v=JSON.parse(localStorage.getItem("seola_day_log")||"null");return v&&v.date===dayKey()?v:{date:dayKey(),items:[]}}catch(e){return {date:dayKey(),items:[]}}}
+function dayLog(e){try{const v=getDayLog();const d=new Date();e.time=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");v.items.push(e);v.items=v.items.slice(-40);localStorage.setItem("seola_day_log",JSON.stringify(v))}catch(x){}}

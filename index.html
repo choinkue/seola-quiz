@@ -148,6 +148,13 @@
   .wk .dw{flex:none;width:34px;height:34px;border-radius:50%;background:#f3ece3;text-align:center;line-height:34px;font-size:17px}
   .wk.today .dw{background:#ff9a5c;color:#fff}.wk .cl{flex:1;font-size:17px;line-height:1.5;padding-top:3px}.wk .cl i{font-style:normal;color:var(--sub);font-size:15px}
 </style>
+<style>
+  .rep{margin-top:16px;padding:10px 12px;border-radius:20px;background:#fff;border:2px dashed #ffd9a0}
+  .repsum{font-size:15px;color:var(--sub);line-height:1.5;margin-bottom:8px}.repsum b{color:var(--ink)}
+  .repbtn{display:flex;gap:8px}.repbtn button{flex:1;margin:0;padding:9px 6px;font-size:16px;border-radius:16px;box-shadow:0 3px 0 rgba(150,70,20,.25)}
+  .repbtn button.m{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  .repmsg{font-size:14px;color:var(--sub);margin-top:6px;min-height:0}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -168,6 +175,7 @@
     <a class="t" href="#acad"><svg viewBox="0 0 64 64"><g stroke="#5a4630" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"><circle cx="13" cy="15" r="8" fill="#ff8fb3"/><circle cx="51" cy="15" r="8" fill="#ff8fb3"/><circle cx="32" cy="36" r="22" fill="#fff"/><path d="M20 56l-4 5M44 56l4 5" stroke-width="3"/></g><circle cx="32" cy="36" r="17" fill="#fff4cf"/><path d="M32 36V25M32 36l8 4" fill="none" stroke="#5a4630" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="36" r="2.2" fill="#ff7a7a"/><circle cx="32" cy="22.5" r="1.4" fill="#5a4630"/><circle cx="32" cy="49.5" r="1.4" fill="#5a4630"/><circle cx="18.5" cy="36" r="1.4" fill="#5a4630"/><circle cx="45.5" cy="36" r="1.4" fill="#5a4630"/></svg><b>학원시간표</b></a>
   </div>
   <a class="dexb" href="#dex"><span class="pgi" id="dexpg"></span><span><b>조펭솜 성장 도감</b><small id="dexsub"></small></span></a>
+  <div class="rep"><div class="repsum" id="repsum"></div><div class="repbtn"><button id="repsms" type="button">💬 아빠 문자</button><button id="repmail" class="m" type="button">📧 아빠 메일</button></div><div class="repmsg" id="repmsg"></div></div>
 </div>
 
 <div id="v-eng" class="view" hidden>
@@ -242,7 +250,7 @@ function route(){
   let h=(location.hash||"#home").slice(1); if(!VIEWS.includes(h)) h="home";
   VIEWS.forEach(v=>$("v-"+v).hidden=(v!==h));
   if(h==="dex"){ paintPg(); renderLv(); $("dexbox").innerHTML=dexHTML(); }
-  if(h==="home"){ homeSubs(); paintDexPg(); }
+  if(h==="home"){ homeSubs(); paintDexPg(); paintRep(); }
   scrollTo(0,0);
 }
 addEventListener("hashchange",route);
@@ -309,6 +317,26 @@ function paintAcad(){
     : `<div class="muted">${ACAD.length?"오늘은 학원이 없어요 🎉":"아래에 학원 시간표를 넣으면 오늘 시간을 알려 줘요"}</div>`;
   paintWeek(); homeSubs();
 }
+
+/* 오늘 푼 결과 → 아빠에게 보내기 */
+function repText(){
+  const L=getDayLog().items, d=new Date(), I=info(getXP());
+  if(!L.length) return "";
+  let t=`[설아 오늘 공부 결과] ${d.getMonth()+1}/${d.getDate()} (${DAYS[d.getDay()]})\n`;
+  let ok=0,n=0; L.forEach(e=>{ok+=e.ok;n+=e.n});
+  t+=`오늘 ${L.length}번 풀었어요 · 합계 ${ok}/${n} (${n?Math.round(ok/n*100):0}점)\n`;
+  L.forEach((e,i)=>{ t+=`\n${i+1}. ${e.label} (${e.time}) — ${e.ok}/${e.n} (${e.n?Math.round(e.ok/e.n*100):0}점)`;
+    if(e.wrong&&e.wrong.length) t+=`\n  틀린 문제 ${e.wrong.length}개\n`+e.wrong.map((w,k)=>`  ${k+1}) ${w}`).join("\n"); });
+  t+=`\n\n🐧 조펭솜: Lv.${I.st+1} ${STAGES[I.st][1]} (모은 별 ${getXP()}개)`;
+  return t;
+}
+function paintRep(){
+  const L=getDayLog().items; let ok=0,n=0; L.forEach(e=>{ok+=e.ok;n+=e.n});
+  $("repsum").innerHTML=L.length?`<b>📮 오늘 푼 결과</b> · ${L.length}번 · ${ok}/${n}문제 맞힘 (${Math.round(ok/n*100)}점)`:`<b>📮 오늘 푼 결과</b> · 아직 푼 문제가 없어요`;
+  $("repsms").disabled=$("repmail").disabled=!L.length;
+}
+$("repmail").onclick=()=>{const t=repText(); if(t) location.href="mailto:"+atob("Y2hvaW5rdWVAZ21haWwuY29t")+"?subject="+encodeURIComponent("[설아 공부] 오늘 결과 "+(new Date().getMonth()+1)+"/"+new Date().getDate())+"&body="+encodeURIComponent(t)};
+$("repsms").onclick=async()=>{const t=repText(); if(!t) return; try{await navigator.clipboard.writeText(t)}catch(e){} $("repmsg").textContent="문자 앱에서 받는 사람에 '아빠'를 고르고 보내줘 💬"; location.href="sms:?body="+encodeURIComponent(t)};
 function paintDexPg(){ const e=$("dexpg"); if(e) e.innerHTML=penguin("normal"); }
 function homeSubs(){
   const x=getXP(), I=info(x), S=STAGES[I.st], nx=STAGES[I.st+1];

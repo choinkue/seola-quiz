@@ -137,6 +137,8 @@ let qs=[],idx=0,res=[],answered=false,label="",path=[];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const cnt=a=>a.reduce((s,x)=>s+x.length,0);
 const basicQs=()=>SUB.groups.filter(x=>!x.adv&&!x.mock).flatMap(x=>x.qs||[]);
+const tierOf=g=>g.adv?"adv":(g.mock||g.all)?"":"basic";
+const tierQs=k=>SUB.groups.filter(g=>tierOf(g)===k).flatMap(g=>g.qs||[]);
 const advQs=()=>SUB.groups.filter(x=>x.adv).flatMap(x=>x.qs||[]);
 const subQs=s=>s.units.flatMap(u=>u.qs||[]);
 renderLv();
@@ -144,9 +146,18 @@ function btn(i,name,n,extra){return `<button class="opt" data-i="${i}" ${extra||
 function menu(){
   let h=`<div class="card">`;
   if(path.length) h+=`<a class="back" href="#" id="bk">← 뒤로</a>`;
-  if(SUB.groups){                       // 한국사: 시대별
-    h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
-    h+=SUB.groups.map((g,i)=>{const n=g.all?basicQs().length:g.mock?advQs().length:g.qs.length;return btn(i,g.name,n,n?"":"disabled")}).join("");
+  if(SUB.groups){                       // 한국사: 기본(4~6급) / 심화(1~3급) 상자 → 시대별
+    const T=[{k:"basic",name:"🌱 기본 (4~6급)"},{k:"adv",name:"🔥 심화 (1~3급)"}];
+    if(path.length===0){
+      h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
+      h+=T.map((t,i)=>`<button class="opt" data-i="${i}">${t.name} <span class="muted">${tierQs(t.k).length}문제</span></button>`).join("");
+    } else {
+      const t=T[path[0]];
+      h+=`<h2 class="sec">${t.name}</h2><div class="muted">${path[0]===0?"쉬운 단답 문제로 개념 익히기":"자료를 읽고 푸는 시험 형태"}</div>`;
+      h+=`<button class="opt" data-i="mix">🔀 섞어서 풀기 <span class="muted">${tierQs(t.k).length}문제 중 10문제</span></button>`;
+      h+=SUB.groups.map((g,i)=>({g,i})).filter(x=>tierOf(x.g)===t.k).map(x=>btn(x.i,x.g.name.replace(/^(기본|심화) · /,""),x.g.qs.length,"")).join("");
+      if(path[0]===1){const mi=SUB.groups.findIndex(g=>g.mock); h+=`<button class="opt" data-i="${mi}">📝 심화 모의고사 (50문제) <span class="muted">급 판정</span></button>`;}
+    }
   } else if(path.length===0){           // 과목 목록 + 종합평가
     const total=SUB.subjects.reduce((s,x)=>s+subQs(x).length,0);
     h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
@@ -163,9 +174,13 @@ function menu(){
   const bk=$("bk"); if(bk) bk.onclick=e=>{e.preventDefault();path.pop();menu()};
   $("app").querySelectorAll("button.opt").forEach(b=>b.onclick=()=>{
     const v=b.dataset.i;
-    if(SUB.groups){ const g=SUB.groups[+v]; label=SHORT+" · "+g.name.replace("📝 ","");
-      if(g.mock) return start(advQs(),{n:50,ordered:true,exam:true});
-      return start(g.all?basicQs():g.qs); }
+    if(SUB.groups){
+      if(path.length===0){ path=[+v]; return menu(); }
+      const tk=path[0]===0?"basic":"adv", tn=path[0]===0?"기본":"심화";
+      if(v==="mix"){ label=SHORT+" · "+tn+" 섞어서"; return start(tierQs(tk)); }
+      const g=SUB.groups[+v];
+      if(g.mock){ label=SHORT+" · 심화 모의고사"; return start(advQs(),{n:50,ordered:true,exam:true}); }
+      label=SHORT+" · "+g.name; return start(g.qs); }
     if(path.length===0){
       if(v==="all"){ label=SHORT+" · 종합평가"; return start(SUB.subjects.flatMap(subQs)); }
       path=[+v]; return menu();
@@ -191,7 +206,8 @@ function renderQ(){
 }
 function result(){
   const ok=res.filter(r=>r.ok).length, n=res.length, pct=Math.round(ok/n*100), bonus=n>=10?(5+(pct===100?10:0)):2;
-  addXP(bonus); const wrong=res.filter(r=>!r.ok); const gain=window.__gain;
+  addXP(bonus); const wrong=res.filter(r=>!r.ok);
+  try{ const pick=q=>{const L=q.split("\n").filter(Boolean); return (L.find(x=>/\?$/.test(x))||L[0]).slice(0,60)}; dayLog({label,ok,n,wrong:wrong.map(r=>`${pick(r.q)} (정답: ${r.ans} / 내 답: ${r.mine})`)}); }catch(e){} const gain=window.__gain;
   const grade=EXAM?(pct>=80?"심화 1급":pct>=70?"심화 2급":pct>=60?"심화 3급":"3급까지 "+Math.max(0,Math.ceil(n*0.6)-ok)+"문제 더 필요"):"";
   const d=new Date(); const text=`[설아 공부] ${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")} (${label})\n점수: ${ok} / ${n} (${pct}점)${grade?" · "+grade:""}\n`+(wrong.length?`\n틀린 문제 ${wrong.length}개\n`+wrong.map((r,i)=>`${i+1}. ${r.q} (정답: ${r.ans} / 내 답: ${r.mine})`).join("\n"):"\n모두 맞았어요! 💯");
   $("app").innerHTML=`<div class="pg big">${penguin(pct>=60?"happy":"sad")}</div><div class="card center"><div class="muted">${escH(label)}</div><div class="score">${ok} / ${n}</div><div style="font-size:20px;font-weight:bold">${pct}점</div>${grade?`<div class="gain" style="font-size:22px">🎓 ${grade}</div>`:""}<div class="gain">이번에 모은 별 ⭐+${gain} <span class="muted">(보너스 +${bonus})</span></div></div>
