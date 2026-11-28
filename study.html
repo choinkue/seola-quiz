@@ -112,7 +112,7 @@
   details.set{margin-top:16px}details.set summary{font-weight:bold;cursor:pointer;font-size:19px}
   .opt{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:2px solid var(--line);margin-top:10px;font-size:21px;font-weight:normal}
   .opt.ok{background:var(--okbg);border-color:var(--ok)}.opt.no{background:var(--nobg);border-color:var(--no)}
-  .q{font-size:26px;font-weight:700;margin:12px 0}
+  .q{font-size:26px;font-weight:700;margin:12px 0;white-space:pre-line;line-height:1.45}
 </style>
 <style>
   .back{display:inline-block;margin:0 0 6px;color:#6b4f00;font-weight:bold;text-decoration:none;font-size:19px}
@@ -136,6 +136,8 @@ $("stitle").textContent=SUB.title; document.title=SHORT;
 let qs=[],idx=0,res=[],answered=false,label="",path=[];
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const cnt=a=>a.reduce((s,x)=>s+x.length,0);
+const basicQs=()=>SUB.groups.filter(x=>!x.adv&&!x.mock).flatMap(x=>x.qs||[]);
+const advQs=()=>SUB.groups.filter(x=>x.adv).flatMap(x=>x.qs||[]);
 const subQs=s=>s.units.flatMap(u=>u.qs||[]);
 renderLv();
 function btn(i,name,n,extra){return `<button class="opt" data-i="${i}" ${extra||""}>${escH(name)} <span class="muted">${n===null?"":n?n+"문제":"준비 중"}</span></button>`}
@@ -144,7 +146,7 @@ function menu(){
   if(path.length) h+=`<a class="back" href="#" id="bk">← 뒤로</a>`;
   if(SUB.groups){                       // 한국사: 시대별
     h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
-    h+=SUB.groups.map((g,i)=>{const n=g.all?SUB.groups.reduce((s,x)=>s+(x.qs?x.qs.length:0),0):g.qs.length;return btn(i,g.name,n,n?"":"disabled")}).join("");
+    h+=SUB.groups.map((g,i)=>{const n=g.all?basicQs().length:g.mock?advQs().length:g.qs.length;return btn(i,g.name,n,n?"":"disabled")}).join("");
   } else if(path.length===0){           // 과목 목록 + 종합평가
     const total=SUB.subjects.reduce((s,x)=>s+subQs(x).length,0);
     h+=`<h2 class="sec">${escH(SUB.title)}</h2><div class="muted">${escH(SUB.hint)}</div>`;
@@ -161,7 +163,9 @@ function menu(){
   const bk=$("bk"); if(bk) bk.onclick=e=>{e.preventDefault();path.pop();menu()};
   $("app").querySelectorAll("button.opt").forEach(b=>b.onclick=()=>{
     const v=b.dataset.i;
-    if(SUB.groups){ const g=SUB.groups[+v]; label=SHORT+" · "+g.name; return start(g.all?SUB.groups.flatMap(x=>x.qs||[]):g.qs); }
+    if(SUB.groups){ const g=SUB.groups[+v]; label=SHORT+" · "+g.name.replace("📝 ","");
+      if(g.mock) return start(advQs(),{n:50,ordered:true,exam:true});
+      return start(g.all?basicQs():g.qs); }
     if(path.length===0){
       if(v==="all"){ label=SHORT+" · 종합평가"; return start(SUB.subjects.flatMap(subQs)); }
       path=[+v]; return menu();
@@ -171,7 +175,8 @@ function menu(){
     label=SHORT+" · "+s.name+" · "+s.units[+v].name; start(s.units[+v].qs);
   });
 }
-function start(pool){ qs=shuffle(pool).slice(0,10).map(q=>{const order=shuffle(q.c.map((c,i)=>i));return {q:q.q,c:order.map(i=>q.c[i]),a:order.indexOf(q.a),e:q.e}}); idx=0;res=[];window.__gain=0;renderQ(); }
+let EXAM=false;
+function start(pool,o){ o=o||{}; EXAM=!!o.exam; qs=(o.ordered?pool.slice():shuffle(pool)).slice(0,o.n||10).map(q=>{const order=shuffle(q.c.map((c,i)=>i));return {q:q.q,c:order.map(i=>q.c[i]),a:order.indexOf(q.a),e:q.e}}); idx=0;res=[];window.__gain=0;renderQ(); }
 function renderQ(){
   answered=false; const q=qs[idx];
   $("app").innerHTML=`<div class="bar"><i style="width:${idx/qs.length*100}%"></i></div><div class="top"><span>${idx+1} / ${qs.length}</span><span>맞은 개수 ${res.filter(r=>r.ok).length}</span></div>
@@ -187,8 +192,9 @@ function renderQ(){
 function result(){
   const ok=res.filter(r=>r.ok).length, n=res.length, pct=Math.round(ok/n*100), bonus=n>=10?(5+(pct===100?10:0)):2;
   addXP(bonus); const wrong=res.filter(r=>!r.ok); const gain=window.__gain;
-  const d=new Date(); const text=`[설아 공부] ${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")} (${label})\n점수: ${ok} / ${n} (${pct}점)\n`+(wrong.length?`\n틀린 문제 ${wrong.length}개\n`+wrong.map((r,i)=>`${i+1}. ${r.q} (정답: ${r.ans} / 내 답: ${r.mine})`).join("\n"):"\n모두 맞았어요! 💯");
-  $("app").innerHTML=`<div class="pg big">${penguin(pct>=60?"happy":"sad")}</div><div class="card center"><div class="muted">${escH(label)}</div><div class="score">${ok} / ${n}</div><div style="font-size:20px;font-weight:bold">${pct}점</div><div class="gain">이번에 모은 별 ⭐+${gain} <span class="muted">(보너스 +${bonus})</span></div></div>
+  const grade=EXAM?(pct>=80?"심화 1급":pct>=70?"심화 2급":pct>=60?"심화 3급":"3급까지 "+Math.max(0,Math.ceil(n*0.6)-ok)+"문제 더 필요"):"";
+  const d=new Date(); const text=`[설아 공부] ${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")} (${label})\n점수: ${ok} / ${n} (${pct}점)${grade?" · "+grade:""}\n`+(wrong.length?`\n틀린 문제 ${wrong.length}개\n`+wrong.map((r,i)=>`${i+1}. ${r.q} (정답: ${r.ans} / 내 답: ${r.mine})`).join("\n"):"\n모두 맞았어요! 💯");
+  $("app").innerHTML=`<div class="pg big">${penguin(pct>=60?"happy":"sad")}</div><div class="card center"><div class="muted">${escH(label)}</div><div class="score">${ok} / ${n}</div><div style="font-size:20px;font-weight:bold">${pct}점</div>${grade?`<div class="gain" style="font-size:22px">🎓 ${grade}</div>`:""}<div class="gain">이번에 모은 별 ⭐+${gain} <span class="muted">(보너스 +${bonus})</span></div></div>
   <div class="card"><button id="mail">📧 아빠한테 메일 보내기</button><button class="ghost" id="sms">💬 아빠한테 문자 보내기</button><button class="soft" id="copy">📋 결과 복사하기</button><div class="copied" id="cp"></div><button class="ghost" id="again">다시 풀기</button><a class="mi" style="margin-top:12px;display:block" href="./">🏠 홈으로</a></div>
   ${wrong.length?`<div class="card"><b>틀린 문제 ${wrong.length}개</b><table>${wrong.map(r=>`<tr><td>${escH(r.q)}<br><span class="muted">정답: ${escH(r.ans)} · 내 답: ${escH(r.mine)}</span></td></tr>`).join("")}</table></div>`:""}`;
   $("mail").onclick=()=>{location.href="mailto:"+atob("Y2hvaW5rdWVAZ21haWwuY29t")+"?subject="+encodeURIComponent(`[설아 공부] ${label} ${ok}/${n} (${pct}점)`)+"&body="+encodeURIComponent(text)};
